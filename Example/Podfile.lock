@@ -1,0 +1,14 @@
+PODS:
+  - URBNDataSource (0.1.0)
+
+DEPENDENCIES:
+  - URBNDataSource (from `../`)
+
+EXTERNAL SOURCES:
+  URBNDataSource:
+    :path: ../
+
+SPEC CHECKSUMS:
+  URBNDataSource: 200f1ee6baf9ae4e8b3329fa1bc263ea974b07de
+
+COCOAPODS: 0.34.4
