@@ -8,31 +8,16 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = "URBNDataSource"
-  s.version          = "0.1.0"
-  s.summary          = "A short description of URBNDataSource."
-  s.description      = <<-DESC
-                       An optional longer description of URBNDataSource
-
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
-                       DESC
-  s.homepage         = "https://github.com/<GITHUB_USERNAME>/URBNDataSource"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  s.name             = 'URBNDataSource'
+  s.version          = '0.1'
+  s.summary          = 'URBNDataSource is meant to be a convenience wrapper around UICollectionView / UITableView data management'
+  s.homepage         = 'https://github.com/urbn/URBNDataSource'
   s.license          = 'MIT'
-  s.author           = { "Joe" => "Ridenour" }
-  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/URBNDataSource.git", :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.author           = 'URBN Application Engineering Team'
+  s.source           = { :git => "https://github.com/urbn/URBNDataSource.git", :tag => s.version.to_s }
 
-  s.platform     = :ios, '7.0'
+  s.platform     = :ios, '6.0'
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes'
-  s.resource_bundles = {
-    'URBNDataSource' => ['Pod/Assets/*.png']
-  }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end
