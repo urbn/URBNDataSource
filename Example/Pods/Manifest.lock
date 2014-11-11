@@ -2,13 +2,9 @@ PODS:
   - URBNDataSource (0.1)
 
 DEPENDENCIES:
-  - URBNDataSource (from `https://github.com/urbn/URBNDataSource`)
-
-EXTERNAL SOURCES:
-  URBNDataSource:
-    :git: https://github.com/urbn/URBNDataSource
+  - URBNDataSource
 
 SPEC CHECKSUMS:
-  URBNDataSource: 40824086cf082fe159bc8bdc225597b986a92186
+  URBNDataSource: 2b54c7e4c2c3ed5b7e05434a309aa714da9639a5
 
 COCOAPODS: 0.34.4
