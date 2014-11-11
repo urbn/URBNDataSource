@@ -1,63 +1,32 @@
-# xcode noise
-[bB]uild/*
-*/[bB]uild/*
+# OS X
+.DS_Store
+
+# Xcode
+build/
 *.pbxuser
 !default.pbxuser
-*.mode*
+*.mode1v3
 !default.mode1v3
+*.mode2v3
 !default.mode2v3
-*.perspective
 *.perspectivev3
 !default.perspectivev3
 xcuserdata
-*.xcuserstate
-# *.xcworkspace
-# *.xcodeproj/*.xcworkspacedata
-!default.xcworkspace
-profile
 *.xccheckout
+profile
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
 
-*.moved-aside*
-
-# IB
-*~.nib
-*~.xib
-
-# Cocoapods
-[Pp]ods/
-
-# Crashlytics
-Crashlytics.framework
-
-# merge stuff
-*.orig
-
-# old skool
-.svn
-
-# mercurial
-.hg
-
-# osx noise
-.DS_Store
-.profile
-*.swp
-Icon?
-*.lock
-*~
-*.dat
-*.dep
-
-# Thumbnails
-._*
-
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
-
-.env
-bin
+# Bundler
 .bundle
-docs
-test-reports
 
+# We recommend against adding the Pods directory to your .gitignore. However
+# you should judge for yourself, the pros and cons are mentioned at:
+# http://guides.cocoapods.org/using/using-cocoapods.html#should-i-ignore-the-pods-directory-in-source-control
+# 
+# Note: if you ignore the Pods directory, make sure to uncomment
+# `pod install` in .travis.yml
+#
+# Pods/
