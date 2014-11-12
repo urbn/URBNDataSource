@@ -13,7 +13,6 @@
 		6003F598195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F596195388D20070C39A /* InfoPlist.strings */; };
 		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
 		6003F59E195388D20070C39A /* URBNAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* URBNAppDelegate.m */; };
-		6003F5A7195388D20070C39A /* URBNTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5A6195388D20070C39A /* URBNTableViewController.m */; };
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
 		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -22,7 +21,11 @@
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		98F505D392A0CF6A3C5E3A04 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A40FBB618B2597246500DCDC /* libPods-Tests.a */; };
 		D6B627EB27B8914E8CBE211F /* libPods-URBNDataSource.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E07A2AEC689CB094EFD22B5D /* libPods-URBNDataSource.a */; };
-		D829B6E81A116E6800E829C9 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D829B6E71A116E6800E829C9 /* MainStoryboard.storyboard */; };
+		D86D97E61A13DDF10054EEE2 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D86D97E51A13DDF10054EEE2 /* MainStoryboard.storyboard */; };
+		D86D97F11A13E9330054EEE2 /* URBNCodeCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D86D97ED1A13E9330054EEE2 /* URBNCodeCollectionViewController.m */; };
+		D86D97F21A13E9330054EEE2 /* URBNCodeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D86D97F01A13E9330054EEE2 /* URBNCodeTableViewController.m */; };
+		D86D97F41A13E97A0054EEE2 /* CustomTableCellFromNib.xib in Resources */ = {isa = PBXBuildFile; fileRef = D86D97F31A13E97A0054EEE2 /* CustomTableCellFromNib.xib */; };
+		D86D97F61A14175C0054EEE2 /* CustomCollectionCellFromNib.xib in Resources */ = {isa = PBXBuildFile; fileRef = D86D97F51A14175C0054EEE2 /* CustomCollectionCellFromNib.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,8 +54,6 @@
 		6003F59B195388D20070C39A /* URBNDataSource-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "URBNDataSource-Prefix.pch"; sourceTree = "<group>"; };
 		6003F59C195388D20070C39A /* URBNAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = URBNAppDelegate.h; sourceTree = "<group>"; };
 		6003F59D195388D20070C39A /* URBNAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = URBNAppDelegate.m; sourceTree = "<group>"; };
-		6003F5A5195388D20070C39A /* URBNTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = URBNTableViewController.h; sourceTree = "<group>"; };
-		6003F5A6195388D20070C39A /* URBNTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = URBNTableViewController.m; sourceTree = "<group>"; };
 		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6003F5AE195388D20070C39A /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -62,7 +63,13 @@
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		88480CFF302ABF3BF54583EF /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		A40FBB618B2597246500DCDC /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D829B6E71A116E6800E829C9 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
+		D86D97E51A13DDF10054EEE2 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
+		D86D97EC1A13E9330054EEE2 /* URBNCodeCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URBNCodeCollectionViewController.h; sourceTree = "<group>"; };
+		D86D97ED1A13E9330054EEE2 /* URBNCodeCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URBNCodeCollectionViewController.m; sourceTree = "<group>"; };
+		D86D97EF1A13E9330054EEE2 /* URBNCodeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URBNCodeTableViewController.h; sourceTree = "<group>"; };
+		D86D97F01A13E9330054EEE2 /* URBNCodeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URBNCodeTableViewController.m; sourceTree = "<group>"; };
+		D86D97F31A13E97A0054EEE2 /* CustomTableCellFromNib.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomTableCellFromNib.xib; sourceTree = "<group>"; };
+		D86D97F51A14175C0054EEE2 /* CustomCollectionCellFromNib.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCollectionCellFromNib.xib; sourceTree = "<group>"; };
 		E07A2AEC689CB094EFD22B5D /* libPods-URBNDataSource.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-URBNDataSource.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC8B8D66D29B52C309D897A2 /* URBNDataSource.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = URBNDataSource.podspec; path = ../URBNDataSource.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -130,13 +137,12 @@
 		6003F593195388D20070C39A /* URBNDataSource */ = {
 			isa = PBXGroup;
 			children = (
+				D86D97E01A13DA2B0054EEE2 /* Examples */,
 				6003F59C195388D20070C39A /* URBNAppDelegate.h */,
 				6003F59D195388D20070C39A /* URBNAppDelegate.m */,
-				6003F5A5195388D20070C39A /* URBNTableViewController.h */,
-				6003F5A6195388D20070C39A /* URBNTableViewController.m */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
-				D829B6E71A116E6800E829C9 /* MainStoryboard.storyboard */,
+				D86D97E51A13DDF10054EEE2 /* MainStoryboard.storyboard */,
 			);
 			path = URBNDataSource;
 			sourceTree = "<group>";
@@ -190,6 +196,37 @@
 				166597C9C5BB37A4CCFD2F7C /* Pods-URBNDataSource.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		D86D97E01A13DA2B0054EEE2 /* Examples */ = {
+			isa = PBXGroup;
+			children = (
+				D86D97EB1A13E9330054EEE2 /* Code CollectionView */,
+				D86D97EE1A13E9330054EEE2 /* Code TableView */,
+			);
+			name = Examples;
+			sourceTree = "<group>";
+		};
+		D86D97EB1A13E9330054EEE2 /* Code CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				D86D97EC1A13E9330054EEE2 /* URBNCodeCollectionViewController.h */,
+				D86D97ED1A13E9330054EEE2 /* URBNCodeCollectionViewController.m */,
+				D86D97F51A14175C0054EEE2 /* CustomCollectionCellFromNib.xib */,
+			);
+			name = "Code CollectionView";
+			path = "ViewControllers/Code CollectionView";
+			sourceTree = "<group>";
+		};
+		D86D97EE1A13E9330054EEE2 /* Code TableView */ = {
+			isa = PBXGroup;
+			children = (
+				D86D97EF1A13E9330054EEE2 /* URBNCodeTableViewController.h */,
+				D86D97F01A13E9330054EEE2 /* URBNCodeTableViewController.m */,
+				D86D97F31A13E97A0054EEE2 /* CustomTableCellFromNib.xib */,
+			);
+			name = "Code TableView";
+			path = "ViewControllers/Code TableView";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -273,8 +310,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D829B6E81A116E6800E829C9 /* MainStoryboard.storyboard in Resources */,
+				D86D97E61A13DDF10054EEE2 /* MainStoryboard.storyboard in Resources */,
+				D86D97F61A14175C0054EEE2 /* CustomCollectionCellFromNib.xib in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
+				D86D97F41A13E97A0054EEE2 /* CustomTableCellFromNib.xib in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -357,8 +396,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D86D97F11A13E9330054EEE2 /* URBNCodeCollectionViewController.m in Sources */,
+				D86D97F21A13E9330054EEE2 /* URBNCodeTableViewController.m in Sources */,
 				6003F59E195388D20070C39A /* URBNAppDelegate.m in Sources */,
-				6003F5A7195388D20070C39A /* URBNTableViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
