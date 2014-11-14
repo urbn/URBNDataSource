@@ -23,24 +23,44 @@
   return self;
 }
 
+- (BOOL)isSectioned
+{
+    id firstItem = [[self allItems] firstObject];
+    return [firstItem isKindOfClass:[NSArray class]];
+}
+
+- (NSArray *)allItems
+{
+    return self.items;
+}
+
+- (NSArray *)itemsForSection:(NSInteger)section
+{
+    if([self isSectioned])
+    {
+        if(section > [self allItems].count) return nil; // Insanity check
+        return [self allItems][section];
+    }
+    return self.allItems;
+}
+
+
 #pragma mark - updating items
 
-- (void)removeAllItems {
+- (void)removeAllItems
+{
     [self.items removeAllObjects];
     
     [self.tableView reloadData];
     [self.collectionView reloadData];
 }
 
-- (void)replaceItems:(NSArray *)newItems {
+- (void)replaceItems:(NSArray *)newItems
+{
     self.items = [NSMutableArray arrayWithArray:newItems];
     
     [self.tableView reloadData];
     [self.collectionView reloadData];
-}
-
-- (NSArray *)allItems {
-    return self.items;
 }
 
 - (void)appendItems:(NSArray *)newItems {
@@ -149,7 +169,8 @@
 
 }
 
-- (void)removeItemAtIndex:(NSUInteger)index {
+- (void)removeItemAtIndex:(NSUInteger)index
+{
     [self.items removeObjectAtIndex:index];
     
     if( self.tableView )
@@ -164,46 +185,45 @@
          ]];
 }
 
+
 #pragma mark - item access
 
-- (NSUInteger)numberOfItems {
-    return [self.items count];
+- (NSUInteger)numberOfSections
+{
+    return [self isSectioned] ? [self allItems].count : 1;
 }
 
-- (NSUInteger)numberOfItemsInSection:(NSInteger)section{
-    
-    if(section == 0)
-        return [self.items count];
-    
-    return 0;
+- (NSUInteger)numberOfItemsInSection:(NSInteger)section
+{
+    return [self itemsForSection:section].count;
 }
 
-- (NSUInteger)numberOfSections{
+- (id)itemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSArray *sectionItems = [self itemsForSection:indexPath.section];
     
-    return 1;
-}
-
-
-- (id)itemAtIndexPath:(NSIndexPath *)indexPath {
-    if( indexPath.row < (NSInteger)[self.items count] )
-        return self.items[(NSUInteger)indexPath.row];
+    if(sectionItems && indexPath.item < [sectionItems count])
+    {
+        return sectionItems[indexPath.item];
+    }
     
     return nil;
 }
 
-- (NSIndexPath *)indexPathForItem:(id)item {
-  NSUInteger row = [self.items indexOfObjectIdenticalTo:item];
+- (NSIndexPath *)indexPathForItem:(id)item
+{
+    NSUInteger row = [self.items indexOfObjectIdenticalTo:item];
   
-  if( row == NSNotFound )
-    return nil;
+    if( row == NSNotFound )
+        return nil;
   
-  return [NSIndexPath indexPathForRow:(NSInteger)row inSection:0];
+    return [NSIndexPath indexPathForRow:(NSInteger)row inSection:0];
 }
 
 #pragma mark - UITableViewDataSource
 
 - (void)tableView:(UITableView *)tableView
-moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath
+    moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath
       toIndexPath:(NSIndexPath *)destinationIndexPath {
     
     id item = [self itemAtIndexPath:sourceIndexPath];
