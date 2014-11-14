@@ -1,10 +1,10 @@
 PODS:
-  - URBNDataSource (0.1)
+  - URBNDataSource (0.2)
 
 DEPENDENCIES:
   - URBNDataSource
 
 SPEC CHECKSUMS:
-  URBNDataSource: 2b54c7e4c2c3ed5b7e05434a309aa714da9639a5
+  URBNDataSource: 7a9413525311954b15ceba507ed317bc116806bf
 
 COCOAPODS: 0.34.4
