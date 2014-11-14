@@ -19,7 +19,6 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, NSString* kind, NS
 @interface URBNDataSourceAdapter : NSObject <UITableViewDataSource, UICollectionViewDataSource>
 
 #pragma mark - UITableView
-
 /**
  * Optional: If the tableview property is assigned, the data source will perform
  * insert/reload/delete calls on it as data changes.
@@ -40,7 +39,6 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, NSString* kind, NS
 
 
 #pragma mark - UICollectionView
-
 /**
  * Optional: If the collectionview property is assigned, the data source will perform
  * insert/reload/delete calls on it as data changes.
@@ -55,7 +53,6 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, NSString* kind, NS
 
 
 #pragma mark - Cells
-
 /**
  * Provide a configuration block, called for each cell with the object to display in that cell.
  * NSStringFromClass(cellClass) will be used for the identifier and the nib name
@@ -77,7 +74,6 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, NSString* kind, NS
 
 
 #pragma mark - Supplimentary Views
-
 /**
  * Supplimentary View configuration block, called for each supplementary view to display.
  * NSStringFromClass(viewClass) will be used for the kind and the nib name
@@ -99,9 +95,7 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, NSString* kind, NS
 @property (nonatomic, copy) URBNSupplementaryViewClassBlock supplementaryViewClassBlock;
 
 
-
 #pragma mark - item access
-
 /**
  * Returns all items. The order will be determined by the concrete subclass.
  *
@@ -151,8 +145,8 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, NSString* kind, NS
  */
 - (URBNCellConfigureBlock)cellConfigurationBlockForClass:(Class)cellClass;
 
-#pragma mark - helpers
 
+#pragma mark - helpers
 /**
  * Helper functions to generate arrays of NSIndexPaths.
  */

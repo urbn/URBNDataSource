@@ -21,7 +21,6 @@
  * will cause the table view or collection view to update automatically
  */
 
-
 /**
  * Add some more items to the end of the items array.
  */
