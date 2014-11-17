@@ -6,11 +6,11 @@
 #ifdef DEBUG
 
 #ifndef NOT_NIL_ASSERT
-#define NOT_NIL_ASSERT(x)                  NSAssert4((x != nil), @"\n\n    ****  Unexpected Nil Assertion  ****\n    ****  " # x @" is nil.\nin file:%s at line %i in Method %@ with object:\n %@", __FILE__, __LINE__, NSStringFromSelector(_cmd), self)
+#define NOT_NIL_ASSERT(x) NSAssert4((x != nil), @"\n\n    ****  Unexpected Nil Assertion  ****\n    ****  " # x @" is nil.\nin file:%s at line %i in Method %@ with object:\n %@", __FILE__, __LINE__, NSStringFromSelector(_cmd), self)
 #endif
 
 #ifndef ASSERT_TRUE
-#define ASSERT_TRUE(test)                  NSAssert4(test, @"\n\n    ****  Unexpected Assertion  **** \nAssertion in file:%s at line %i in Method %@ with object:\n %@", __FILE__, __LINE__, NSStringFromSelector(_cmd), self)
+#define ASSERT_TRUE(test) NSAssert4(test, @"\n\n    ****  Unexpected Assertion  **** \nAssertion in file:%s at line %i in Method %@ with object:\n %@", __FILE__, __LINE__, NSStringFromSelector(_cmd), self)
 #endif
 
 #else
@@ -34,8 +34,8 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 
 @interface URBNDataSourceAdapter ()
 
-@property (nonatomic, strong) NSMutableDictionary *cellConfigurationBlocks;
-@property (nonatomic, strong) NSMutableDictionary *viewConfigurationBlocks;
+@property (nonatomic, retain) NSMutableDictionary* cellConfigurationBlocks;
+@property (nonatomic, retain) NSMutableDictionary* viewConfigurationBlocks;
 
 @end
 
@@ -56,7 +56,8 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 - (void)registerCellClass:(Class)cellClass withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock {
     ASSERT_TRUE(self.tableView || self.collectionView);
     
-    identifier = identifier?:NSStringFromClass(cellClass);
+    NSString* identifier = NSStringFromClass(cellClass);
+    
     UINib* nib = [self nibWithName:identifier];
     if (nib) {
         [self.tableView registerNib:nib forCellReuseIdentifier:identifier];
@@ -160,37 +161,32 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 #pragma mark - Protocol adherance
 - (NSUInteger)numberOfItems {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"Did you forget to override %@?",
-                                           NSStringFromSelector(_cmd)]
+                                   reason:[NSString stringWithFormat:@"Did you forget to override %@?", NSStringFromSelector(_cmd)]
                                  userInfo:nil];
 }
 
 - (NSUInteger)numberOfItemsInSection:(NSInteger)section {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"Did you forget to override %@?",
-                                           NSStringFromSelector(_cmd)]
+                                   reason:[NSString stringWithFormat:@"Did you forget to override %@?", NSStringFromSelector(_cmd)]
                                  userInfo:nil];
 }
 
 - (NSUInteger)numberOfSections {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"Did you forget to override %@?",
-                                           NSStringFromSelector(_cmd)]
-                                 userInfo:nil];
-}
-
-- (id)itemAtIndexPath:(NSIndexPath *)indexPath {
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"Did you forget to override %@?",
-                                           NSStringFromSelector(_cmd)]
+                                   reason:[NSString stringWithFormat:@"Did you forget to override %@?", NSStringFromSelector(_cmd)]
                                  userInfo:nil];
     
 }
 
+- (id)itemAtIndexPath:(NSIndexPath *)indexPath {
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"Did you forget to override %@?", NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
+}
+
 - (NSIndexPath *)indexPathForItem:(id)item {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"Did you forget to override %@?",
-                                           NSStringFromSelector(_cmd)]
+                                   reason:[NSString stringWithFormat:@"Did you forget to override %@?", NSStringFromSelector(_cmd)]
                                  userInfo:nil];
 }
 
@@ -304,14 +300,15 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
         return nil;
     }
     
-    URBNSupplementaryViewConfigureBlock configBlock = [self viewConfigurationBlockForIdentifier:identifier withKind:URBNSupplementaryViewKindHeader];
-    UITableViewHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+    URBNCellConfigureBlock cellBlock = [self cellConfigurationBlockForClass:cellClass];
     
     if (configBlock) {
         configBlock(view, URBNSupplementaryViewTypeFooter, indexPath);
     }
     
-    return view;
+    cellBlock(cell, item, indexPath);
+    
+    return cell;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
@@ -322,8 +319,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
         return nil;
     }
     
-    URBNSupplementaryViewConfigureBlock configBlock = [self viewConfigurationBlockForIdentifier:identifier withKind:URBNSupplementaryViewKindFooter];
-    UITableViewHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+    UICollectionReusableView* view = (id)[self.collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:NSStringFromClass(supplementaryClass) forIndexPath:indexPath];
     
     if (configBlock) {
         configBlock(view, URBNSupplementaryViewTypeFooter, indexPath);
@@ -388,7 +384,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
         configBlock(view, normalizedType, indexPath);
     }
     
-    return view;
+    return ret;
 }
 
 @end

@@ -25,6 +25,11 @@
 		</dict>
 		<key>055891ABF5B65B74E3D38C68</key>
 		<dict>
+			<key>attributes</key>
+			<dict>
+				<key>LastUpgradeCheck</key>
+				<string>0510</string>
+			</dict>
 			<key>buildConfigurationList</key>
 			<string>57C69102B799DB54B61D0A56</string>
 			<key>buildPhases</key>
@@ -33,7 +38,13 @@
 				<string>FDE3922474D40BC915A0118C</string>
 				<string>5EC5725A55FB82AC87A9D28F</string>
 			</array>
-			<key>buildRules</key>
+			<key>mainGroup</key>
+			<string>A7C919AE07BFD72E9F7897D8</string>
+			<key>productRefGroup</key>
+			<string>8F76E6A18C5FF751DF628FF9</string>
+			<key>projectDirPath</key>
+			<string></string>
+			<key>projectReferences</key>
 			<array/>
 			<key>dependencies</key>
 			<array/>
@@ -111,12 +122,44 @@
 			<key>fileRef</key>
 			<string>C9DDEA220DDD5A26410FA252</string>
 			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string>-fobjc-arc</string>
-			</dict>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>path</key>
+			<string>Pods-URBNDataSource.release.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>1E60C74279D649B9A3EB58F6</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXTargetDependency</string>
+			<key>target</key>
+			<string>8A3AAFBEC0C484689C25022D</string>
+			<key>targetProxy</key>
+			<string>6932EFC7223D6FC81CF25945</string>
+		</dict>
+		<key>1FE0AAE26B970E24C891B97D</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>E4D29B0948110412E0196978</string>
+				<string>4D6AB425DDA44406B93B022C</string>
+				<string>E86006DE65712E913B077E70</string>
+				<string>9A9A29D3754CBC26453D89C9</string>
+				<string>9630FFA2FBBB5EC97B46F48E</string>
+				<string>D1DF3E67D7DB5E4965A3C6BA</string>
+				<string>73CDCC4EB993B6BCAAC6566C</string>
+				<string>623FA969B5EA4C7D0A9002A8</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Support Files</string>
+			<key>path</key>
+			<string>../Target Support Files/Pods-Tests-URBNDataSource</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
 		</dict>
 		<key>1AD4A59D0E4630C8715BC285</key>
 		<dict>
@@ -297,9 +340,7 @@
 			<array>
 				<string>CEF9547861CB16BE7A1C2A7F</string>
 			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
+			<key>defaultConfigurationIsVisible</key>
 			<string>0</string>
 		</dict>
 		<key>2F69969DDA145CD35436DE2D</key>
@@ -616,7 +657,13 @@
 			<key>fileRef</key>
 			<string>33B40DA83A148603829E9735</string>
 			<key>isa</key>
-			<string>PBXBuildFile</string>
+			<string>PBXContainerItemProxy</string>
+			<key>proxyType</key>
+			<string>1</string>
+			<key>remoteGlobalIDString</key>
+			<string>8A3AAFBEC0C484689C25022D</string>
+			<key>remoteInfo</key>
+			<string>Pods-URBNDataSource-URBNDataSource</string>
 		</dict>
 		<key>57C69102B799DB54B61D0A56</key>
 		<dict>
@@ -804,8 +851,10 @@
 		</dict>
 		<key>720F146F30215ACBA2B469D7</key>
 		<dict>
+			<key>explicitFileType</key>
+			<string>archive.ar</string>
 			<key>includeInIndex</key>
-			<string>1</string>
+			<string>0</string>
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
@@ -813,7 +862,7 @@
 			<key>path</key>
 			<string>Pods-URBNDataSource-acknowledgements.markdown</string>
 			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
+			<string>BUILT_PRODUCTS_DIR</string>
 		</dict>
 		<key>7927EF57B533B3F999EFC18D</key>
 		<dict>
@@ -986,7 +1035,7 @@
 			<key>path</key>
 			<string>../..</string>
 			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
+			<string>DEVELOPER_DIR</string>
 		</dict>
 		<key>872BC610C2AD5C1C727BF6D0</key>
 		<dict>
@@ -1080,8 +1129,12 @@
 		</dict>
 		<key>9F199A79EE1D95584DAA6F20</key>
 		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>47E4DD45FBC02DABB02EE8E9</string>
+			</array>
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
@@ -1121,16 +1174,16 @@
 		</dict>
 		<key>AA01CB3565AB5C3D823224B4</key>
 		<dict>
-			<key>explicitFileType</key>
-			<string>archive.ar</string>
 			<key>includeInIndex</key>
-			<string>0</string>
+			<string>1</string>
 			<key>isa</key>
 			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text</string>
 			<key>path</key>
-			<string>libPods-URBNDataSource.a</string>
+			<string>Pods-Tests-acknowledgements.markdown</string>
 			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
+			<string>&lt;group&gt;</string>
 		</dict>
 		<key>AA155CDF8874D5A231C652DF</key>
 		<dict>
@@ -1209,8 +1262,14 @@
 		</dict>
 		<key>BA233FD0E0E84965CEE1307E</key>
 		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
+			<key>children</key>
+			<array>
+				<string>2F9DD4E59F8AA5CCD86FCDDC</string>
+				<string>66BC4DF0C86B7A3DD3EB3FEF</string>
+				<string>280C255A8B982B4AF4E4A143</string>
+				<string>47DE83CE8C9F92677D01061E</string>
+				<string>1FE0AAE26B970E24C891B97D</string>
+			</array>
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
@@ -1355,10 +1414,8 @@
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>URBNArrayDataSourceAdapter.m</string>
 			<key>path</key>
-			<string>Pod/Classes/URBNArrayDataSourceAdapter.m</string>
+			<string>Pods-URBNDataSource-dummy.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -1388,13 +1445,17 @@
 				<string>6656FDFE44913DA1F2B75811</string>
 			</array>
 			<key>isa</key>
-			<string>PBXGroup</string>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text</string>
 			<key>name</key>
-			<string>Pods-Tests</string>
+			<string>Podfile</string>
 			<key>path</key>
-			<string>Target Support Files/Pods-Tests</string>
+			<string>../Podfile</string>
 			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
+			<string>SOURCE_ROOT</string>
+			<key>xcLanguageSpecificationIdentifier</key>
+			<string>xcode.lang.ruby</string>
 		</dict>
 		<key>CEF9547861CB16BE7A1C2A7F</key>
 		<dict>
@@ -1485,7 +1546,7 @@
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
+			<string>text.plist.xml</string>
 			<key>path</key>
 			<string>Pods-URBNDataSource.debug.xcconfig</string>
 			<key>sourceTree</key>
@@ -1611,12 +1672,13 @@
 			<key>fileRef</key>
 			<string>C9DDEA220DDD5A26410FA252</string>
 			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string>-fobjc-arc</string>
-			</dict>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>path</key>
+			<string>Pods-Tests-URBNDataSource.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
 		</dict>
 		<key>FCF0A21D12F1FDC3EB202E89</key>
 		<dict>
@@ -1652,6 +1714,19 @@
 			<string>PBXFrameworksBuildPhase</string>
 			<key>runOnlyForDeploymentPostprocessing</key>
 			<string>0</string>
+		</dict>
+		<key>F8E1BA7B5791CCA0D25320CD</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>archive.ar</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>libPods-URBNDataSource.a</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
 		</dict>
 	</dict>
 	<key>rootObject</key>

@@ -1,5 +1,5 @@
 PODS:
-  - URBNDataSource (0.1)
+  - URBNDataSource (0.2)
 
 DEPENDENCIES:
   - URBNDataSource (from `../`)

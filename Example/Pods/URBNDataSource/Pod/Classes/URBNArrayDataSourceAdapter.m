@@ -57,6 +57,10 @@
     [self.collectionView reloadData];
 }
 
+- (NSArray *)allItems {
+    return self.items;
+}
+
 - (void)appendItems:(NSArray *)newItems {
     NSUInteger count = [self numberOfItems];
     
@@ -100,6 +104,7 @@
     NSIndexPath *indexPath2 = [NSIndexPath indexPathForRow:index2 inSection:0];
     
     id item = [self itemAtIndexPath:indexPath1];
+
     [self.items removeObject:item];
     [self.items insertObject:item atIndex:index2];
     
@@ -166,6 +171,9 @@
 }
 
 #pragma mark - item access
+- (NSUInteger)numberOfItems {
+    return [self.items count];
+}
 
 - (NSUInteger)numberOfSections {
     return [self isSectioned] ? [self allItems].count : 1;
