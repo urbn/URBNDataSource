@@ -32,7 +32,6 @@
 NSString *const URBNSupplementaryViewKindHeader = @"URBNSupplementaryViewKindHeader";
 NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFooter";
 
-
 @interface URBNDataSourceAdapter ()
 
 @property (nonatomic, strong) NSMutableDictionary *cellConfigurationBlocks;
@@ -42,174 +41,145 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 
 @implementation URBNDataSourceAdapter
 
-
 #pragma mark - init
-
-- (instancetype)init
-{
-    if((self = [super init]))
-    {
+- (instancetype)init {
+    if ((self = [super init])) {
         self.rowAnimation = UITableViewRowAnimationAutomatic;
         self.cellConfigurationBlocks = [NSMutableDictionary dictionary];
         self.viewConfigurationBlocks = [NSMutableDictionary dictionary];
     }
+
     return self;
 }
 
-
 #pragma mark - Registration
-
-- (void)registerCellClass:(Class)cellClass withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock
-{
+- (void)registerCellClass:(Class)cellClass withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock {
     ASSERT_TRUE(self.tableView || self.collectionView);
     
     identifier = identifier?:NSStringFromClass(cellClass);
     UINib* nib = [self nibWithName:identifier];
-    if(nib)
-    {
+    if (nib) {
         [self.tableView registerNib:nib forCellReuseIdentifier:identifier];
         [self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
     }
-    else if(cellClass != NULL)
-    {
+    else if (cellClass != NULL) {
         [self.tableView registerClass:cellClass forCellReuseIdentifier:identifier];
         [self.collectionView registerClass:cellClass forCellWithReuseIdentifier:identifier];
     }
+
     self.cellConfigurationBlocks[identifier] = configurationBlock;
 }
 
-- (void)registerCellClass:(Class)cellClass withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock
-{
+- (void)registerCellClass:(Class)cellClass withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock {
     [self registerCellClass:cellClass withIdentifier:nil withConfigurationBlock:configurationBlock];
 }
 
-- (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock
-{
+- (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock {
     ASSERT_TRUE(self.collectionView || self.tableView);
     
     NSString *kindString = [[self class] normalizedKindForSupplementaryType:kind withView:(self.collectionView?:self.tableView)];
     UINib *nib = [self nibWithName:NSStringFromClass(viewClass)];
     
     /// Do our registrations here
-    if(self.tableView)
-    {
-        identifier = identifier?:kindString;
+    if (self.tableView) {
+        identifier = identifier ? : kindString;
         /// We're registering a header / footer for tableView.
-        if(nib)
-        {
+        if (nib) {
             [self.tableView registerNib:nib forHeaderFooterViewReuseIdentifier:identifier];
         }
-        else
-        {
+        else {
             [self.tableView registerClass:viewClass forHeaderFooterViewReuseIdentifier:identifier];
         }
     }
-    else
-    {
+    else {
         identifier = identifier?:NSStringFromClass(viewClass);
         /// We're registering a supplementary view on collectionView
-        if(nib)
-        {
+        if (nib) {
             [self.collectionView registerNib:nib forSupplementaryViewOfKind:kindString withReuseIdentifier:identifier];
         }
-        else
-        {
+        else {
             [self.collectionView registerClass:viewClass forSupplementaryViewOfKind:kindString withReuseIdentifier:identifier];
         }
     }
     
     /// Now save our configurationBlock
-    if(configurationBlock)
-    {
+    if (configurationBlock) {
         NSMutableDictionary *configsForKind = [self.viewConfigurationBlocks[kindString] mutableCopy] ?: [NSMutableDictionary dictionary];
         configsForKind[identifier] = configurationBlock;
         self.viewConfigurationBlocks[kindString] = configsForKind;
     }
 }
 
-- (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock
-{
+- (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock {
     [self registerSupplementaryViewClass:viewClass ofKind:kind withIdentifier:nil withConfigurationBlock:configurationBlock];
 }
 
-
-- (URBNCellConfigureBlock)cellConfigurationBlockForIdentifier:(NSString *)identifier
-{
+- (URBNCellConfigureBlock)cellConfigurationBlockForIdentifier:(NSString *)identifier {
     return self.cellConfigurationBlocks[identifier];
 }
 
-- (URBNSupplementaryViewConfigureBlock)viewConfigurationBlockForIdentifier:(NSString *)identifier withKind:(NSString *)kind
-{
+- (URBNSupplementaryViewConfigureBlock)viewConfigurationBlockForIdentifier:(NSString *)identifier withKind:(NSString *)kind {
     NSDictionary *kindBlocks = self.viewConfigurationBlocks[kind];
-    if(kindBlocks)
-    {
+    if (kindBlocks) {
         return kindBlocks[identifier];
     }
+    
     return nil;
 }
 
-- (NSString *)supplementaryIdentifierForKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
+- (NSString *)supplementaryIdentifierForKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     NSString *identifier = nil;
-    if(self.supplementaryViewIdentifierBlock)
-    {
+    
+    if(self.supplementaryViewIdentifierBlock) {
         identifier = self.supplementaryViewIdentifierBlock(kind, indexPath);
     }
-    else
-    {
+    else {
         identifier = [[self.viewConfigurationBlocks[kind] allKeys] firstObject];
     }
+
     return identifier;
 }
 
-- (NSString *)identifierForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (NSString *)identifierForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString *identifier = nil;
-    if(self.cellIdentifierBlock)
-    {
+    
+    if (self.cellIdentifierBlock) {
         identifier = self.cellIdentifierBlock([self itemAtIndexPath:indexPath], indexPath);
     }
-    else
-    {
+    else {
         identifier = [[self.cellConfigurationBlocks allKeys] firstObject];
     }
+    
     return identifier;
 }
 
-- (URBNSupplementaryViewConfigureBlock)viewConfigurationBlockForClass:(Class)viewClass
-{
+- (URBNSupplementaryViewConfigureBlock)viewConfigurationBlockForClass:(Class)viewClass {
     return self.viewConfigurationBlocks[NSStringFromClass(viewClass)];
 }
 
-
 #pragma mark - Protocol adherance
-
-- (NSUInteger)numberOfItems
-{
+- (NSUInteger)numberOfItems {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"Did you forget to override %@?",
                                            NSStringFromSelector(_cmd)]
                                  userInfo:nil];
 }
 
-- (NSUInteger)numberOfItemsInSection:(NSInteger)section
-{
+- (NSUInteger)numberOfItemsInSection:(NSInteger)section {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"Did you forget to override %@?",
                                            NSStringFromSelector(_cmd)]
                                  userInfo:nil];
 }
 
-- (NSUInteger)numberOfSections
-{
+- (NSUInteger)numberOfSections {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"Did you forget to override %@?",
                                            NSStringFromSelector(_cmd)]
                                  userInfo:nil];
 }
 
-- (id)itemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (id)itemAtIndexPath:(NSIndexPath *)indexPath {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"Did you forget to override %@?",
                                            NSStringFromSelector(_cmd)]
@@ -217,21 +187,16 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
     
 }
 
-- (NSIndexPath *)indexPathForItem:(id)item
-{
+- (NSIndexPath *)indexPathForItem:(id)item {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"Did you forget to override %@?",
                                            NSStringFromSelector(_cmd)]
                                  userInfo:nil];
 }
 
-
 #pragma mark - Convenience
-
-+ (NSString *)normalizedKindForSupplementaryType:(URBNSupplementaryViewType)type withView:(UIView *)collectionOrTableView
-{
-    if(!collectionOrTableView || [collectionOrTableView isKindOfClass:[UITableView class]])
-    {
++ (NSString *)normalizedKindForSupplementaryType:(URBNSupplementaryViewType)type withView:(UIView *)collectionOrTableView {
+    if (!collectionOrTableView || [collectionOrTableView isKindOfClass:[UITableView class]]) {
         /// We're either nil or a tableView
         return type == URBNSupplementaryViewTypeHeader ? URBNSupplementaryViewKindHeader : URBNSupplementaryViewKindFooter;
     }
@@ -240,20 +205,21 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
     return type == URBNSupplementaryViewTypeFooter ? UICollectionElementKindSectionFooter : UICollectionElementKindSectionHeader;
 }
 
-+ (NSArray *)indexPathArrayWithRange:(NSRange)range
-{
++ (NSArray *)indexPathArrayWithRange:(NSRange)range {
     NSMutableArray *ret = [NSMutableArray array];
-    for( NSUInteger i = range.location; i < NSMaxRange(range); i++)
+    for( NSUInteger i = range.location; i < NSMaxRange(range); i++) {
         [ret addObject:[NSIndexPath indexPathForRow:(NSInteger)i inSection:0]];
+    }
+
     return ret;
 }
 
-+ (NSArray *)indexPathArrayWithIndexSet:(NSIndexSet *)indexes
-{
++ (NSArray *)indexPathArrayWithIndexSet:(NSIndexSet *)indexes {
     NSMutableArray *ret = [NSMutableArray array];
     [indexes enumerateIndexesUsingBlock:^(NSUInteger index, BOOL *stop) {
         [ret addObject:[NSIndexPath indexPathForRow:(NSInteger)index inSection:0]];
     }];
+
     return ret;
 }
 
@@ -262,47 +228,50 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
  * nibWithName… returns a (broken) nib even if no file exists
  * Instead we cheat, and ignore the possibility of a nib in a subfolder
  */
-- (UINib*)nibWithName:(NSString*)name
-{
+- (UINib*)nibWithName:(NSString*)name {
     UINib *nib = nil;
-    if([[NSBundle mainBundle] pathForResource:name ofType:@"nib"])
-    {
+    
+    if ([[NSBundle mainBundle] pathForResource:name ofType:@"nib"]) {
         nib = [UINib nibWithNibName:name bundle:nil];
     }
+
     return nib;
 }
 
-
 #pragma mark - Forwarding
+- (BOOL)conformsToProtocol:(Protocol *)aProtocol {
+    if ([super conformsToProtocol:aProtocol]) {
+        return YES;
+    }
 
-- (BOOL)conformsToProtocol:(Protocol *)aProtocol{
+    if ([self.fallbackDataSource conformsToProtocol:aProtocol]) {
+        return YES;
+    }
     
-    if([super conformsToProtocol:aProtocol])
-        return YES;
-    if([self.fallbackDataSource conformsToProtocol:aProtocol])
-        return YES;
     return NO;
 }
 
-- (BOOL)respondsToSelector:(SEL)aSelector{
-    
-    if([super respondsToSelector:aSelector])
+- (BOOL)respondsToSelector:(SEL)aSelector {
+    if ([super respondsToSelector:aSelector]) {
         return YES;
-    if([self.fallbackDataSource respondsToSelector:aSelector])
+    }
+
+    if ([self.fallbackDataSource respondsToSelector:aSelector]) {
         return YES;
+    }
+
     return NO;
 }
 
-- (id)forwardingTargetForSelector:(SEL)aSelector{
-    
-    if([self.fallbackDataSource respondsToSelector:aSelector])
+- (id)forwardingTargetForSelector:(SEL)aSelector {
+    if ([self.fallbackDataSource respondsToSelector:aSelector]) {
         return self.fallbackDataSource;
+    }
     
     return [super forwardingTargetForSelector:aSelector];
 }
 
 @end
-
 
 
 /**
@@ -311,79 +280,71 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 @implementation URBNDataSourceAdapter (UITableView)
 
 #pragma mark - UITableViewDataSource
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return [self numberOfSections];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self numberOfItemsInSection:section];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForHeaderInSection:(NSInteger)section {
     return tableView.sectionHeaderHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForFooterInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForFooterInSection:(NSInteger)section {
     return tableView.sectionFooterHeight;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
     NSString *identifier = [self supplementaryIdentifierForKind:URBNSupplementaryViewKindHeader atIndexPath:indexPath];
-    if(identifier == nil)
-    {
+    
+    if (identifier == nil) {
         return nil;
     }
     
     URBNSupplementaryViewConfigureBlock configBlock = [self viewConfigurationBlockForIdentifier:identifier withKind:URBNSupplementaryViewKindHeader];
     UITableViewHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
     
-    if(configBlock)
-    {
+    if (configBlock) {
         configBlock(view, URBNSupplementaryViewTypeFooter, indexPath);
     }
     
     return view;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
     NSString *identifier = [self supplementaryIdentifierForKind:URBNSupplementaryViewKindFooter atIndexPath:indexPath];
-    if(!identifier) return nil;
+    
+    if (!identifier) {
+        return nil;
+    }
     
     URBNSupplementaryViewConfigureBlock configBlock = [self viewConfigurationBlockForIdentifier:identifier withKind:URBNSupplementaryViewKindFooter];
     UITableViewHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
     
-    if(configBlock)
-    {
+    if (configBlock) {
         configBlock(view, URBNSupplementaryViewTypeFooter, indexPath);
     }
     
     return view;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)ip
-{
+- (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)ip {
     id item = [self itemAtIndexPath:ip];
     NSString *identifier = [self identifierForItemAtIndexPath:ip];
     URBNCellConfigureBlock cellBlock = [self cellConfigurationBlockForIdentifier:identifier];
     
     UITableViewCell *cell = [tv dequeueReusableCellWithIdentifier:identifier forIndexPath:ip];
     
-    if(cellBlock)
-    {
+    if (cellBlock) {
         cellBlock(cell, item, ip);
     }
+    
     return cell;
 }
-
 
 @end
 
@@ -391,45 +352,38 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 @implementation URBNDataSourceAdapter (UICollectionView)
 
 #pragma mark - UICollectionViewDataSource
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return [self numberOfSections];
 }
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return [self numberOfItemsInSection:section];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)ip
-{
+- (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)ip {
     id item = [self itemAtIndexPath:ip];
     NSString *identifier = [self identifierForItemAtIndexPath:ip];
     URBNCellConfigureBlock cellBlock = [self cellConfigurationBlockForIdentifier:identifier];
     
     UICollectionViewCell *cell = [cv dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:ip];
     
-    if(cellBlock)
-    {
+    if(cellBlock) {
         cellBlock(cell, item, ip);
     }
+
     return cell;
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)cv viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
+- (UICollectionReusableView *)collectionView:(UICollectionView *)cv viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     NSString *identifier = [self supplementaryIdentifierForKind:kind atIndexPath:indexPath];
-    if(identifier == nil)
-    {
+    if (identifier == nil) {
         return nil;
     }
     
     URBNSupplementaryViewConfigureBlock configBlock = [self viewConfigurationBlockForIdentifier:identifier withKind:kind];
     
     UICollectionReusableView* view = (id)[self.collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:identifier forIndexPath:indexPath];
-    if(configBlock)
-    {
+    if (configBlock) {
         URBNSupplementaryViewType normalizedType = ([kind isEqualToString:UICollectionElementKindSectionFooter] ? URBNSupplementaryViewTypeFooter : URBNSupplementaryViewTypeHeader);
         configBlock(view, normalizedType, indexPath);
     }
@@ -438,12 +392,3 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 }
 
 @end
-
-
-
-
-
-
-
-
-

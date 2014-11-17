@@ -9,114 +9,33 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-typedef Class (^URBNCellClassBlock) (id object, NSIndexPath* indexPath);
+typedef NS_ENUM(NSUInteger, URBNSupplementaryViewType) {
+    URBNSupplementaryViewTypeHeader,
+    URBNSupplementaryViewTypeFooter
+};
+
+typedef NSString *(^URBNSupplementaryViewReuseIdentifierBlock) (NSString *kind, NSIndexPath *indexPath);
+typedef NSString *(^URBNReuseableIdentifierBlock) (id item, NSIndexPath *indexPath);
+
 typedef void (^URBNCellConfigureBlock) (id cell, id object, NSIndexPath* indexPath);
+typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryViewType kind, NSIndexPath* indexPath);
 
-typedef Class (^URBNSupplementaryViewClassBlock) (NSIndexPath* indexPath, NSString *kind);
-typedef void (^URBNSupplementaryViewConfigureBlock) (id view, NSString* kind, NSIndexPath* indexPath);
-
-
-@interface URBNDataSourceAdapter : NSObject <UITableViewDataSource, UICollectionViewDataSource>
-
-#pragma mark - UITableView
-/**
- * Optional: If the tableview property is assigned, the data source will perform
- * insert/reload/delete calls on it as data changes.
- */
-@property (nonatomic, weak) UITableView *tableView;
-
-/**
- * Optional animation to use when updating the table.
- * Defaults to UITableViewRowAnimationAutomatic.
- */
-@property (nonatomic, assign) UITableViewRowAnimation rowAnimation;
-
-/**
- * Optional data source fallback.
- * If this is set, it will receive data source calls that this class does not handle
- */
-@property (nonatomic, weak) id <UITableViewDataSource> fallbackTableDataSource;
-
-
-#pragma mark - UICollectionView
-/**
- * Optional: If the collectionview property is assigned, the data source will perform
- * insert/reload/delete calls on it as data changes.
- */
-@property (nonatomic, weak) UICollectionView *collectionView;
-
-/**
- * Optional data source fallback.
- * If this is set, it will receive data source calls that this class does not handle
- */
-@property (nonatomic, weak) id <UICollectionViewDataSource> fallbackCollectionDataSource;
-
-
-#pragma mark - Cells
-/**
- * Provide a configuration block, called for each cell with the object to display in that cell.
- * NSStringFromClass(cellClass) will be used for the identifier and the nib name
- * This must be called after the tableview/collection view is set or it will be the callers responsibility to call
- * "register[Class|Nib]:forCellReuseIdentifier:" on the tableview or collectionview.
- *
- *  @param cellClass          The cell class o configure
- *  @param configurationBlock The block that configures instances of the cell class
- */
-- (void)registerCellClass:(Class)cellClass withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock;
-
-/**
- * Optional: This only needs defined if multiple cell classes are registered
- * This block will be invoked to determine which cell class to use.
- * Reuse Identifier will be @"NSStringFromClass(cellClass)"
- * Will search for a Nib of named @"NSStringFromClass(cellClass)"
- */
-@property (nonatomic, copy) URBNCellClassBlock cellClassBlock;
-
-
-#pragma mark - Supplimentary Views
-/**
- * Supplimentary View configuration block, called for each supplementary view to display.
- * NSStringFromClass(viewClass) will be used for the kind and the nib name
- * This must be called after the collection view is set or it will be the callers responsibility to call
- * "register[Class|Nib]:forSupplementaryViewOfKind:" on the tableview ro collectionview.
- *
- *  @param viewClass          The supplementary view class to configure
- *  @param ofKind             OPTIONAL: The supplementary view kind (UICollectionElementKindSectionHeader or UICollectionElementKindSectionFooter). Defaults to class name.
- *  @param configurationBlock The block that configures instances of the class
- */
-- (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(NSString *)kind withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock;
-
-/**
- * Optional: This only needs defined if multiple view classes are registered
- * This block will be invoked to determine which supplimentary view class to use.
- * Reuse Identifier will be @"NSStringFromClass(viewClass)"
- * Will search for a Nib of named @"NSStringFromClass(viewClass)"
- */
-@property (nonatomic, copy) URBNSupplementaryViewClassBlock supplementaryViewClassBlock;
-
-
-#pragma mark - item access
-/**
- * Returns all items. The order will be determined by the concrete subclass.
- *
- *  @return All items
- */
-- (NSArray *)allItems;
+@protocol URBNDataSourceAdapterProtocol <NSObject>
 
 /**
  * Return the number of items in the data source.
  */
-- (NSUInteger)numberOfItems;
+- (NSInteger)numberOfItems;
 
 /**
  * Return the number of items in the section
  */
-- (NSUInteger)numberOfItemsInSection:(NSInteger)section;
+- (NSInteger)numberOfItemsInSection:(NSInteger)section;
 
 /**
  * Return the number of sections in the data source.
  */
-- (NSUInteger)numberOfSections;
+- (NSInteger)numberOfSections;
 
 /**
  * Return the item at a given index path. Override in your subclass.
@@ -136,21 +55,94 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, NSString* kind, NS
  */
 - (NSIndexPath *)indexPathForItem:(id)item;
 
-/**
- *  Get the Cell Config Block for a cell class.
- *
- *  @param A cell class
- *
- *  @return The Cell Config Block.
- */
-- (URBNCellConfigureBlock)cellConfigurationBlockForClass:(Class)cellClass;
+- (URBNCellConfigureBlock)cellConfigurationBlockForIdentifier:(NSString *)identifier;
+- (NSString *)identifierForItemAtIndexPath:(NSIndexPath *)indexPath;
 
+@end
+
+
+@interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapterProtocol>
+
+#pragma mark - Outlets
+/**
+ * Optional: If the tableview property is assigned, the data source will perform
+ * insert/reload/delete calls on it as data changes.
+ */
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, assign) UITableViewRowAnimation rowAnimation;
+
+/**
+ * Optional: If the collectionview property is assigned, the data source will perform
+ * insert/reload/delete calls on it as data changes.
+ */
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+
+/**
+ *  Optional:  If the @fallbackDataSource property is assigned, any collectionView or tableView
+ *  will attempt to fallback to this dataSource.
+ **/
+@property (nonatomic, weak) IBOutlet id fallbackDataSource;
+
+#pragma mark - Cells
+/**
+ *  This is a convenience method for the `-registerCellClass:withIdentifier`.   This method will use the
+ *  @cellClass as the identifier
+ *
+ *  @param cellClass          The cell class o configure
+ *  @param configurationBlock The block that configures instances of the cell class
+ */
+- (void)registerCellClass:(Class)cellClass withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock;
+
+/**
+ * Provide a configuration block, called for each cell with the object to display in that cell.
+ * NSStringFromClass(cellClass) will be used for the identifier and the nib name
+ * This must be called after the tableview/collection view is set or it will be the callers responsibility to call
+ * "register[Class|Nib]:forCellReuseIdentifier:" on the tableview or collectionview.
+ *
+ *  @param cellClass                The cell class o configure
+ *  @param identifier (optional)    The reuseIdentifier to be used for this cell.  If nil the @cellClass will be used.
+ *  @param configurationBlock       The block that configures instances of the cell class
+ */
+- (void)registerCellClass:(Class)cellClass withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock;
+
+#pragma mark - Supplimentary Views
+/**
+ * Supplimentary View configuration block, called for each supplementary view to display.
+ * NSStringFromClass(viewClass) will be used for the kind and the nib name
+ * This must be called after the collection view is set or it will be the callers responsibility to call
+ * "register[Class|Nib]:forSupplementaryViewOfKind:" on the tableview ro collectionview.
+ *
+ *  @param viewClass          The supplementary view class to configure
+ *  @param ofKind             OPTIONAL: The supplementary view kind (UICollectionElementKindSectionHeader or UICollectionElementKindSectionFooter). Defaults to class name.
+ *  @param configurationBlock The block that configures instances of the class
+ */
+- (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock;
+
+- (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock;
+
+#pragma mark - Advanced configuration
+/**
+ *  If your table / collectionView has more than 1 cell identifier, then you can handle that with this block.
+ *  You pass back the reuseIdentifier of the cell you expect to use at the given indexPath / item.
+ */
+@property (nonatomic, copy) URBNReuseableIdentifierBlock cellIdentifierBlock;
+- (void)setCellIdentifierBlock:(URBNReuseableIdentifierBlock)cellIdentifierBlock;
+
+@property (nonatomic, copy) URBNSupplementaryViewReuseIdentifierBlock supplementaryViewIdentifierBlock;
+- (void)setSupplementaryViewIdentifierBlock:(URBNSupplementaryViewReuseIdentifierBlock)supplementaryViewIdentifierBlock;
 
 #pragma mark - helpers
 /**
  * Helper functions to generate arrays of NSIndexPaths.
  */
-+ (NSArray *)indexPathArrayWithRange:(NSRange)range;
-+ (NSArray *)indexPathArrayWithIndexSet:(NSIndexSet *)indexes;
++ (NSArray *)indexPathArrayWithRange:(NSRange)range inSection:(NSInteger)section;
++ (NSArray *)indexPathArrayWithIndexSet:(NSIndexSet *)indexes inSection:(NSInteger)section;
 
+@end
+
+
+@interface URBNDataSourceAdapter (UITableView) <UITableViewDataSource, UITableViewDelegate>
+@end
+
+@interface URBNDataSourceAdapter (UICollectionView) <UICollectionViewDataSource>
 @end

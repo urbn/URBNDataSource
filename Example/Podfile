@@ -1,9 +1,9 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'URBNDataSource', :exclusive => true do
-  pod "URBNDataSource"
+  pod "URBNDataSource", :path => "../"
 end
 
 target 'Tests', :exclusive => true do
-  pod "URBNDataSource"
+  pod "URBNDataSource", :path => "../"
 end

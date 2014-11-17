@@ -14,13 +14,11 @@ typedef NS_ENUM(NSUInteger, URBNSupplementaryViewType) {
     URBNSupplementaryViewTypeFooter
 };
 
-
 typedef NSString *(^URBNSupplementaryViewReuseIdentifierBlock) (NSString *kind, NSIndexPath *indexPath);
 typedef NSString *(^URBNReuseableIdentifierBlock) (id item, NSIndexPath *indexPath);
 
 typedef void (^URBNCellConfigureBlock) (id cell, id object, NSIndexPath* indexPath);
 typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryViewType kind, NSIndexPath* indexPath);
-
 
 @protocol URBNDataSourceAdapterProtocol <NSObject>
 
@@ -57,20 +55,15 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
  */
 - (NSIndexPath *)indexPathForItem:(id)item;
 
-
-
 - (URBNCellConfigureBlock)cellConfigurationBlockForIdentifier:(NSString *)identifier;
 - (NSString *)identifierForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
 
-
 @interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapterProtocol>
 
-
 #pragma mark - Outlets
-
 /**
  * Optional: If the tableview property is assigned, the data source will perform
  * insert/reload/delete calls on it as data changes.
@@ -84,16 +77,13 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
  */
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 
-
 /**
  *  Optional:  If the @fallbackDataSource property is assigned, any collectionView or tableView
  *  will attempt to fallback to this dataSource.
  **/
 @property (nonatomic, weak) IBOutlet id fallbackDataSource;
 
-
 #pragma mark - Cells
-
 /**
  *  This is a convenience method for the `-registerCellClass:withIdentifier`.   This method will use the 
  *  @cellClass as the identifier
@@ -115,9 +105,7 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
  */
 - (void)registerCellClass:(Class)cellClass withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock;
 
-
 #pragma mark - Supplimentary Views
-
 /**
  * Supplimentary View configuration block, called for each supplementary view to display.
  * NSStringFromClass(viewClass) will be used for the kind and the nib name
@@ -133,7 +121,6 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
 - (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock;
 
 #pragma mark - Advanced configuration
-
 /**
  *  If your table / collectionView has more than 1 cell identifier, then you can handle that with this block. 
  *  You pass back the reuseIdentifier of the cell you expect to use at the given indexPath / item.
@@ -141,13 +128,10 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
 @property (nonatomic, copy) URBNReuseableIdentifierBlock cellIdentifierBlock;
 - (void)setCellIdentifierBlock:(URBNReuseableIdentifierBlock)cellIdentifierBlock;
 
-
 @property (nonatomic, copy) URBNSupplementaryViewReuseIdentifierBlock supplementaryViewIdentifierBlock;
 - (void)setSupplementaryViewIdentifierBlock:(URBNSupplementaryViewReuseIdentifierBlock)supplementaryViewIdentifierBlock;
 
-
 #pragma mark - helpers
-
 /**
  * Helper functions to generate arrays of NSIndexPaths.
  */
@@ -155,7 +139,6 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
 + (NSArray *)indexPathArrayWithIndexSet:(NSIndexSet *)indexes;
 
 @end
-
 
 
 @interface URBNDataSourceAdapter (UITableView) <UITableViewDataSource, UITableViewDelegate>
