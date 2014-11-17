@@ -1,6 +1,6 @@
 # URBNDataSource
 
-[![CI Status](http://img.shields.io/travis/Joe/URBNDataSource.svg?style=flat)](https://travis-ci.org/Joe/URBNDataSource)
+[![CI Status](http://img.shields.io/travis/urbn/URBNDataSource.svg?style=flat)](https://travis-ci.org/urbn/URBNDataSource)
 [![Version](https://img.shields.io/cocoapods/v/URBNDataSource.svg?style=flat)](http://cocoadocs.org/docsets/URBNDataSource)
 [![License](https://img.shields.io/cocoapods/l/URBNDataSource.svg?style=flat)](http://cocoadocs.org/docsets/URBNDataSource)
 [![Platform](https://img.shields.io/cocoapods/p/URBNDataSource.svg?style=flat)](http://cocoadocs.org/docsets/URBNDataSource)
@@ -17,10 +17,6 @@ URBNDataSource is available through [CocoaPods](http://cocoapods.org). To instal
 it, simply add the following line to your Podfile:
 
     pod "URBNDataSource"
-
-## Author
-
-Joe, Ridenour
 
 ## License
 
