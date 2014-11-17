@@ -144,7 +144,7 @@
  *  This will toggle the data on the adapter to be sectioned
  *  or not.
  **/
-- (IBAction)toggleSectionedData
+- (IBAction)toggleSectionedData:(UIBarButtonItem *)sender
 {
     NSArray *data = nil;
     if([self.adapter isSectioned])
@@ -164,6 +164,7 @@
           ];
     }
     
+    sender.title = [NSString stringWithFormat:@"Sections: %@", [self.adapter isSectioned] ? @"Off" : @"On"];
     /// Calling this method will automagically reload the table for us.
     [self.adapter replaceItems:data];
 }

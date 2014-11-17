@@ -59,7 +59,7 @@
 
 - (void)insertItems:(NSArray *)newItems atIndexes:(NSIndexSet *)indexes inSection:(NSInteger)section {
     NSMutableArray *tempItems = [[self itemsForSection:section] mutableCopy];
-    [tempItems insertObjects:items atIndexes:indexes];
+    [tempItems insertObjects:newItems atIndexes:indexes];
     
     if (self.isSectioned) {
         [self.items replaceObjectAtIndex:section withObject:[NSArray arrayWithArray:tempItems]];
