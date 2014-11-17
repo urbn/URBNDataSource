@@ -15,22 +15,31 @@
  */
 - (instancetype)initWithItems:(NSArray *)items;
 
-
 /**
  * Using the methods below to manipulate the items
  * will cause the table view or collection view to update automatically
  */
+- (BOOL)isSectioned;
+
+- (NSArray *)allItems;
 
 /**
  * Add some more items to the end of the items array.
+ *
+ *  @param newItems The new items
+ *  @param section The section for the new items
  */
-- (void)appendItems:(NSArray *)newItems;
+- (void)appendItems:(NSArray *)newItems inSection:(NSInteger)section;
 
 /**
  * Insert some items at the specified indexes.
  * The count of `items` should be equal to the number of `indexes`.
+ *
+ *  @param newItems The new items
+ *  @param indexes The indexes for the new items
+ *  @param section The section for the new items
  */
-- (void)insertItems:(NSArray *)items atIndexes:(NSIndexSet *)indexes;
+- (void)insertItems:(NSArray *)newItems atIndexes:(NSIndexSet *)indexes inSection:(NSInteger)section;
 
 /**
  *  Replace all items in the array
@@ -42,39 +51,41 @@
 /*
  * Replace an item.
  *
- *  @param index The index of the original items
- *  @param item  The new item
+ *  @param indexPath The indexPath of the original items
+ *  @param item The new item
  */
-- (void)replaceItemAtIndex:(NSUInteger)index withItem:(id)item;
+- (void)replaceItemAtIndexPath:(NSIndexPath *)indexPath withItem:(id)item;
 
 /**
  * Remove items in a specific range
  *
  *  @param range The range to remove
+ *  @param section The section to remove from
  */
-- (void)removeItemsInRange:(NSRange)range;
+- (void)removeItemsInRange:(NSRange)range inSection:(NSInteger)section;
 
 /**
  * Remove items at specific indexes
  *
  *  @param indexes The indexes to remove
+ *  @param section The section to remove from
  */
-- (void)removeItemsAtIndexes:(NSIndexSet *)indexes;
+- (void)removeItemsAtIndexes:(NSIndexSet *)indexes inSection:(NSInteger)section;
 
 /**
- * Remove items at a specific index
+ * Remove items at a specific indexPath
  *
- *  @param index The index to remove
+ *  @param indexPath The indexPath to remove
  */
-- (void)removeItemAtIndex:(NSUInteger)index;
+- (void)removeItemAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
- * Move an item to a new index. Note: if index1 is before index2, then index2 will be 
+ * Move an item to a new indexPath.
  *
- *  @param index1 The original index
- *  @param index2 The new index
+ *  @param indexPath The original indexPath
+ *  @param newIndexPath The new indexPath
  */
-- (void)moveItemAtIndex:(NSUInteger)index1 toIndex:(NSUInteger)index2;
+- (void)moveItemAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath;
 
 /**
  * Remove all objects in the data source.

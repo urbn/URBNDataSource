@@ -14,11 +14,11 @@
 @synthesize items;
 
 - (instancetype)initWithItems:(NSArray *)anItems {
-  if ( (self = [self init]) ) {
-      self.items = ( anItems ? [NSMutableArray arrayWithArray:anItems] : [NSMutableArray array] );
-  }
-  
-  return self;
+    if ((self = [self init])) {
+        self.items = (anItems ? [NSMutableArray arrayWithArray:anItems] : [NSMutableArray array]);
+    }
+    
+    return self;
 }
 
 #pragma mark - updating items
@@ -36,152 +36,233 @@
     [self.collectionView reloadData];
 }
 
-- (NSArray *)allItems {
-    return self.items;
-}
-
-- (void)appendItems:(NSArray *)newItems {
-    NSUInteger count = [self numberOfItems];
+- (void)appendItems:(NSArray *)newItems inSection:(NSInteger)section {
+    NSInteger count = [self numberOfItemsInSection:section];
     
-    [self.items addObjectsFromArray:newItems];
+    if (self.isSectioned) {
+        NSMutableArray *tempItems = [[self itemsForSection:section] mutableCopy];
+        [tempItems addObjectsFromArray:newItems];
+        [self.items replaceObjectAtIndex:section withObject:tempItems];
+    }
+    else {
+        [self.items addObjectsFromArray:newItems];
+    }
     
     if (self.tableView) {
-        [self.tableView insertRowsAtIndexPaths:[[self class] indexPathArrayWithRange:NSMakeRange(count, [newItems count])] withRowAnimation:self.rowAnimation];
+        [self.tableView insertRowsAtIndexPaths:[[self class] indexPathArrayWithRange:NSMakeRange(count, [newItems count]) inSection:section] withRowAnimation:self.rowAnimation];
     }
     
     if (self.collectionView) {
-        [self.collectionView insertItemsAtIndexPaths:[[self class] indexPathArrayWithRange:NSMakeRange(count, [newItems count])]];
+        [self.collectionView insertItemsAtIndexPaths:[[self class] indexPathArrayWithRange:NSMakeRange(count, [newItems count]) inSection:section]];
     }
 }
 
-- (void)insertItems:(NSArray *)newItems atIndexes:(NSIndexSet *)indexes {    
-    [self.items insertObjects:newItems atIndexes:indexes];
+- (void)insertItems:(NSArray *)newItems atIndexes:(NSIndexSet *)indexes inSection:(NSInteger)section {
+    NSMutableArray *tempItems = [[self itemsForSection:section] mutableCopy];
+    [tempItems insertObjects:items atIndexes:indexes];
     
+    if (self.isSectioned) {
+        [self.items replaceObjectAtIndex:section withObject:[NSArray arrayWithArray:tempItems]];
+    }
+    else {
+        self.items = tempItems;
+    }
+
     if (self.tableView) {
-        [self.tableView insertRowsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes] withRowAnimation:self.rowAnimation];
+        [self.tableView insertRowsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes inSection:section] withRowAnimation:self.rowAnimation];
     }
     
     if (self.collectionView) {
-        [self.collectionView insertItemsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes]];
+        [self.collectionView insertItemsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes inSection:section]];
     }
 }
 
-- (void)replaceItemAtIndex:(NSUInteger)index withItem:(id)item {
-    [self.items replaceObjectAtIndex:index withObject:item];
-
+- (void)replaceItemAtIndexPath:(NSIndexPath *)indexPath withItem:(id)item {
+    NSMutableArray *tempItems = [[self itemsForSection:indexPath.section] mutableCopy];
+    [tempItems replaceObjectAtIndex:indexPath.row withObject:item];
+    
+    if (self.isSectioned) {
+        [self.items replaceObjectAtIndex:indexPath.section withObject:[NSArray arrayWithArray:tempItems]];
+    }
+    else {
+        self.items = tempItems;
+    }
+    
     if (self.tableView) {
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(NSInteger)index inSection:0]] withRowAnimation:self.rowAnimation];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:self.rowAnimation];
     }
     
     if (self.collectionView) {
-        [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:(NSInteger)index inSection:0]]];
+        [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
     }
 }
 
-- (void)moveItemAtIndex:(NSUInteger)index1 toIndex:(NSUInteger)index2 updateCollectionView:(BOOL)update {
-    NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:index1 inSection:0];
-    NSIndexPath *indexPath2 = [NSIndexPath indexPathForRow:index2 inSection:0];
+- (void)moveItemAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath {
+    id item = [self itemAtIndexPath:indexPath];
     
-    id item = [self itemAtIndexPath:indexPath1];
+    if (self.isSectioned) {
+        NSMutableArray *tempItems = [[self itemsForSection:indexPath.section] mutableCopy];
+        [tempItems removeObjectAtIndex:indexPath.row];
 
-    [self.items removeObject:item];
-    [self.items insertObject:item atIndex:index2];
-    
-    if (self.tableView) {
-        [self.tableView moveRowAtIndexPath:indexPath1 toIndexPath:indexPath2];
+        if (indexPath.section != newIndexPath.section) {
+            NSMutableArray *newTempItems = [[self itemsForSection:newIndexPath.section] mutableCopy];
+            [newTempItems insertObject:item atIndex:indexPath.row];
+
+            NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+            [indexSet addIndex:indexPath.section];
+            [indexSet addIndex:newIndexPath.section];
+            
+            [self.items replaceObjectsAtIndexes:indexSet withObjects:@[tempItems, newTempItems]];
+        }
+        else {
+            [tempItems insertObject:item atIndex:newIndexPath.row];
+            [self.items replaceObjectAtIndex:indexPath.section withObject:tempItems];
+        }
+    }
+    else {
+        [self.items removeObject:item];
+        [self.items insertObject:item atIndex:newIndexPath.row];
     }
     
-    if (update && self.collectionView) {
-        [self.collectionView moveItemAtIndexPath:indexPath1 toIndexPath:indexPath2];
-    }
-}
-
-- (void)moveItemAtIndex:(NSUInteger)index1 toIndex:(NSUInteger)index2 {
-    NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:index1 inSection:0];
-    NSIndexPath *indexPath2 = [NSIndexPath indexPathForRow:index2 inSection:0];
-    
-    id item = [self itemAtIndexPath:indexPath1];
-    [self.items removeObject:item];
-    [self.items insertObject:item atIndex:index2];
-    
     if (self.tableView) {
-        [self.tableView moveRowAtIndexPath:indexPath1 toIndexPath:indexPath2];
+        [self.tableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
     }
     
     if (self.collectionView) {
-        [self.collectionView moveItemAtIndexPath:indexPath1 toIndexPath:indexPath2];
+        [self.collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
     }
 }
 
-- (void)removeItemsInRange:(NSRange)range {    
-    [self.items removeObjectsInRange:range];
+- (void)removeItemsInRange:(NSRange)range inSection:(NSInteger)section {
+    NSMutableArray *tempItems = [[self itemsForSection:section] mutableCopy];
+
+    if (range.location >= tempItems.count) {
+        return;
+    }
+    else if (range.location + range.length >= tempItems.count) {
+        range = NSMakeRange(range.location, tempItems.count - range.location);
+    }
+    
+    [tempItems removeObjectsInRange:range];
+    
+    if (self.isSectioned) {
+        [self.items replaceObjectAtIndex:section withObject:[NSArray arrayWithArray:tempItems]];
+    }
+    else {
+        self.items = tempItems;
+    }
     
     if (self.tableView) {
-        [self.tableView deleteRowsAtIndexPaths:[[self class] indexPathArrayWithRange:range] withRowAnimation:self.rowAnimation];
+        [self.tableView deleteRowsAtIndexPaths:[[self class] indexPathArrayWithRange:range inSection:section] withRowAnimation:self.rowAnimation];
     }
     
     if (self.collectionView) {
-        [self.collectionView deleteItemsAtIndexPaths:[[self class] indexPathArrayWithRange:range]];
+        [self.collectionView deleteItemsAtIndexPaths:[[self class] indexPathArrayWithRange:range inSection:section]];
     }
 }
 
-- (void)removeItemsAtIndexes:(NSIndexSet *)indexes {
-    [self.items removeObjectsAtIndexes:indexes];
-
+- (void)removeItemsAtIndexes:(NSIndexSet *)indexes inSection:(NSInteger)section {
+    NSMutableArray *tempItems = [[self itemsForSection:section] mutableCopy];
+    [tempItems removeObjectsAtIndexes:indexes];
+    
+    if (self.isSectioned) {
+        [self.items replaceObjectAtIndex:section withObject:[NSArray arrayWithArray:tempItems]];
+    }
+    else {
+        self.items = tempItems;
+    }
+    
     if (self.tableView) {
-        [self.tableView deleteRowsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes] withRowAnimation:self.rowAnimation];
+        [self.tableView deleteRowsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes inSection:section] withRowAnimation:self.rowAnimation];
     }
     
     if (self.collectionView) {
-        [self.collectionView deleteItemsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes]];
+        [self.collectionView deleteItemsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes inSection:section]];
     }
 }
 
-- (void)removeItemAtIndex:(NSUInteger)index {
-    [self.items removeObjectAtIndex:index];
+- (void)removeItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSMutableArray *tempItems = [[self itemsForSection:indexPath.section] mutableCopy];
+    [tempItems removeObjectAtIndex:indexPath.row];
+    
+    if (self.isSectioned) {
+        [self.items replaceObjectAtIndex:indexPath.section withObject:[NSArray arrayWithArray:tempItems]];
+    }
+    else {
+        self.items = tempItems;
+    }
     
     if (self.tableView) {
-        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(NSInteger)index inSection:0]] withRowAnimation:self.rowAnimation];
+        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:self.rowAnimation];
     }
     
     if (self.collectionView) {
-        [self.collectionView deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:(NSInteger)index inSection:0]]];
+        [self.collectionView deleteItemsAtIndexPaths:@[indexPath]];
     }
 }
 
 #pragma mark - item access
-- (NSUInteger)numberOfItems {
-    return [self.items count];
+- (BOOL)isSectioned {
+    id firstItem = [[self allItems] firstObject];
+    return [firstItem isKindOfClass:[NSArray class]];
 }
 
-- (NSUInteger)numberOfItemsInSection:(NSInteger)section {
-    if (section == 0) {
-        return [self.items count];
+- (NSArray *)allItems {
+    return self.items;
+}
+
+- (NSArray *)itemsForSection:(NSInteger)section {
+    if ([self isSectioned]) {
+        if (section > [self allItems].count) {
+            return nil; // Insanity check
+        }
+        
+        return [self allItems][section];
     }
     
-    return 0;
+    return self.allItems;
 }
 
-- (NSUInteger)numberOfSections {
-    return 1;
+- (NSInteger)numberOfSections {
+    return [self isSectioned] ? [self allItems].count : 1;
+}
+
+- (NSInteger)numberOfItemsInSection:(NSInteger)section {
+    return [self itemsForSection:section].count;
 }
 
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row < (NSInteger)[self.items count]) {
-        return self.items[(NSUInteger)indexPath.row];
+    NSArray *sectionItems = [self itemsForSection:indexPath.section];
+    
+    if (sectionItems && indexPath.item < [sectionItems count]) {
+        return sectionItems[indexPath.item];
     }
     
     return nil;
 }
 
 - (NSIndexPath *)indexPathForItem:(id)item {
-    NSUInteger row = [self.items indexOfObjectIdenticalTo:item];
-
+    __block NSInteger section;
+    __block NSInteger row;
+    if (self.isSectioned) {
+        [self.items enumerateObjectsUsingBlock:^(NSArray *sectionArray, NSUInteger idx, BOOL *stop) {
+            row = [sectionArray indexOfObjectIdenticalTo:item];
+            if (row != NSNotFound) {
+                section = idx;
+                *stop = YES;
+            }
+        }];
+    }
+    else {
+        section = 0;
+        row = [self.items indexOfObjectIdenticalTo:item];
+    }
+    
     if (row == NSNotFound) {
         return nil;
     }
-  
-    return [NSIndexPath indexPathForRow:(NSInteger)row inSection:0];
+    
+    return [NSIndexPath indexPathForRow:row inSection:section];
 }
 
 #pragma mark - UITableViewDataSource

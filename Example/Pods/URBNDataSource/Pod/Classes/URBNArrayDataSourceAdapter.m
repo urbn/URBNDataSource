@@ -14,11 +14,32 @@
 @synthesize items;
 
 - (instancetype)initWithItems:(NSArray *)anItems {
-  if ( (self = [self init]) ) {
-      self.items = ( anItems ? [NSMutableArray arrayWithArray:anItems] : [NSMutableArray array] );
-  }
-  
-  return self;
+    if ((self = [self init])) {
+        self.items = (anItems ? [NSMutableArray arrayWithArray:anItems] : [NSMutableArray array]);
+    }
+
+    return self;
+}
+
+- (BOOL)isSectioned {
+    id firstItem = [[self allItems] firstObject];
+    return [firstItem isKindOfClass:[NSArray class]];
+}
+
+- (NSArray *)allItems {
+    return self.items;
+}
+
+- (NSArray *)itemsForSection:(NSInteger)section {
+    if ([self isSectioned]) {
+        if (section > [self allItems].count) {
+            return nil; // Insanity check
+        }
+        
+        return [self allItems][section];
+    }
+    
+    return self.allItems;
 }
 
 #pragma mark - updating items
@@ -78,7 +99,7 @@
     }
 }
 
-- (void)moveItemAtIndex:(NSUInteger)index1 toIndex:(NSUInteger)index2 updateCollectionView:(BOOL)update {
+- (void)moveItemAtIndex:(NSUInteger)index1 toIndex:(NSUInteger)index2 updateCollectionView:(BOOL)update{
     NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:index1 inSection:0];
     NSIndexPath *indexPath2 = [NSIndexPath indexPathForRow:index2 inSection:0];
     
@@ -154,21 +175,19 @@
     return [self.items count];
 }
 
-- (NSUInteger)numberOfItemsInSection:(NSInteger)section {
-    if (section == 0) {
-        return [self.items count];
-    }
-    
-    return 0;
+- (NSUInteger)numberOfSections {
+    return [self isSectioned] ? [self allItems].count : 1;
 }
 
-- (NSUInteger)numberOfSections {
-    return 1;
+- (NSUInteger)numberOfItemsInSection:(NSInteger)section {
+    return [self itemsForSection:section].count;
 }
 
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row < (NSInteger)[self.items count]) {
-        return self.items[(NSUInteger)indexPath.row];
+    NSArray *sectionItems = [self itemsForSection:indexPath.section];
+    
+    if (sectionItems && indexPath.item < [sectionItems count]) {
+        return sectionItems[indexPath.item];
     }
     
     return nil;
@@ -176,7 +195,7 @@
 
 - (NSIndexPath *)indexPathForItem:(id)item {
     NSUInteger row = [self.items indexOfObjectIdenticalTo:item];
-
+  
     if (row == NSNotFound) {
         return nil;
     }
@@ -185,7 +204,7 @@
 }
 
 #pragma mark - UITableViewDataSource
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {    
     id item = [self itemAtIndexPath:sourceIndexPath];
     [self.items removeObject:item];
     [self.items insertObject:item atIndex:destinationIndexPath.row];

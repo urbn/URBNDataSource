@@ -15,11 +15,13 @@
  */
 - (instancetype)initWithItems:(NSArray *)items;
 
-
 /**
  * Using the methods below to manipulate the items
  * will cause the table view or collection view to update automatically
  */
+- (BOOL)isSectioned;
+
+- (NSArray *)allItems;
 
 /**
  * Add some more items to the end of the items array.

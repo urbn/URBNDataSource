@@ -9,12 +9,17 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-typedef Class (^URBNCellClassBlock) (id object, NSIndexPath* indexPath);
+typedef NS_ENUM(NSUInteger, URBNSupplementaryViewType) {
+    URBNSupplementaryViewTypeHeader,
+    URBNSupplementaryViewTypeFooter
+};
+
+typedef NSString *(^URBNSupplementaryViewReuseIdentifierBlock) (NSString *kind, NSIndexPath *indexPath);
+typedef NSString *(^URBNReuseableIdentifierBlock) (id item, NSIndexPath *indexPath);
+
 typedef void (^URBNCellConfigureBlock) (id cell, id object, NSIndexPath* indexPath);
 
-typedef Class (^URBNSupplementaryViewClassBlock) (NSIndexPath* indexPath, NSString *kind);
-typedef void (^URBNSupplementaryViewConfigureBlock) (id view, NSString* kind, NSIndexPath* indexPath);
-
+@protocol URBNDataSourceAdapterProtocol <NSObject>
 
 @interface URBNDataSourceAdapter : NSObject <UITableViewDataSource, UICollectionViewDataSource>
 
@@ -35,22 +40,36 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, NSString* kind, NS
  * Optional data source fallback.
  * If this is set, it will receive data source calls that this class does not handle
  */
-@property (nonatomic, weak) id <UITableViewDataSource> fallbackTableDataSource;
+- (NSIndexPath *)indexPathForItem:(id)item;
 
+- (URBNCellConfigureBlock)cellConfigurationBlockForIdentifier:(NSString *)identifier;
+- (NSString *)identifierForItemAtIndexPath:(NSIndexPath *)indexPath;
+
+@end
+
+
+@interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapterProtocol>
+
+#pragma mark - Outlets
+/**
+ * Optional: If the tableview property is assigned, the data source will perform
+ * insert/reload/delete calls on it as data changes.
+ */
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, assign) UITableViewRowAnimation rowAnimation;
 
 #pragma mark - UICollectionView
 /**
  * Optional: If the collectionview property is assigned, the data source will perform
  * insert/reload/delete calls on it as data changes.
  */
-@property (nonatomic, weak) UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 
 /**
  * Optional data source fallback.
  * If this is set, it will receive data source calls that this class does not handle
  */
 @property (nonatomic, weak) id <UICollectionViewDataSource> fallbackCollectionDataSource;
-
 
 #pragma mark - Cells
 /**
@@ -71,7 +90,6 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, NSString* kind, NS
  * Will search for a Nib of named @"NSStringFromClass(cellClass)"
  */
 @property (nonatomic, copy) URBNCellClassBlock cellClassBlock;
-
 
 #pragma mark - Supplimentary Views
 /**
@@ -94,30 +112,19 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, NSString* kind, NS
  */
 @property (nonatomic, copy) URBNSupplementaryViewClassBlock supplementaryViewClassBlock;
 
-
-#pragma mark - item access
+#pragma mark - Advanced configuration
 /**
  * Returns all items. The order will be determined by the concrete subclass.
  *
  *  @return All items
  */
-- (NSArray *)allItems;
+@property (nonatomic, copy) URBNReuseableIdentifierBlock cellIdentifierBlock;
+- (void)setCellIdentifierBlock:(URBNReuseableIdentifierBlock)cellIdentifierBlock;
 
-/**
- * Return the number of items in the data source.
- */
-- (NSUInteger)numberOfItems;
+@property (nonatomic, copy) URBNSupplementaryViewReuseIdentifierBlock supplementaryViewIdentifierBlock;
+- (void)setSupplementaryViewIdentifierBlock:(URBNSupplementaryViewReuseIdentifierBlock)supplementaryViewIdentifierBlock;
 
-/**
- * Return the number of items in the section
- */
-- (NSUInteger)numberOfItemsInSection:(NSInteger)section;
-
-/**
- * Return the number of sections in the data source.
- */
-- (NSUInteger)numberOfSections;
-
+#pragma mark - helpers
 /**
  * Return the item at a given index path. Override in your subclass.
  *
@@ -145,12 +152,7 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, NSString* kind, NS
  */
 - (URBNCellConfigureBlock)cellConfigurationBlockForClass:(Class)cellClass;
 
-
-#pragma mark - helpers
-/**
- * Helper functions to generate arrays of NSIndexPaths.
- */
-+ (NSArray *)indexPathArrayWithRange:(NSRange)range;
-+ (NSArray *)indexPathArrayWithIndexSet:(NSIndexSet *)indexes;
+@interface URBNDataSourceAdapter (UITableView) <UITableViewDataSource, UITableViewDelegate>
+@end
 
 @end
