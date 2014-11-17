@@ -21,6 +21,8 @@
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		98F505D392A0CF6A3C5E3A04 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A40FBB618B2597246500DCDC /* libPods-Tests.a */; };
 		D6B627EB27B8914E8CBE211F /* libPods-URBNDataSource.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E07A2AEC689CB094EFD22B5D /* libPods-URBNDataSource.a */; };
+		D849C6C11A1A5D0F00E140DA /* URBNProtoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D849C6C01A1A5D0F00E140DA /* URBNProtoTableViewController.m */; };
+		D849C6C51A1A7B3100E140DA /* URBNProtoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D849C6C41A1A7B3100E140DA /* URBNProtoCollectionViewController.m */; };
 		D86D97E61A13DDF10054EEE2 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D86D97E51A13DDF10054EEE2 /* MainStoryboard.storyboard */; };
 		D86D97F11A13E9330054EEE2 /* URBNCodeCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D86D97ED1A13E9330054EEE2 /* URBNCodeCollectionViewController.m */; };
 		D86D97F21A13E9330054EEE2 /* URBNCodeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D86D97F01A13E9330054EEE2 /* URBNCodeTableViewController.m */; };
@@ -63,6 +65,10 @@
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		88480CFF302ABF3BF54583EF /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		A40FBB618B2597246500DCDC /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D849C6BF1A1A5D0F00E140DA /* URBNProtoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = URBNProtoTableViewController.h; path = "ViewControllers/Prototype TableView/URBNProtoTableViewController.h"; sourceTree = "<group>"; };
+		D849C6C01A1A5D0F00E140DA /* URBNProtoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = URBNProtoTableViewController.m; path = "ViewControllers/Prototype TableView/URBNProtoTableViewController.m"; sourceTree = "<group>"; };
+		D849C6C31A1A7B3100E140DA /* URBNProtoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = URBNProtoCollectionViewController.h; path = "ViewControllers/Prototype CollectionView/URBNProtoCollectionViewController.h"; sourceTree = "<group>"; };
+		D849C6C41A1A7B3100E140DA /* URBNProtoCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = URBNProtoCollectionViewController.m; path = "ViewControllers/Prototype CollectionView/URBNProtoCollectionViewController.m"; sourceTree = "<group>"; };
 		D86D97E51A13DDF10054EEE2 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
 		D86D97EC1A13E9330054EEE2 /* URBNCodeCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URBNCodeCollectionViewController.h; sourceTree = "<group>"; };
 		D86D97ED1A13E9330054EEE2 /* URBNCodeCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URBNCodeCollectionViewController.m; sourceTree = "<group>"; };
@@ -198,9 +204,29 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		D849C6BE1A1A5CDD00E140DA /* Prototype TableView */ = {
+			isa = PBXGroup;
+			children = (
+				D849C6BF1A1A5D0F00E140DA /* URBNProtoTableViewController.h */,
+				D849C6C01A1A5D0F00E140DA /* URBNProtoTableViewController.m */,
+			);
+			name = "Prototype TableView";
+			sourceTree = "<group>";
+		};
+		D849C6C21A1A7B0F00E140DA /* Prototype CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				D849C6C31A1A7B3100E140DA /* URBNProtoCollectionViewController.h */,
+				D849C6C41A1A7B3100E140DA /* URBNProtoCollectionViewController.m */,
+			);
+			name = "Prototype CollectionView";
+			sourceTree = "<group>";
+		};
 		D86D97E01A13DA2B0054EEE2 /* Examples */ = {
 			isa = PBXGroup;
 			children = (
+				D849C6C21A1A7B0F00E140DA /* Prototype CollectionView */,
+				D849C6BE1A1A5CDD00E140DA /* Prototype TableView */,
 				D86D97EB1A13E9330054EEE2 /* Code CollectionView */,
 				D86D97EE1A13E9330054EEE2 /* Code TableView */,
 			);
@@ -397,6 +423,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D86D97F11A13E9330054EEE2 /* URBNCodeCollectionViewController.m in Sources */,
+				D849C6C11A1A5D0F00E140DA /* URBNProtoTableViewController.m in Sources */,
+				D849C6C51A1A7B3100E140DA /* URBNProtoCollectionViewController.m in Sources */,
 				D86D97F21A13E9330054EEE2 /* URBNCodeTableViewController.m in Sources */,
 				6003F59E195388D20070C39A /* URBNAppDelegate.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
