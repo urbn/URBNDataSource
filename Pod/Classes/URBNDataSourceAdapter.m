@@ -97,7 +97,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
         if (nib) {
             [self.collectionView registerNib:nib forSupplementaryViewOfKind:kindString withReuseIdentifier:identifier];
         }
-        else {
+        else if(viewClass) {
             [self.collectionView registerClass:viewClass forSupplementaryViewOfKind:kindString withReuseIdentifier:identifier];
         }
     }
@@ -231,7 +231,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 - (UINib*)nibWithName:(NSString*)name {
     UINib *nib = nil;
     
-    if ([[NSBundle mainBundle] pathForResource:name ofType:@"nib"]) {
+    if (name && [[NSBundle mainBundle] pathForResource:name ofType:@"nib"]) {
         nib = [UINib nibWithNibName:name bundle:nil];
     }
     
@@ -308,7 +308,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
     UITableViewHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
     
     if (configBlock) {
-        configBlock(view, URBNSupplementaryViewTypeFooter, indexPath);
+        configBlock(view, URBNSupplementaryViewTypeHeader, indexPath);
     }
     
     return view;
