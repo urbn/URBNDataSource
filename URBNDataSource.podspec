@@ -9,11 +9,11 @@
 
 Pod::Spec.new do |s|
   s.name             = 'URBNDataSource'
-  s.version          = '0.2'
+  s.version          = '0.3'
   s.summary          = 'URBNDataSource is meant to be a convenience wrapper around UICollectionView / UITableView data management'
   s.homepage         = 'https://github.com/urbn/URBNDataSource'
   s.license          = 'MIT'
-  s.author           = 'URBN Application Engineering Team'
+  s.author           = { "urbn" => "jgrandelli@urbn.com" }
   s.source           = { :git => "https://github.com/urbn/URBNDataSource.git", :tag => s.version.to_s }
 
   s.platform     = :ios, '6.0'
