@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3BCAE831082179423392ABF7"
+               BlueprintIdentifier = "15E5360F2B9F54E759EA2AA5"
                BuildableName = "libPods-URBNDataSource-URBNDataSource.a"
                BlueprintName = "Pods-URBNDataSource-URBNDataSource"
                ReferencedContainer = "container:Pods.xcodeproj">
