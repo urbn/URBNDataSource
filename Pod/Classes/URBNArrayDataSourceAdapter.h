@@ -13,7 +13,7 @@
 /**
  * Create a new array data source by specifying an array of items. Items can be nil.
  */
-- (instancetype)initWithItems:(NSArray *)items;
+- (instancetype)initWithItems:(NSArray *)items __attribute__((objc_designated_initializer));
 
 /**
  * Using the methods below to manipulate the items

@@ -13,11 +13,11 @@
 
 @synthesize items;
 
+#pragma mark - Init
 - (instancetype)initWithItems:(NSArray *)anItems {
-    if ((self = [self init])) {
-        self.items = (anItems ? [NSMutableArray arrayWithArray:anItems] : [NSMutableArray array]);
+    if ((self = [super init])) {
+        self.items = [NSMutableArray arrayWithArray:anItems];
     }
-    
     return self;
 }
 
@@ -39,21 +39,27 @@
 - (void)appendItems:(NSArray *)newItems inSection:(NSInteger)section {
     NSInteger count = [self numberOfItemsInSection:section];
     
-    if (self.isSectioned) {
-        NSMutableArray *tempItems = [[self itemsForSection:section] mutableCopy];
-        [tempItems addObjectsFromArray:newItems];
-        [self.items replaceObjectAtIndex:section withObject:tempItems];
-    }
-    else {
-        [self.items addObjectsFromArray:newItems];
-    }
+    void (^UpdateData)() = ^{
+        if (self.isSectioned) {
+            NSMutableArray *tempItems = [[self itemsForSection:section] mutableCopy];
+            [tempItems addObjectsFromArray:newItems];
+            [self.items replaceObjectAtIndex:section withObject:tempItems];
+        }
+        else {
+            [self.items addObjectsFromArray:newItems];
+        }
+    };
     
     if (self.tableView) {
+        UpdateData();
         [self.tableView insertRowsAtIndexPaths:[[self class] indexPathArrayWithRange:NSMakeRange(count, [newItems count]) inSection:section] withRowAnimation:self.rowAnimation];
     }
     
     if (self.collectionView) {
-        [self.collectionView insertItemsAtIndexPaths:[[self class] indexPathArrayWithRange:NSMakeRange(count, [newItems count]) inSection:section]];
+        [self.collectionView performBatchUpdates:^{
+            UpdateData();
+            [self.collectionView insertItemsAtIndexPaths:[[self class] indexPathArrayWithRange:NSMakeRange(count, [newItems count]) inSection:section]];
+        } completion:nil];
     }
 }
 
@@ -61,19 +67,25 @@
     NSMutableArray *tempItems = [[self itemsForSection:section] mutableCopy];
     [tempItems insertObjects:newItems atIndexes:indexes];
     
-    if (self.isSectioned) {
-        [self.items replaceObjectAtIndex:section withObject:[NSArray arrayWithArray:tempItems]];
-    }
-    else {
-        self.items = tempItems;
-    }
+    void (^UpdateData)() = ^{
+        if (self.isSectioned) {
+            [self.items replaceObjectAtIndex:section withObject:[NSArray arrayWithArray:tempItems]];
+        }
+        else {
+            self.items = tempItems;
+        }
+    };
 
     if (self.tableView) {
+        UpdateData();
         [self.tableView insertRowsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes inSection:section] withRowAnimation:self.rowAnimation];
     }
     
     if (self.collectionView) {
-        [self.collectionView insertItemsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes inSection:section]];
+        [self.collectionView performBatchUpdates:^{
+            UpdateData();
+            [self.collectionView insertItemsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes inSection:section]];
+        } completion:nil];
     }
 }
 
@@ -100,36 +112,42 @@
 - (void)moveItemAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath {
     id item = [self itemAtIndexPath:indexPath];
     
-    if (self.isSectioned) {
-        NSMutableArray *tempItems = [[self itemsForSection:indexPath.section] mutableCopy];
-        [tempItems removeObjectAtIndex:indexPath.row];
-
-        if (indexPath.section != newIndexPath.section) {
-            NSMutableArray *newTempItems = [[self itemsForSection:newIndexPath.section] mutableCopy];
-            [newTempItems insertObject:item atIndex:indexPath.row];
-
-            NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
-            [indexSet addIndex:indexPath.section];
-            [indexSet addIndex:newIndexPath.section];
+    void (^UpdateData)() = ^{
+        if (self.isSectioned) {
+            NSMutableArray *tempItems = [[self itemsForSection:indexPath.section] mutableCopy];
+            [tempItems removeObjectAtIndex:indexPath.row];
             
-            [self.items replaceObjectsAtIndexes:indexSet withObjects:@[tempItems, newTempItems]];
+            if (indexPath.section != newIndexPath.section) {
+                NSMutableArray *newTempItems = [[self itemsForSection:newIndexPath.section] mutableCopy];
+                [newTempItems insertObject:item atIndex:indexPath.row];
+                
+                NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+                [indexSet addIndex:indexPath.section];
+                [indexSet addIndex:newIndexPath.section];
+                
+                [self.items replaceObjectsAtIndexes:indexSet withObjects:@[tempItems, newTempItems]];
+            }
+            else {
+                [tempItems insertObject:item atIndex:newIndexPath.row];
+                [self.items replaceObjectAtIndex:indexPath.section withObject:tempItems];
+            }
         }
         else {
-            [tempItems insertObject:item atIndex:newIndexPath.row];
-            [self.items replaceObjectAtIndex:indexPath.section withObject:tempItems];
+            [self.items removeObject:item];
+            [self.items insertObject:item atIndex:newIndexPath.row];
         }
-    }
-    else {
-        [self.items removeObject:item];
-        [self.items insertObject:item atIndex:newIndexPath.row];
-    }
+    };
     
     if (self.tableView) {
+        UpdateData();
         [self.tableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
     }
     
     if (self.collectionView) {
-        [self.collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
+        [self.collectionView performBatchUpdates:^{
+            UpdateData();
+            [self.collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
+        } completion:nil];
     }
 }
 
@@ -145,19 +163,24 @@
     
     [tempItems removeObjectsInRange:range];
     
-    if (self.isSectioned) {
-        [self.items replaceObjectAtIndex:section withObject:[NSArray arrayWithArray:tempItems]];
-    }
-    else {
-        self.items = tempItems;
-    }
+    void (^UpdateData)() = ^{
+        if (self.isSectioned) {
+            [self.items replaceObjectAtIndex:section withObject:[NSArray arrayWithArray:tempItems]];
+        }
+        else {
+            self.items = tempItems;
+        }
+    };
     
     if (self.tableView) {
+        UpdateData();
         [self.tableView deleteRowsAtIndexPaths:[[self class] indexPathArrayWithRange:range inSection:section] withRowAnimation:self.rowAnimation];
     }
     
     if (self.collectionView) {
-        [self.collectionView deleteItemsAtIndexPaths:[[self class] indexPathArrayWithRange:range inSection:section]];
+        [self.collectionView performBatchUpdates:^{
+            [self.collectionView deleteItemsAtIndexPaths:[[self class] indexPathArrayWithRange:range inSection:section]];
+        } completion:nil];
     }
 }
 
@@ -165,19 +188,25 @@
     NSMutableArray *tempItems = [[self itemsForSection:section] mutableCopy];
     [tempItems removeObjectsAtIndexes:indexes];
     
-    if (self.isSectioned) {
-        [self.items replaceObjectAtIndex:section withObject:[NSArray arrayWithArray:tempItems]];
-    }
-    else {
-        self.items = tempItems;
-    }
+    void (^UpdateData)() = ^{
+        if (self.isSectioned) {
+            [self.items replaceObjectAtIndex:section withObject:[NSArray arrayWithArray:tempItems]];
+        }
+        else {
+            self.items = tempItems;
+        }
+    };
     
     if (self.tableView) {
+        UpdateData();
         [self.tableView deleteRowsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes inSection:section] withRowAnimation:self.rowAnimation];
     }
     
     if (self.collectionView) {
-        [self.collectionView deleteItemsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes inSection:section]];
+        [self.collectionView performBatchUpdates:^{
+            UpdateData();
+            [self.collectionView deleteItemsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes inSection:section]];
+        } completion:nil];
     }
 }
 
