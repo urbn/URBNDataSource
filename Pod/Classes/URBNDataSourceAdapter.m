@@ -158,13 +158,6 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 }
 
 #pragma mark - Protocol adherance
-- (NSInteger)numberOfItems {
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"Did you forget to override %@?",
-                                           NSStringFromSelector(_cmd)]
-                                 userInfo:nil];
-}
-
 - (NSInteger)numberOfItemsInSection:(NSInteger)section {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"Did you forget to override %@?",

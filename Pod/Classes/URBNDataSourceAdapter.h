@@ -23,11 +23,6 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
 @protocol URBNDataSourceAdapterProtocol <NSObject>
 
 /**
- * Return the number of items in the data source.
- */
-- (NSInteger)numberOfItems;
-
-/**
  * Return the number of items in the section
  */
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
