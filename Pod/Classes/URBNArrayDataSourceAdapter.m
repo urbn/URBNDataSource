@@ -21,6 +21,16 @@
     return self;
 }
 
+#pragma mark - Index Path Helpers
+- (NSArray *)indexPathArrayWithRange:(NSRange)range inSection:(NSInteger)section {
+    return [[self class] indexPathArrayWithRange:range inSection:section];
+}
+
+- (NSArray *)indexPathArrayWithIndexSet:(NSIndexSet *)indexes inSection:(NSInteger)section {
+    return [[self class] indexPathArrayWithIndexSet:indexes inSection:section];
+}
+
+
 #pragma mark - updating items
 - (void)removeAllItems {
     [self.items removeAllObjects];
@@ -52,13 +62,15 @@
     
     if (self.tableView) {
         UpdateData();
-        [self.tableView insertRowsAtIndexPaths:[[self class] indexPathArrayWithRange:NSMakeRange(count, [newItems count]) inSection:section] withRowAnimation:self.rowAnimation];
+        [self.tableView insertRowsAtIndexPaths:[self indexPathArrayWithRange:NSMakeRange(count, [newItems count]) inSection:section] withRowAnimation:self.rowAnimation];
     }
     
     if (self.collectionView) {
+        
         [self.collectionView performBatchUpdates:^{
             UpdateData();
-            [self.collectionView insertItemsAtIndexPaths:[[self class] indexPathArrayWithRange:NSMakeRange(count, [newItems count]) inSection:section]];
+            NSArray *paths = [self indexPathArrayWithRange:NSMakeRange(count, [newItems count]) inSection:section];
+            [self.collectionView insertItemsAtIndexPaths:paths];
         } completion:nil];
     }
 }
@@ -78,13 +90,13 @@
 
     if (self.tableView) {
         UpdateData();
-        [self.tableView insertRowsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes inSection:section] withRowAnimation:self.rowAnimation];
+        [self.tableView insertRowsAtIndexPaths:[self indexPathArrayWithIndexSet:indexes inSection:section] withRowAnimation:self.rowAnimation];
     }
     
     if (self.collectionView) {
         [self.collectionView performBatchUpdates:^{
             UpdateData();
-            [self.collectionView insertItemsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes inSection:section]];
+            [self.collectionView insertItemsAtIndexPaths:[self indexPathArrayWithIndexSet:indexes inSection:section]];
         } completion:nil];
     }
 }
@@ -174,12 +186,12 @@
     
     if (self.tableView) {
         UpdateData();
-        [self.tableView deleteRowsAtIndexPaths:[[self class] indexPathArrayWithRange:range inSection:section] withRowAnimation:self.rowAnimation];
+        [self.tableView deleteRowsAtIndexPaths:[self indexPathArrayWithRange:range inSection:section] withRowAnimation:self.rowAnimation];
     }
     
     if (self.collectionView) {
         [self.collectionView performBatchUpdates:^{
-            [self.collectionView deleteItemsAtIndexPaths:[[self class] indexPathArrayWithRange:range inSection:section]];
+            [self.collectionView deleteItemsAtIndexPaths:[self indexPathArrayWithRange:range inSection:section]];
         } completion:nil];
     }
 }
@@ -199,13 +211,13 @@
     
     if (self.tableView) {
         UpdateData();
-        [self.tableView deleteRowsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes inSection:section] withRowAnimation:self.rowAnimation];
+        [self.tableView deleteRowsAtIndexPaths:[self indexPathArrayWithIndexSet:indexes inSection:section] withRowAnimation:self.rowAnimation];
     }
     
     if (self.collectionView) {
         [self.collectionView performBatchUpdates:^{
             UpdateData();
-            [self.collectionView deleteItemsAtIndexPaths:[[self class] indexPathArrayWithIndexSet:indexes inSection:section]];
+            [self.collectionView deleteItemsAtIndexPaths:[self indexPathArrayWithIndexSet:indexes inSection:section]];
         } completion:nil];
     }
 }

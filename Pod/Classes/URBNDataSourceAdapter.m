@@ -201,7 +201,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 + (NSArray *)indexPathArrayWithRange:(NSRange)range inSection:(NSInteger)section {
     NSMutableArray *ret = [NSMutableArray array];
     for( NSInteger i = range.location; i < NSMaxRange(range); i++) {
-        [ret addObject:[NSIndexPath indexPathForRow:(NSInteger)i inSection:0]];
+        [ret addObject:[NSIndexPath indexPathForRow:(NSInteger)i inSection:section]];
     }
     
     return ret;
