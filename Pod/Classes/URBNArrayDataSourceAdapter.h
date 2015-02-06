@@ -92,4 +92,14 @@
  */
 - (void)removeAllItems;
 
+/**
+ *  Returns an array of index paths with item set to values in the range param and section set to section param.
+ */
+- (NSArray *)indexPathArrayWithRange:(NSRange)range inSection:(NSInteger)section;
+
+/**
+ *  Returns an array of index paths with item set to the indexes in the indexes param and section set to section param.
+ */
+- (NSArray *)indexPathArrayWithIndexSet:(NSIndexSet *)indexes inSection:(NSInteger)section;
+
 @end
