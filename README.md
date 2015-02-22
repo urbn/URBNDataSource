@@ -4,7 +4,7 @@
 [![Platform](https://img.shields.io/cocoapods/p/URBNDataSource.svg?style=flat)](http://cocoadocs.org/docsets/URBNDataSource)
 
 # URBNDataSource
-URBNDataSource is a generic table/collection data source, useful when your data is an array of objects.  If this datasource's `tableView` or `collectionView` property is set to your tableview or collection view, the data source will perform insert/reload/delete calls when the data changes.  URBNDataSource can be used in `tableViews` or `collectionViews` defined in Nibs, Storyboards or programmatically.
+URBNDataSource is a generic table/collection data source, useful when your data is an array of objects.  If this datasource's `tableView` or `collectionView` property is set to your tableview or collection view, the data source will perform insert/reload/delete calls when the data changes.  URBNDataSource can be used in `tableViews` or `collectionViews` defined in Nibs, Storyboards or code.
 
 ## Usage
 The URBNDataSource may be individually imported on an as needed basis. Add to your class in following fashion: ```#import <URBNDataSource/URBNArrayDataSourceAdapter.h>```
@@ -34,7 +34,7 @@ The URBNDataSource may be individually imported on an as needed basis. Add to yo
 * __(NSArray *)indexPathArrayWithIndexSet:(NSIndexSet *)indexes inSection:(NSInteger)section:__ Returns an array of index paths with item set to the indexes in the indexes param and section set to section param.
 
 ##Sample Project
-The sample project demonstrates how to use URBNDataSource with `tableViews` or `collectionViews` in Nibs, Storyboards and programmatically.
+The sample project demonstrates how to use URBNDataSource with `tableViews` or `collectionViews` in Nibs, Storyboards and code.
 
 ## Requirements
 URBNDataSource has been tested on iOS 7 and up. Though it may work on lower deployment targets. ARC is required.
