@@ -20,12 +20,13 @@
 @implementation URBNAccordionDataSourceAdapter
 
 - (instancetype)initWithItems:(NSArray *)items {
-    return [self initWithSections:nil andItems:items];
+    return [self initWithSectionObjects:nil andItems:items];
 }
 
-- (instancetype)initWithSections:(NSArray *)sections andItems:(NSArray *)items {
+- (instancetype)initWithSectionObjects:(NSArray *)sections andItems:(NSArray *)items {
     self = [super initWithItems:items];
     if (self) {
+        NSAssert(sections, @"You need sections for an accordion. Stop being a jerk.");
         self.sections = [NSMutableArray arrayWithArray:sections];
         self.items = [NSMutableArray arrayWithArray:items];
 
@@ -38,7 +39,7 @@
 }
 
 - (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock {
-    NSAssert(kind == URBNSupplementaryViewTypeHeader, @"You should not be registering a header for accordion views! Use the right method. See registerAccordionHeaderViewClass:");
+    NSAssert(kind == URBNSupplementaryViewTypeHeader, @"RTFM! You should not be registering a header for accordion views! Use the right method. See registerAccordionHeaderViewClass:");
     if (kind == URBNSupplementaryViewTypeHeader) {
         return;
     }
@@ -124,11 +125,11 @@
 
 #pragma mark - item access
 - (NSInteger)numberOfSections {
-    return [self isSectioned] ? [self allItems].count : 1;
+    return self.sections.count;
 }
 
 - (NSInteger)numberOfItemsInSection:(NSInteger)section {
-    if ([self.expandedSections containsIndex:section]) {
+    if ([self.expandedSections containsIndex:section] || [self.sectionsToKeepOpen containsIndex:section]) {
         return [self itemsForSection:section].count;
     }
 

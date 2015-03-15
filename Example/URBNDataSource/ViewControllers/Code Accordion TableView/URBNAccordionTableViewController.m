@@ -96,7 +96,7 @@
         [items addObject:@[@"Item 0", @"Item 1", @"Item 2", @"Item 3", @"Item 4"]];
     }
 
-    self.adapter = [[URBNAccordionDataSourceAdapter alloc] initWithSections:sections andItems:items];
+    self.adapter = [[URBNAccordionDataSourceAdapter alloc] initWithSectionObjects:sections andItems:items];
     self.adapter.fallbackDataSource = self;
     self.adapter.tableView = self.tableView;
     
@@ -115,6 +115,8 @@
         };
     }];
 
+    self.adapter.sectionsToKeepOpen = [NSIndexSet indexSetWithIndex:0];
+    
     self.tableView.delegate = self.adapter;
     self.tableView.dataSource = self.adapter;
 }
