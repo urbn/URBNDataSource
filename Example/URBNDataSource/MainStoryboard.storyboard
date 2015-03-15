@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="lR3-u2-hJp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="lR3-u2-hJp">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <scenes>
         <!--Root View Controller-->
@@ -48,6 +48,23 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <segue destination="iC9-fZ-uC0" kind="show" id="Dqp-Aw-LfW"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="KH6-RG-NMm" style="IBUITableViewCellStyleDefault" id="o7T-i1-GWS">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="o7T-i1-GWS" id="gig-a6-cHn">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Accordion Table" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="KH6-RG-NMm">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="2ll-N1-rdu" kind="show" id="DaL-RH-MeK"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -126,7 +143,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x01-aQ-ev4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2384" y="-1073"/>
+            <point key="canvasLocation" x="1872" y="-1510"/>
         </scene>
         <!--Collection View-->
         <scene sceneID="ErR-4E-OvP">
@@ -158,7 +175,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IKy-Kk-UsH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2368" y="-358"/>
+            <point key="canvasLocation" x="2568" y="-1054"/>
         </scene>
         <!--SB Examples-->
         <scene sceneID="Lov-8I-XOK">
@@ -260,7 +277,34 @@
                     </connections>
                 </customObject>
             </objects>
-            <point key="canvasLocation" x="2368" y="298"/>
+            <point key="canvasLocation" x="2384" y="474"/>
+        </scene>
+        <!--Accordion Table View-->
+        <scene sceneID="Edb-PL-ecK">
+            <objects>
+                <tableViewController id="2ll-N1-rdu" customClass="URBNAccordionTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="44" sectionFooterHeight="1" id="Jzm-3J-AUN">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="eNT-Me-SVK">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eNT-Me-SVK" id="lsF-0M-6QB">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="2ll-N1-rdu" id="IN8-sj-JMx"/>
+                            <outlet property="delegate" destination="2ll-N1-rdu" id="vPD-ng-kuV"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Accordion Table View" id="KYA-kr-puI"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="r7o-g3-43Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2490" y="-324"/>
         </scene>
         <!--SB Examples-->
         <scene sceneID="AhB-Cl-eYV">
@@ -392,7 +436,7 @@
                     </connections>
                 </customObject>
             </objects>
-            <point key="canvasLocation" x="2368" y="951"/>
+            <point key="canvasLocation" x="1684" y="555"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="n5d-IP-Zbr">

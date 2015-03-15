@@ -50,9 +50,6 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
  */
 - (NSIndexPath *)indexPathForItem:(id)item;
 
-- (URBNCellConfigureBlock)cellConfigurationBlockForIdentifier:(NSString *)identifier;
-- (NSString *)identifierForItemAtIndexPath:(NSIndexPath *)indexPath;
-
 @end
 
 
@@ -100,6 +97,8 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
  */
 - (void)registerCellClass:(Class)cellClass withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock;
 
+- (URBNCellConfigureBlock)cellConfigurationBlockForIdentifier:(NSString *)identifier;
+
 #pragma mark - Supplimentary Views
 /**
  * Supplimentary View configuration block, called for each supplementary view to display.
@@ -114,6 +113,10 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
 - (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock;
 
 - (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock;
+
+- (NSString *)supplementaryIdentifierForType:(URBNSupplementaryViewType)type atIndexPath:(NSIndexPath *)indexPath;
+
+- (NSString *)identifierForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 #pragma mark - Advanced configuration
 /**
