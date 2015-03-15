@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		458B18511AB5074600B5169E /* URBNAccordionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458B18501AB5074600B5169E /* URBNAccordionTableViewController.m */; };
+		45ADDCA11AB60A36005E4C21 /* URBNAccordionCollectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 45ADDCA01AB60A36005E4C21 /* URBNAccordionCollectionVC.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -49,6 +50,8 @@
 		3963D55A29A783E72F15CCCE /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		458B184F1AB5074600B5169E /* URBNAccordionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = URBNAccordionTableViewController.h; path = "ViewControllers/Code Accordion TableView/URBNAccordionTableViewController.h"; sourceTree = "<group>"; };
 		458B18501AB5074600B5169E /* URBNAccordionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = URBNAccordionTableViewController.m; path = "ViewControllers/Code Accordion TableView/URBNAccordionTableViewController.m"; sourceTree = "<group>"; };
+		45ADDC9F1AB60A36005E4C21 /* URBNAccordionCollectionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URBNAccordionCollectionVC.h; sourceTree = "<group>"; };
+		45ADDCA01AB60A36005E4C21 /* URBNAccordionCollectionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URBNAccordionCollectionVC.m; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* URBNDataSource.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = URBNDataSource.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -116,6 +119,16 @@
 				458B18501AB5074600B5169E /* URBNAccordionTableViewController.m */,
 			);
 			name = "Code Accordion TableView";
+			sourceTree = "<group>";
+		};
+		45ADDC9E1AB60A36005E4C21 /* Code Accordion CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				45ADDC9F1AB60A36005E4C21 /* URBNAccordionCollectionVC.h */,
+				45ADDCA01AB60A36005E4C21 /* URBNAccordionCollectionVC.m */,
+			);
+			name = "Code Accordion CollectionView";
+			path = "ViewControllers/Code Accordion CollectionView";
 			sourceTree = "<group>";
 		};
 		6003F581195388D10070C39A = {
@@ -239,9 +252,10 @@
 			children = (
 				D849C6C21A1A7B0F00E140DA /* Prototype CollectionView */,
 				D849C6BE1A1A5CDD00E140DA /* Prototype TableView */,
-				D86D97EB1A13E9330054EEE2 /* Code CollectionView */,
 				D86D97EE1A13E9330054EEE2 /* Code TableView */,
+				D86D97EB1A13E9330054EEE2 /* Code CollectionView */,
 				458B18521AB5076100B5169E /* Code Accordion TableView */,
+				45ADDC9E1AB60A36005E4C21 /* Code Accordion CollectionView */,
 			);
 			name = Examples;
 			sourceTree = "<group>";
@@ -439,6 +453,7 @@
 				D849C6C11A1A5D0F00E140DA /* URBNProtoTableViewController.m in Sources */,
 				D849C6C51A1A7B3100E140DA /* URBNProtoCollectionViewController.m in Sources */,
 				D86D97F21A13E9330054EEE2 /* URBNCodeTableViewController.m in Sources */,
+				45ADDCA11AB60A36005E4C21 /* URBNAccordionCollectionVC.m in Sources */,
 				6003F59E195388D20070C39A /* URBNAppDelegate.m in Sources */,
 				458B18511AB5074600B5169E /* URBNAccordionTableViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,

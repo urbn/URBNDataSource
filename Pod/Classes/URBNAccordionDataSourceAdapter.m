@@ -39,7 +39,7 @@
 }
 
 - (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock {
-    NSAssert(kind == URBNSupplementaryViewTypeHeader, @"RTFM! You should not be registering a header for accordion views! Use the right method. See registerAccordionHeaderViewClass:");
+    NSAssert(kind != URBNSupplementaryViewTypeHeader, @"RTFM! You should not be registering a header for accordion views! Use the right method. See registerAccordionHeaderViewClass:");
     if (kind == URBNSupplementaryViewTypeHeader) {
         return;
     }
@@ -85,6 +85,33 @@
     }
 }
 
+- (void)toggleSection:(NSInteger)section {
+    if ([self.sectionsToKeepOpen containsIndex:section]) {
+        return;
+    }
+    
+    NSIndexSet *removedIndices = [NSIndexSet indexSet];
+    if ([self.expandedSections containsIndex:section]) {
+        [self.expandedSections removeIndex:section];
+    }
+    else {
+        if (!self.allowMultipleExpandedSections) {
+            removedIndices = [self.expandedSections copy];
+            [self.expandedSections removeAllIndexes];
+        }
+        [self.expandedSections addIndex:section];
+    }
+    
+    NSMutableIndexSet *indicesToReload = [NSMutableIndexSet indexSetWithIndex:section];
+    [indicesToReload addIndexes:removedIndices];
+    if (self.tableView) {
+        [self.tableView reloadSections:indicesToReload withRowAnimation:self.rowAnimation];
+    }
+    else if (self.collectionView) {
+        [self.collectionView reloadSections:indicesToReload];
+    }
+}
+
 #pragma mark - UITableViewDataSource
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
@@ -99,28 +126,37 @@
     URBNAccordionHeaderViewConfigureBlock configBlock = self.headerConfigBlocks[identifier];
     if (configBlock) {
         id sectionObj = self.sections.count > section ? self.sections[section] : nil;
-        configBlock(view, sectionObj, section, [self.expandedSections containsIndex:section]);
+        BOOL expanded = [self.expandedSections containsIndex:indexPath.section] | [self.sectionsToKeepOpen containsIndex:indexPath.section];
+        configBlock(view, sectionObj, indexPath.section, expanded);
     }
     
     return view;
 }
 
-- (void)toggleSection:(NSInteger)section {
-    NSIndexSet *removedIndices = [NSIndexSet indexSet];
-    if ([self.expandedSections containsIndex:section]) {
-        [self.expandedSections removeIndex:section];
+#pragma mark - UICollectionViewDataSource
+- (UICollectionReusableView *)collectionView:(UICollectionView *)cv viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    URBNSupplementaryViewType normalizedType = ([kind isEqualToString:UICollectionElementKindSectionFooter] ? URBNSupplementaryViewTypeFooter : URBNSupplementaryViewTypeHeader);
+    
+    if (normalizedType == URBNSupplementaryViewTypeFooter) {
+        return [super collectionView:cv viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
     }
-    else {
-        if (!self.allowMultipleExpandedSections) {
-            removedIndices = [self.expandedSections copy];
-            [self.expandedSections removeAllIndexes];
-        }
-        [self.expandedSections addIndex:section];
+    
+    NSString *identifier = [self supplementaryIdentifierForType:URBNSupplementaryViewTypeHeader atIndexPath:indexPath];
+    identifier = identifier?:[[self.headerConfigBlocks allKeys] firstObject];
+    if (identifier == nil) {
+        return nil;
     }
+    
+    UICollectionReusableView* view = (id)[self.collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:identifier forIndexPath:indexPath];
 
-    NSMutableIndexSet *indicesToReload = [NSMutableIndexSet indexSetWithIndex:section];
-    [indicesToReload addIndexes:removedIndices];
-    [self.tableView reloadSections:indicesToReload withRowAnimation:self.rowAnimation];
+    URBNAccordionHeaderViewConfigureBlock configBlock = self.headerConfigBlocks[identifier];
+    if (configBlock) {
+        id sectionObj = self.sections.count > indexPath.section ? self.sections[indexPath.section] : nil;
+        BOOL expanded = [self.expandedSections containsIndex:indexPath.section] | [self.sectionsToKeepOpen containsIndex:indexPath.section];
+        configBlock(view, sectionObj, indexPath.section, expanded);
+    }
+    
+    return view;
 }
 
 #pragma mark - item access
