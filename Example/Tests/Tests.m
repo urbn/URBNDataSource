@@ -8,6 +8,7 @@
 
 @import XCTest;
 #import <URBNDataSource/URBNArrayDataSourceAdapter.h>
+#import <URBNDataSource/URBNAccordionDataSourceAdapter.h>
 
 @interface BaseTests : XCTestCase @end
 @implementation BaseTests
@@ -51,6 +52,12 @@
     
     NSArray *itemsBeingAdded = @[@0,@1,@2,@3];
     XCTAssertNoThrow([ds appendItems:itemsBeingAdded inSection:0]);
+}
+
+- (void)testAccordionNilOrEmptySectionsArrayAssert {
+    XCTAssertThrows([[URBNAccordionDataSourceAdapter alloc] initWithSectionObjects:nil andItems:nil]);
+    XCTAssertThrows([[URBNAccordionDataSourceAdapter alloc] initWithItems:nil]);
+    XCTAssertThrows([[URBNAccordionDataSourceAdapter alloc] initWithSectionObjects:@[] andItems:nil]);
 }
 
 @end
