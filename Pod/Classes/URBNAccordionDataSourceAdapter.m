@@ -164,6 +164,16 @@
 
 #pragma mark - URBNArrayDataSourceOverrides
 #pragma mark - updating items
+- (void)replaceItemsInSection:(NSInteger)section withItems:(NSArray *)newItems {
+    newItems = newItems?:@[];
+    if ([self sectionIsOpen:section]) {
+        [super replaceItemsInSection:section withItems:newItems];
+    }
+    else {
+        [self.items replaceObjectAtIndex:section withObject:[newItems copy]];
+    }
+}
+
 - (void)appendItems:(NSArray *)newItems inSection:(NSInteger)section {
     if ([self sectionIsOpen:section]) {
         [super appendItems:newItems inSection:section];
