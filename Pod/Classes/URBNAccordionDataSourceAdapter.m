@@ -113,6 +113,10 @@
     }
 }
 
+- (BOOL)sectionIsOpen:(NSInteger)section {
+    return [self.sectionsToKeepOpen containsIndex:section] || [self.expandedSections containsIndex:section];
+}
+
 #pragma mark - UITableViewDataSource
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
@@ -127,8 +131,7 @@
     URBNAccordionHeaderViewConfigureBlock configBlock = self.headerConfigBlocks[identifier];
     if (configBlock) {
         id sectionObj = self.sections.count > section ? self.sections[section] : nil;
-        BOOL expanded = [self.expandedSections containsIndex:indexPath.section] | [self.sectionsToKeepOpen containsIndex:indexPath.section];
-        configBlock(view, sectionObj, indexPath.section, expanded);
+        configBlock(view, sectionObj, indexPath.section, [self sectionIsOpen:indexPath.section]);
     }
     
     return view;
@@ -153,24 +156,119 @@
     URBNAccordionHeaderViewConfigureBlock configBlock = self.headerConfigBlocks[identifier];
     if (configBlock) {
         id sectionObj = self.sections.count > indexPath.section ? self.sections[indexPath.section] : nil;
-        BOOL expanded = [self.expandedSections containsIndex:indexPath.section] | [self.sectionsToKeepOpen containsIndex:indexPath.section];
-        configBlock(view, sectionObj, indexPath.section, expanded);
+        configBlock(view, sectionObj, indexPath.section, [self sectionIsOpen:indexPath.section]);
     }
     
     return view;
 }
 
+#pragma mark - URBNArrayDataSourceOverrides
+#pragma mark - updating items
+- (void)appendItems:(NSArray *)newItems inSection:(NSInteger)section {
+    if ([self sectionIsOpen:section]) {
+        [super appendItems:newItems inSection:section];
+    }
+    else {
+        NSMutableArray *tempItems = [[self itemsForSection:section] mutableCopy];
+        [tempItems addObjectsFromArray:newItems];
+        [self.items replaceObjectAtIndex:section withObject:tempItems];
+    }
+}
+
+- (void)insertItems:(NSArray *)newItems atIndexes:(NSIndexSet *)indexes inSection:(NSInteger)section {
+    if ([self sectionIsOpen:section]) {
+        [super insertItems:newItems atIndexes:indexes inSection:section];
+    }
+    else {
+        NSMutableArray *tempItems = [[self itemsForSection:section] mutableCopy];
+        [tempItems insertObjects:newItems atIndexes:indexes];
+        [self.items replaceObjectAtIndex:section withObject:[NSArray arrayWithArray:tempItems]];
+    }
+}
+
+- (void)replaceItemAtIndexPath:(NSIndexPath *)indexPath withItem:(id)item {
+    if ([self sectionIsOpen:indexPath.section]) {
+        [super replaceItemAtIndexPath:indexPath withItem:item];
+    }
+    else {
+        NSMutableArray *tempItems = [[self itemsForSection:indexPath.section] mutableCopy];
+        [tempItems replaceObjectAtIndex:indexPath.row withObject:item];
+        [self.items replaceObjectAtIndex:indexPath.section withObject:[NSArray arrayWithArray:tempItems]];
+    }
+}
+
+- (void)moveItemAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath {
+    BOOL bothSectionsOpen = [self sectionIsOpen:indexPath.section] && [self sectionIsOpen:newIndexPath.section];
+    NSAssert(bothSectionsOpen, @"At the moment both sections need to be open in order to move an item to and fro. Don't like that, raise an issue.");
+    if (bothSectionsOpen) {
+        [super moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
+    }
+}
+
+- (void)removeItemsInRange:(NSRange)range inSection:(NSInteger)section {
+    if ([self sectionIsOpen:section]) {
+        [super removeItemsInRange:range inSection:section];
+    }
+    else {
+        NSMutableArray *tempItems = [[self itemsForSection:section] mutableCopy];
+        if (range.location >= tempItems.count) {
+            return;
+        }
+        else if (range.location + range.length >= tempItems.count) {
+            range = NSMakeRange(range.location, tempItems.count - range.location);
+        }
+        
+        [tempItems removeObjectsInRange:range];
+        [self.items replaceObjectAtIndex:section withObject:[NSArray arrayWithArray:tempItems]];
+    }
+}
+
+- (void)removeItemsAtIndexes:(NSIndexSet *)indexes inSection:(NSInteger)section {
+    if ([self sectionIsOpen:section]) {
+        [super removeItemsAtIndexes:indexes inSection:section];
+    }
+    else {
+        NSMutableArray *tempItems = [[self itemsForSection:section] mutableCopy];
+        [tempItems removeObjectsAtIndexes:indexes];
+        [self.items replaceObjectAtIndex:section withObject:[NSArray arrayWithArray:tempItems]];
+    }
+}
+
+- (void)removeItemAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self sectionIsOpen:indexPath.section]) {
+        [super removeItemAtIndexPath:indexPath];
+    }
+    else {
+        NSMutableArray *tempItems = [[self itemsForSection:indexPath.section] mutableCopy];
+        [tempItems removeObjectAtIndex:indexPath.row];
+        [self.items replaceObjectAtIndex:indexPath.section withObject:[NSArray arrayWithArray:tempItems]];
+    }
+}
+
 #pragma mark - item access
+- (BOOL)isSectioned {
+    return YES;
+}
+
 - (NSInteger)numberOfSections {
     return self.sections.count;
 }
 
 - (NSInteger)numberOfItemsInSection:(NSInteger)section {
-    if ([self.expandedSections containsIndex:section] || [self.sectionsToKeepOpen containsIndex:section]) {
+    if ([self sectionIsOpen:section]) {
         return [self itemsForSection:section].count;
     }
 
     return 0;
+}
+
+- (NSArray *)itemsForSection:(NSInteger)section {
+    NSArray *items = @[];
+    if (section < self.items.count) {
+        items = [self.items[section] isKindOfClass:[NSArray class]] ? self.items[section] : @[self.items[section]];
+    }
+
+    return items;
 }
 
 @end
