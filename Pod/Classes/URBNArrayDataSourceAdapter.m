@@ -47,7 +47,8 @@
 }
 
 - (void)replaceItemsInSection:(NSInteger)section withItems:(NSArray *)newItems {
-    if (self.isSectioned) {
+    newItems = newItems?:@[];
+    if ([self isSectioned]) {
         [self.items replaceObjectAtIndex:section withObject:[newItems copy]];
     }
     else {
@@ -61,14 +62,13 @@
     if (self.collectionView) {
         [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:section]];
     }
-    
 }
 
 - (void)appendItems:(NSArray *)newItems inSection:(NSInteger)section {
     NSInteger count = [self numberOfItemsInSection:section];
     
     void (^UpdateData)() = ^{
-        if (self.isSectioned) {
+        if ([self isSectioned]) {
             NSMutableArray *tempItems = [[self itemsForSection:section] mutableCopy];
             [tempItems addObjectsFromArray:newItems];
             [self.items replaceObjectAtIndex:section withObject:tempItems];
@@ -98,7 +98,7 @@
     [tempItems insertObjects:newItems atIndexes:indexes];
     
     void (^UpdateData)() = ^{
-        if (self.isSectioned) {
+        if ([self isSectioned]) {
             [self.items replaceObjectAtIndex:section withObject:[NSArray arrayWithArray:tempItems]];
         }
         else {
@@ -123,7 +123,7 @@
     NSMutableArray *tempItems = [[self itemsForSection:indexPath.section] mutableCopy];
     [tempItems replaceObjectAtIndex:indexPath.row withObject:item];
     
-    if (self.isSectioned) {
+    if ([self isSectioned]) {
         [self.items replaceObjectAtIndex:indexPath.section withObject:[NSArray arrayWithArray:tempItems]];
     }
     else {
@@ -143,7 +143,7 @@
     id item = [self itemAtIndexPath:indexPath];
     
     void (^UpdateData)() = ^{
-        if (self.isSectioned) {
+        if ([self isSectioned]) {
             NSMutableArray *tempItems = [[self itemsForSection:indexPath.section] mutableCopy];
             [tempItems removeObjectAtIndex:indexPath.row];
             
@@ -194,7 +194,7 @@
     [tempItems removeObjectsInRange:range];
     
     void (^UpdateData)() = ^{
-        if (self.isSectioned) {
+        if ([self isSectioned]) {
             [self.items replaceObjectAtIndex:section withObject:[NSArray arrayWithArray:tempItems]];
         }
         else {
@@ -219,7 +219,7 @@
     [tempItems removeObjectsAtIndexes:indexes];
     
     void (^UpdateData)() = ^{
-        if (self.isSectioned) {
+        if ([self isSectioned]) {
             [self.items replaceObjectAtIndex:section withObject:[NSArray arrayWithArray:tempItems]];
         }
         else {
@@ -244,7 +244,7 @@
     NSMutableArray *tempItems = [[self itemsForSection:indexPath.section] mutableCopy];
     [tempItems removeObjectAtIndex:indexPath.row];
     
-    if (self.isSectioned) {
+    if ([self isSectioned]) {
         [self.items replaceObjectAtIndex:indexPath.section withObject:[NSArray arrayWithArray:tempItems]];
     }
     else {
@@ -303,7 +303,7 @@
 - (NSIndexPath *)indexPathForItem:(id)item {
     __block NSInteger section;
     __block NSInteger row;
-    if (self.isSectioned) {
+    if ([self isSectioned]) {
         [self.items enumerateObjectsUsingBlock:^(NSArray *sectionArray, NSUInteger idx, BOOL *stop) {
             row = [sectionArray indexOfObjectIdenticalTo:item];
             if (row != NSNotFound) {
