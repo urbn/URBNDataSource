@@ -17,6 +17,8 @@ The concept of URBNDataSource is to unify the methods of registering / configuri
 
 * __URBNArrayDataSourceAdapter:__  This is a subclass of URBNDataSource that's built around an array (or array of array) of items.   This dataSource will fit for most all of the basic needs.
 
+* __URBNAccordionDataSourceAdapter:__  This is a subclass of URBNArrayDataSource that's built around an array of arrays of items and an array of sections. This adds support for accordion style table views and collection views.
+
 
 ### Registering Cells
 
