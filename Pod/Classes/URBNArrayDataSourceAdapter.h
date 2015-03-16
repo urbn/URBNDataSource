@@ -50,6 +50,14 @@
  */
 - (void)replaceItems:(NSArray *)newItems;
 
+/**
+ *  Replace all items in a section.
+ *
+ *  @param section  The section of the original items
+ *  @param items    The new items
+ */
+- (void)replaceItemsInSection:(NSInteger)section withItems:(NSArray *)newItems;
+
 /*
  * Replace an item.
  *

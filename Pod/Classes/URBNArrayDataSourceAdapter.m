@@ -46,6 +46,24 @@
     [self.collectionView reloadData];
 }
 
+- (void)replaceItemsInSection:(NSInteger)section withItems:(NSArray *)newItems {
+    if (self.isSectioned) {
+        [self.items replaceObjectAtIndex:section withObject:[newItems copy]];
+    }
+    else {
+        self.items = [newItems mutableCopy];
+    }
+    
+    if (self.tableView) {
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:self.rowAnimation];
+    }
+    
+    if (self.collectionView) {
+        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:section]];
+    }
+    
+}
+
 - (void)appendItems:(NSArray *)newItems inSection:(NSInteger)section {
     NSInteger count = [self numberOfItemsInSection:section];
     
