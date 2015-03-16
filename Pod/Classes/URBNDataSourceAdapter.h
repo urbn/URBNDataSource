@@ -50,9 +50,6 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
  */
 - (NSIndexPath *)indexPathForItem:(id)item;
 
-- (URBNCellConfigureBlock)cellConfigurationBlockForIdentifier:(NSString *)identifier;
-- (NSString *)identifierForItemAtIndexPath:(NSIndexPath *)indexPath;
-
 @end
 
 
@@ -90,7 +87,7 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
 
 /**
  * Provide a configuration block, called for each cell with the object to display in that cell.
- * NSStringFromClass(cellClass) will be used for the identifier and the nib name
+ * NSStringFromClass(cellClass) will be used for the identifier and the nib name if @identifier is nil
  * This must be called after the tableview/collection view is set or it will be the callers responsibility to call
  * "register[Class|Nib]:forCellReuseIdentifier:" on the tableview or collectionview.
  *
@@ -100,20 +97,35 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
  */
 - (void)registerCellClass:(Class)cellClass withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock;
 
+- (URBNCellConfigureBlock)cellConfigurationBlockForIdentifier:(NSString *)identifier;
+
 #pragma mark - Supplimentary Views
 /**
- * Supplimentary View configuration block, called for each supplementary view to display.
- * NSStringFromClass(viewClass) will be used for the kind and the nib name
- * This must be called after the collection view is set or it will be the callers responsibility to call
- * "register[Class|Nib]:forSupplementaryViewOfKind:" on the tableview ro collectionview.
+ *  This is a convenience method for the `-registerSupplementaryViewClass:ofKind:withIdentifier:`.   This method will use the
+ *  @viewClass as the identifier
  *
- *  @param viewClass          The supplementary view class to configure
- *  @param ofKind             OPTIONAL: The supplementary view kind (UICollectionElementKindSectionHeader or UICollectionElementKindSectionFooter). Defaults to class name.
- *  @param configurationBlock The block that configures instances of the class
+ *  @param viewClass            The supplementary view class to configure
+ *  @param ofKind               The supplementary view kind (UICollectionElementKindSectionHeader or UICollectionElementKindSectionFooter).
+ *  @param configurationBlock   The block that configures instances of the class
  */
 - (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock;
 
+/**
+ * Provide a configuration block, called for each supplementary view to display.
+ * NSStringFromClass(cellClass) will be used for the identifier and the nib name
+ * This must be called after the tableview/collection view is set or it will be the callers responsibility to call
+ * "register[Class|Nib]:forSupplementaryViewOfKind:" on the tableview ro collectionview.
+ *
+ *  @param viewClass                The supplementary view class to configure
+ *  @param ofKind                   The supplementary view kind (UICollectionElementKindSectionHeader or UICollectionElementKindSectionFooter).
+ *  @param identifier (optional)    The reuseIdentifier to be used for this cell.  If nil the @cellClass will be used.
+ *  @param configurationBlock       The block that configures instances of the class
+ */
 - (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock;
+
+- (NSString *)supplementaryIdentifierForType:(URBNSupplementaryViewType)type atIndexPath:(NSIndexPath *)indexPath;
+
+- (NSString *)identifierForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 #pragma mark - Advanced configuration
 /**

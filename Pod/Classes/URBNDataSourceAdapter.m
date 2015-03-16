@@ -127,9 +127,9 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
     return nil;
 }
 
-- (NSString *)supplementaryIdentifierForKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+- (NSString *)supplementaryIdentifierForType:(URBNSupplementaryViewType)type atIndexPath:(NSIndexPath *)indexPath {
+    NSString *kind = [[self class] normalizedKindForSupplementaryType:type withView:(self.collectionView?:self.tableView)];
     NSString *identifier = nil;
-    
     if (self.supplementaryViewIdentifierBlock) {
         identifier = self.supplementaryViewIdentifierBlock(kind, indexPath);
     }
@@ -291,7 +291,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
-    NSString *identifier = [self supplementaryIdentifierForKind:URBNSupplementaryViewKindHeader atIndexPath:indexPath];
+    NSString *identifier = [self supplementaryIdentifierForType:URBNSupplementaryViewTypeHeader atIndexPath:indexPath];
     
     if (identifier == nil) {
         return nil;
@@ -309,7 +309,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
-    NSString *identifier = [self supplementaryIdentifierForKind:URBNSupplementaryViewKindFooter atIndexPath:indexPath];
+    NSString *identifier = [self supplementaryIdentifierForType:URBNSupplementaryViewTypeFooter atIndexPath:indexPath];
     
     if (!identifier) {
         return nil;
@@ -368,7 +368,9 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)cv viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    NSString *identifier = [self supplementaryIdentifierForKind:kind atIndexPath:indexPath];
+    URBNSupplementaryViewType normalizedType = ([kind isEqualToString:UICollectionElementKindSectionFooter] ? URBNSupplementaryViewTypeFooter : URBNSupplementaryViewTypeHeader);
+
+    NSString *identifier = [self supplementaryIdentifierForType:normalizedType atIndexPath:indexPath];
     if (identifier == nil) {
         return nil;
     }
@@ -377,7 +379,6 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
     
     UICollectionReusableView* view = (id)[self.collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:identifier forIndexPath:indexPath];
     if (configBlock) {
-        URBNSupplementaryViewType normalizedType = ([kind isEqualToString:UICollectionElementKindSectionFooter] ? URBNSupplementaryViewTypeFooter : URBNSupplementaryViewTypeHeader);
         configBlock(view, normalizedType, indexPath);
     }
     

@@ -23,6 +23,8 @@
 
 - (NSArray *)allItems;
 
+- (NSArray *)itemsForSection:(NSInteger)section;
+
 /**
  * Add some more items to the end of the items array.
  *
