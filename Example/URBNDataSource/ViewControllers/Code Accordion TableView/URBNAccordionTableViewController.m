@@ -61,7 +61,7 @@
 }
 
 - (void)tapped:(UITapGestureRecognizer *)tap {
-    if (UIGestureRecognizerStateEnded == tap.state) {
+    if (UIGestureRecognizerStateEnded == tap.state && self.tappedBlock) {
         self.tappedBlock();
     }
 }
@@ -108,11 +108,12 @@
     }];
     
     /// Here we're registering a reuseableTableHeaderView for our section headers.  Pretty sweet
+    __weak typeof(self) weakSelf = self;
     [self.adapter registerAccordionHeaderViewClass:[URBNAccordionHeader class] withConfigurationBlock:^(URBNAccordionHeader *view, id object, NSInteger section, BOOL expanded) {
         view.catLabel.text = object;
         [view setExpanded:expanded];
         view.tappedBlock = ^() {
-            [self.adapter toggleSection:section];
+            [weakSelf.adapter toggleSection:section];
         };
     }];
 
