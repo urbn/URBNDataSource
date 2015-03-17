@@ -93,6 +93,27 @@
     }
 }
 
+- (void)appendSectionWithItems:(NSArray *)newItems {
+    
+    if ([self isSectioned]) {
+        void (^updateData)() = ^{
+            [self.items addObject:newItems];
+        };
+        
+        if (self.tableView) {
+            updateData();
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:(self.items.count - 1)] withRowAnimation:UITableViewRowAnimationFade];
+        }
+        
+        if (self.collectionView) {
+            [self.collectionView performBatchUpdates:^{
+                updateData();
+                [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:(self.items.count - 1)]];
+            } completion:nil];
+        }
+    }
+}
+
 - (void)insertItems:(NSArray *)newItems atIndexes:(NSIndexSet *)indexes inSection:(NSInteger)section {
     NSMutableArray *tempItems = [[self itemsForSection:section] mutableCopy];
     [tempItems insertObjects:newItems atIndexes:indexes];
@@ -257,6 +278,21 @@
     
     if (self.collectionView) {
         [self.collectionView deleteItemsAtIndexPaths:@[indexPath]];
+    }
+}
+
+- (void)removeLastSection {
+    if ([self isSectioned] && (self.items.count > 0)) {
+        [self.items removeLastObject];
+
+        NSIndexSet *deletedSection = [NSIndexSet indexSetWithIndex:self.items.count];
+        if (self.tableView) {
+            [self.tableView deleteSections:deletedSection withRowAnimation:UITableViewRowAnimationFade];
+        }
+        
+        if (self.collectionView) {
+            [self.collectionView deleteSections:deletedSection];
+        }
     }
 }
 
