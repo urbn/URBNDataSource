@@ -10,7 +10,7 @@
 
 @interface URBNAccordionDataSourceAdapter ()
 
-@property (nonatomic, strong) NSMutableArray *sections;
+@property (nonatomic, strong) NSArray *sections;
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) NSMutableIndexSet *expandedSections;
 @property (nonatomic, strong) NSMutableDictionary *headerConfigBlocks;
@@ -28,7 +28,7 @@
     if (self) {
         NSAssert(sections, @"You need sections for an accordion. Stop being a jerk.");
         NSAssert(sections.count > 0, @"Nice try, an empty sections array isn't gonna cut it. GTFO.");
-        self.sections = [NSMutableArray arrayWithArray:sections];
+        self.sections = [sections copy];
         self.items = [NSMutableArray arrayWithArray:items];
 
         self.expandedSections = [NSMutableIndexSet indexSet];
@@ -115,6 +115,22 @@
 
 - (BOOL)sectionIsOpen:(NSInteger)section {
     return [self.sectionsToKeepOpen containsIndex:section] || [self.expandedSections containsIndex:section];
+}
+
+- (void)appendSectionWithItems:(NSArray *)newItems {
+    NSAssert(YES, @"Call appendSectionObject:items:expanded: instead");
+}
+
+- (void)appendSectionObject:(id)sectionObject items:(NSArray *)items {
+    self.sections = [self.sections arrayByAddingObject:sectionObject];
+    [super appendSectionWithItems:items];
+}
+
+- (void)removeLastSection {
+    if (self.sections.count > 0) {
+        self.sections = [self.sections subarrayWithRange:NSMakeRange(0, self.sections.count - 1)];
+    }
+    [super removeLastSection];
 }
 
 #pragma mark - UITableViewDataSource

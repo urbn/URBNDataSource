@@ -12,6 +12,7 @@ typedef void (^URBNAccordionHeaderViewConfigureBlock) (id view, id object, NSInt
 
 @interface URBNAccordionDataSourceAdapter : URBNArrayDataSourceAdapter
 
+@property (nonatomic, strong, readonly) NSArray *sections;
 @property (nonatomic, assign) BOOL allowMultipleExpandedSections;
 @property (nonatomic, strong) NSIndexSet *sectionsToKeepOpen;
 
@@ -58,5 +59,13 @@ typedef void (^URBNAccordionHeaderViewConfigureBlock) (id view, id object, NSInt
  *  @return BOOL        YES/NO depending on the current status of the given section.
  */
 - (BOOL)sectionIsOpen:(NSInteger)section;
+
+/**
+ *  Appends a section to the view.
+ *
+ *  @param sectionObject The section object being added
+ *  @param items         The items being adding to the section
+ */
+- (void)appendSectionObject:(id)sectionObject items:(NSArray *)items;
 
 @end
