@@ -80,6 +80,7 @@
 
 @interface URBNAccordionCollectionVC ()
 @property (nonatomic, strong) URBNAccordionDataSourceAdapter *adapter;
+@property (weak, nonatomic) IBOutlet UIStepper *stepper;
 @end
 
 @implementation URBNAccordionCollectionVC
@@ -91,10 +92,11 @@
     
     NSMutableArray *items = [NSMutableArray array];
     NSMutableArray *sections = [NSMutableArray array];
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < 4; i++) {
         [sections addObject:[NSString stringWithFormat:@"Section %i", i]];
         [items addObject:@[@"Item 0", @"Item 1", @"Item 2", @"Item 3", @"Item 4"]];
     }
+    self.stepper.value = (double)sections.count;
     
     self.adapter = [[URBNAccordionDataSourceAdapter alloc] initWithSectionObjects:sections andItems:items];
     self.adapter.fallbackDataSource = self;
@@ -135,6 +137,15 @@
     }];
     
     self.collectionView.dataSource = self.adapter;
+}
+
+- (IBAction)stepperPressed:(UIStepper *)stepper {
+    if (stepper.value > self.adapter.sections.count) {
+        [self.adapter appendSectionObject:[NSString stringWithFormat:@"Section %lu", (unsigned long)self.adapter.sections.count] items:@[@"Item A", @"Item B", @"Item C", @"Item D", @"Item E"]];
+    }
+    else {
+        [self.adapter removeLastSection];
+    }
 }
 
 @end
