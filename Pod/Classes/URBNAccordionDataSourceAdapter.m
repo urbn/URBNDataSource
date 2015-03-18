@@ -10,7 +10,7 @@
 
 @interface URBNAccordionDataSourceAdapter ()
 
-@property (nonatomic, strong) NSArray *sections;
+@property (nonatomic, strong) NSMutableArray *sections;
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) NSMutableIndexSet *expandedSections;
 @property (nonatomic, strong) NSMutableDictionary *headerConfigBlocks;
@@ -28,7 +28,7 @@
     if (self) {
         NSAssert(sections, @"You need sections for an accordion. Stop being a jerk.");
         NSAssert(sections.count > 0, @"Nice try, an empty sections array isn't gonna cut it. GTFO.");
-        self.sections = [sections copy];
+        self.sections = [NSMutableArray arrayWithArray:sections];
         self.items = [NSMutableArray arrayWithArray:items];
 
         self.expandedSections = [NSMutableIndexSet indexSet];
@@ -118,17 +118,22 @@
 }
 
 - (void)appendSectionWithItems:(NSArray *)newItems {
-    NSAssert(YES, @"Call appendSectionObject:items:expanded: instead");
+    [self appendSectionObject:nil items:newItems];
 }
 
 - (void)appendSectionObject:(id)sectionObject items:(NSArray *)items {
-    self.sections = [self.sections arrayByAddingObject:sectionObject];
-    [super appendSectionWithItems:items];
+    NSAssert(sectionObject, @"A sectionObject must be included when appending a section. Call appendSectionObject:items: instead");
+    [self.sections addObject:sectionObject];
+    [super appendSectionWithItems:[NSArray arrayWithArray:items]];
+}
+
+- (NSArray *)allSections {
+    return [self.sections copy];
 }
 
 - (void)removeLastSection {
     if (self.sections.count > 0) {
-        self.sections = [self.sections subarrayWithRange:NSMakeRange(0, self.sections.count - 1)];
+        [self.sections removeLastObject];
     }
     [super removeLastSection];
 }
