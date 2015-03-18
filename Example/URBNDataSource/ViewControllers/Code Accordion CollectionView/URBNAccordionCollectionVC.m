@@ -140,8 +140,9 @@
 }
 
 - (IBAction)stepperPressed:(UIStepper *)stepper {
-    if (stepper.value > self.adapter.sections.count) {
-        [self.adapter appendSectionObject:[NSString stringWithFormat:@"Section %lu", (unsigned long)self.adapter.sections.count] items:@[@"Item A", @"Item B", @"Item C", @"Item D", @"Item E"]];
+    NSUInteger sectionCount = [self.adapter allSections].count;
+    if (stepper.value > sectionCount) {
+        [self.adapter appendSectionObject:[NSString stringWithFormat:@"Section %lu", (unsigned long)sectionCount] items:@[@"Item A", @"Item B", @"Item C", @"Item D", @"Item E"]];
     }
     else {
         [self.adapter removeLastSection];
