@@ -52,6 +52,14 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
     return self;
 }
 
+#pragma mark - Custom Setter
+- (void)setFallbackDataSource:(id)fallbackDataSource {
+    _fallbackDataSource = fallbackDataSource;
+    id currentDataSource = self.tableView.dataSource;
+    self.tableView.dataSource = nil;
+    self.tableView.dataSource = currentDataSource;
+}
+
 #pragma mark - Registration
 - (void)registerCellClass:(Class)cellClass withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock {
     ASSERT_TRUE(self.tableView || self.collectionView);
