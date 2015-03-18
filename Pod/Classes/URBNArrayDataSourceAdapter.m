@@ -94,23 +94,31 @@
 }
 
 - (void)appendSectionWithItems:(NSArray *)newItems {
+    newItems = newItems ?: @[];
     
-    if ([self isSectioned]) {
-        void (^updateData)() = ^{
-            [self.items addObject:newItems];
-        };
-        
-        if (self.tableView) {
+    __block NSIndexSet *newItemsIndexSet;
+    __weak typeof(self) weakSelf = self;
+    void (^updateData)() = ^{
+        if ([weakSelf isSectioned]) {
+            newItemsIndexSet = [NSIndexSet indexSetWithIndex:(weakSelf.items.count)];
+            [weakSelf.items addObject:newItems];
+        }
+        else {
+            newItemsIndexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(weakSelf.items.count, newItems.count)];
+            [weakSelf.items addObjectsFromArray:newItems];
+        }
+    };
+    
+    if (self.tableView) {
+        updateData();
+        [self.tableView insertSections:newItemsIndexSet withRowAnimation:self.rowAnimation];
+    }
+    
+    if (self.collectionView) {
+        [self.collectionView performBatchUpdates:^{
             updateData();
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:(self.items.count - 1)] withRowAnimation:UITableViewRowAnimationFade];
-        }
-        
-        if (self.collectionView) {
-            [self.collectionView performBatchUpdates:^{
-                updateData();
-                [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:(self.items.count - 1)]];
-            } completion:nil];
-        }
+            [self.collectionView insertSections:newItemsIndexSet];
+        } completion:nil];
     }
 }
 
@@ -282,12 +290,13 @@
 }
 
 - (void)removeLastSection {
+    NSAssert([self isSectioned], @"Don't call removeLastSection if the data isnt sectioned.");
     if ([self isSectioned] && (self.items.count > 0)) {
         [self.items removeLastObject];
 
         NSIndexSet *deletedSection = [NSIndexSet indexSetWithIndex:self.items.count];
         if (self.tableView) {
-            [self.tableView deleteSections:deletedSection withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView deleteSections:deletedSection withRowAnimation:self.rowAnimation];
         }
         
         if (self.collectionView) {
@@ -303,7 +312,7 @@
 }
 
 - (NSArray *)allItems {
-    return self.items;
+    return [self.items copy];
 }
 
 - (NSArray *)itemsForSection:(NSInteger)section {

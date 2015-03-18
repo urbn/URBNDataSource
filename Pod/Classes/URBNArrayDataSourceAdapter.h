@@ -34,7 +34,7 @@
 - (void)appendItems:(NSArray *)newItems inSection:(NSInteger)section;
 
 /**
- * Appends a new section with the new items. If not sectioned, this does nothing.
+ * Appends a new section with the new items.
  *
  *  @param newItems The new items
  */
