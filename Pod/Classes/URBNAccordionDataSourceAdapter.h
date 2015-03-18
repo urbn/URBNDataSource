@@ -59,4 +59,19 @@ typedef void (^URBNAccordionHeaderViewConfigureBlock) (id view, id object, NSInt
  */
 - (BOOL)sectionIsOpen:(NSInteger)section;
 
+/**
+ *  Appends a section to the view.
+ *
+ *  @param sectionObject The section object being added
+ *  @param items         The items being adding to the section
+ */
+- (void)appendSectionObject:(id)sectionObject items:(NSArray *)items;
+
+/**
+ *  Returns an array of all section
+ *
+ *  @return all sections
+ */
+- (NSArray *)allSections;
+
 @end

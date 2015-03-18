@@ -117,6 +117,27 @@
     return [self.sectionsToKeepOpen containsIndex:section] || [self.expandedSections containsIndex:section];
 }
 
+- (void)appendSectionWithItems:(NSArray *)newItems {
+    [self appendSectionObject:nil items:newItems];
+}
+
+- (void)appendSectionObject:(id)sectionObject items:(NSArray *)items {
+    NSAssert(sectionObject, @"A sectionObject must be included when appending a section. Call appendSectionObject:items: instead");
+    [self.sections addObject:sectionObject];
+    [super appendSectionWithItems:[NSArray arrayWithArray:items]];
+}
+
+- (NSArray *)allSections {
+    return [self.sections copy];
+}
+
+- (void)removeLastSection {
+    if (self.sections.count > 0) {
+        [self.sections removeLastObject];
+    }
+    [super removeLastSection];
+}
+
 #pragma mark - UITableViewDataSource
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];

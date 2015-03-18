@@ -93,6 +93,35 @@
     }
 }
 
+- (void)appendSectionWithItems:(NSArray *)newItems {
+    newItems = newItems ?: @[];
+    
+    __block NSIndexSet *newItemsIndexSet;
+    __weak typeof(self) weakSelf = self;
+    void (^updateData)() = ^{
+        if ([weakSelf isSectioned]) {
+            newItemsIndexSet = [NSIndexSet indexSetWithIndex:(weakSelf.items.count)];
+            [weakSelf.items addObject:newItems];
+        }
+        else {
+            newItemsIndexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(weakSelf.items.count, newItems.count)];
+            [weakSelf.items addObjectsFromArray:newItems];
+        }
+    };
+    
+    if (self.tableView) {
+        updateData();
+        [self.tableView insertSections:newItemsIndexSet withRowAnimation:self.rowAnimation];
+    }
+    
+    if (self.collectionView) {
+        [self.collectionView performBatchUpdates:^{
+            updateData();
+            [self.collectionView insertSections:newItemsIndexSet];
+        } completion:nil];
+    }
+}
+
 - (void)insertItems:(NSArray *)newItems atIndexes:(NSIndexSet *)indexes inSection:(NSInteger)section {
     NSMutableArray *tempItems = [[self itemsForSection:section] mutableCopy];
     [tempItems insertObjects:newItems atIndexes:indexes];
@@ -260,6 +289,22 @@
     }
 }
 
+- (void)removeLastSection {
+    NSAssert([self isSectioned], @"Don't call removeLastSection if the data isnt sectioned.");
+    if ([self isSectioned] && (self.items.count > 0)) {
+        [self.items removeLastObject];
+
+        NSIndexSet *deletedSection = [NSIndexSet indexSetWithIndex:self.items.count];
+        if (self.tableView) {
+            [self.tableView deleteSections:deletedSection withRowAnimation:self.rowAnimation];
+        }
+        
+        if (self.collectionView) {
+            [self.collectionView deleteSections:deletedSection];
+        }
+    }
+}
+
 #pragma mark - item access
 - (BOOL)isSectioned {
     id firstItem = [[self allItems] firstObject];
@@ -267,7 +312,7 @@
 }
 
 - (NSArray *)allItems {
-    return self.items;
+    return [self.items copy];
 }
 
 - (NSArray *)itemsForSection:(NSInteger)section {

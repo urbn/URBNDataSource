@@ -34,6 +34,13 @@
 - (void)appendItems:(NSArray *)newItems inSection:(NSInteger)section;
 
 /**
+ * Appends a new section with the new items.
+ *
+ *  @param newItems The new items
+ */
+- (void)appendSectionWithItems:(NSArray *)newItems;
+
+/**
  * Insert some items at the specified indexes.
  * The count of `items` should be equal to the number of `indexes`.
  *
@@ -88,6 +95,11 @@
  *  @param indexPath The indexPath to remove
  */
 - (void)removeItemAtIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ *  Removes the last section. If isSectioned is false, or there are no items, this does nothing
+ */
+- (void)removeLastSection;
 
 /**
  * Move an item to a new indexPath.

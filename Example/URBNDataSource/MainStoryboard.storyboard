@@ -317,7 +317,20 @@
                             <outlet property="delegate" destination="2ll-N1-rdu" id="vPD-ng-kuV"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Accordion Table View" id="KYA-kr-puI"/>
+                    <navigationItem key="navigationItem" title="Accordion Table View" id="KYA-kr-puI">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="6o9-m3-Yl5">
+                            <stepper key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" id="FaS-6H-S64">
+                                <rect key="frame" x="-47" y="-14" width="94" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="stepperPressed:" destination="2ll-N1-rdu" eventType="valueChanged" id="ouM-3l-Akd"/>
+                                </connections>
+                            </stepper>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="stepper" destination="FaS-6H-S64" id="X9w-fw-Elq"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r7o-g3-43Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -343,7 +356,20 @@
                             <outlet property="delegate" destination="0dd-5H-FHB" id="Ypx-De-BiS"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Accordion Collection View" id="5q1-c1-cTq"/>
+                    <navigationItem key="navigationItem" title="Accordion Collection View" id="5q1-c1-cTq">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="kCz-X8-AWg">
+                            <stepper key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" maximumValue="20" id="dRq-04-wza">
+                                <rect key="frame" x="-47" y="-14" width="94" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="stepperPressed:" destination="0dd-5H-FHB" eventType="valueChanged" id="leJ-c6-8ec"/>
+                                </connections>
+                            </stepper>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="stepper" destination="dRq-04-wza" id="Tdb-xR-mD3"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8xy-qR-AoU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
