@@ -15,8 +15,13 @@
 
 #pragma mark - Init
 - (instancetype)initWithItems:(NSArray *)anItems {
+    return ([self initWithItems:anItems andFallbackDataSource:nil]);
+}
+
+- (instancetype)initWithItems:(NSArray *)anitems andFallbackDataSource:(id)fallbackDataSource {
     if ((self = [super init])) {
-        self.items = [NSMutableArray arrayWithArray:anItems];
+        self.items = [NSMutableArray arrayWithArray:anitems];
+        self.fallbackDataSource = fallbackDataSource;
     }
     return self;
 }

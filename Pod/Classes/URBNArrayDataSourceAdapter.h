@@ -11,9 +11,13 @@
 @interface URBNArrayDataSourceAdapter : URBNDataSourceAdapter
 
 /**
- * Create a new array data source by specifying an array of items. Items can be nil.
+ * Create a new array data source by specifying an array of items and a fallback data source;
+ * Items can be nil;
+ * Fallback data source can be nil. But ensures that selectors are properly forwarded
  */
-- (instancetype)initWithItems:(NSArray *)items __attribute__((objc_designated_initializer));
+- (instancetype)initWithItems:(NSArray *)items andFallbackDataSource:(id)fallbackDataSource __attribute__((objc_designated_initializer));
+
+- (instancetype)initWithItems:(NSArray *)items;
 
 /**
  * Using the methods below to manipulate the items
