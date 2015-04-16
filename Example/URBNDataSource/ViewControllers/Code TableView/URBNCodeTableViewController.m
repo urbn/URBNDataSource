@@ -81,6 +81,9 @@
         return cellIdentifiers[(indexPath.item % cellIdentifiers.count)];
     }];
     
+    self.tableView.sectionFooterHeight = 20.0;
+    self.tableView.rowHeight = 60.0;
+
     self.tableView.delegate = self.adapter;
     self.tableView.dataSource = self.adapter;
 }
@@ -115,6 +118,10 @@
     [self.adapter replaceItems:data];
 }
 
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 100.0;
+}
 
 #pragma mark - Fallback Methods
 

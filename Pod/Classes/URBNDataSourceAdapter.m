@@ -281,14 +281,6 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
     return [self numberOfItemsInSection:section];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForHeaderInSection:(NSInteger)section {
-    return tableView.sectionHeaderHeight;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForFooterInSection:(NSInteger)section {
-    return tableView.sectionFooterHeight;
-}
-
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
     NSString *identifier = [self supplementaryIdentifierForType:URBNSupplementaryViewTypeHeader atIndexPath:indexPath];
