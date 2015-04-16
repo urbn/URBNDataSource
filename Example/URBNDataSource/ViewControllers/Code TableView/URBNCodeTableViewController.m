@@ -30,6 +30,7 @@
     self.adapter = [[URBNArrayDataSourceAdapter alloc] initWithItems:items];
     self.adapter.fallbackDataSource = self;
     self.adapter.tableView = self.tableView;
+    self.adapter.autoSizingEnabled = YES;
     
     /// If all of your cell classes are unique, then you can just call regsiter cell with that class.
     /// The identifier will be the className
@@ -82,7 +83,7 @@
     }];
     
     self.tableView.sectionFooterHeight = 20.0;
-    self.tableView.rowHeight = 60.0;
+    self.tableView.rowHeight = 20.f;
 
     self.tableView.delegate = self.adapter;
     self.tableView.dataSource = self.adapter;
