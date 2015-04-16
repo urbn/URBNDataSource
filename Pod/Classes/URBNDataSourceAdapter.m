@@ -32,10 +32,27 @@
 NSString *const URBNSupplementaryViewKindHeader = @"URBNSupplementaryViewKindHeader";
 NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFooter";
 
+/**
+ *  These are our internal objects to wrap up the collectionView dataSource delegate stuff.
+ */
+@interface URBNDataSourceTableViewDataSourceDelegate: NSObject <UITableViewDataSource, UITableViewDelegate>
+@property (nonatomic, weak) URBNDataSourceAdapter *ds;
+@end
+@interface URBNDataSourceCollectioniewDataSourceDelegate: NSObject <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@property (nonatomic, weak) URBNDataSourceAdapter *ds;
+@end
+
 @interface URBNDataSourceAdapter ()
 
 @property (nonatomic, strong) NSMutableDictionary *cellConfigurationBlocks;
 @property (nonatomic, strong) NSMutableDictionary *viewConfigurationBlocks;
+
+@property (nonatomic, strong) NSMutableArray *dataSources;
+@property (nonatomic, strong) NSMutableDictionary *prototypeCells;
+@property (nonatomic, strong) NSMutableDictionary *prototypeHeaders;
+
+- (CGSize)heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (CGSize)heightForSupplementaryViewOfType:(URBNSupplementaryViewType)type atIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -43,13 +60,171 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 
 #pragma mark - init
 - (instancetype)init {
-    if ((self = [super init])) {
+    self = [super init];
+    if (self) {
         self.rowAnimation = UITableViewRowAnimationAutomatic;
         self.cellConfigurationBlocks = [NSMutableDictionary dictionary];
         self.viewConfigurationBlocks = [NSMutableDictionary dictionary];
+        self.dataSources = [NSMutableArray array];
+        self.prototypeCells = [NSMutableDictionary dictionary];
+        self.prototypeHeaders = [NSMutableDictionary dictionary];
+        URBNDataSourceCollectioniewDataSourceDelegate *cd = [URBNDataSourceCollectioniewDataSourceDelegate new];
+        URBNDataSourceTableViewDataSourceDelegate *td = [URBNDataSourceTableViewDataSourceDelegate new];
+        cd.ds = self;
+        td.ds = self;
+        [self.dataSources addObject:cd];
+        [self.dataSources addObject:td];
+    }
+    return self;
+}
+
+#pragma mark - Setters
+- (void)setFallbackDataSource:(id)fallbackDataSource {
+    if (_fallbackDataSource == fallbackDataSource) {
+        return;
+    }
+    _fallbackDataSource = fallbackDataSource;
+    [self.dataSources addObject:fallbackDataSource];
+}
+
+#pragma mark - Forwarding
+- (BOOL)conformsToProtocol:(Protocol *)aProtocol {
+    if ([super conformsToProtocol:aProtocol]) {
+        return YES;
     }
     
-    return self;
+    for (id obj in self.dataSources) {
+        if ([obj conformsToProtocol:aProtocol]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (BOOL)respondsToSelector:(SEL)aSelector {
+    if ([super respondsToSelector:aSelector]) {
+        return YES;
+    }
+    
+    for (id obj in self.dataSources) {
+        if ([obj respondsToSelector:aSelector]) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+- (id)forwardingTargetForSelector:(SEL)aSelector {
+    for (id obj in self.dataSources) {
+        if ([obj respondsToSelector:aSelector]) {
+            return obj;
+        }
+    }
+    return nil;
+}
+
+#pragma mark - Heights
+- (void)cacheAndSaveCellWithNib:(UINib *)nib withIdentifier:(NSString *)identifier {
+    if (self.prototypeCells[identifier]) {
+        return;
+    }
+    
+    self.prototypeCells[identifier] = [[nib instantiateWithOwner:nil options:nil] firstObject];
+}
+
+- (void)cacheAndSaveCellOfClass:(Class)aClass withIdentifier:(NSString *)identifier {
+    if (self.prototypeCells[identifier]) {
+        return;
+    }
+    
+    if (self.tableView) {
+        self.prototypeCells[identifier] = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+    }
+    else {
+        self.prototypeCells[identifier] = [[aClass alloc] initWithFrame:CGRectZero];
+    }
+}
+
+- (CGSize)heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *identifier = [self identifierForItemAtIndexPath:indexPath];
+    id cell = self.prototypeCells[identifier];
+    if (!cell) {
+        if (self.tableView) {
+            cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+        }
+        else {
+            // This is a cell that came from a storyboard or something.   The reason we can't cache this here is because
+            // this will call an infinite loop within itemSize.   We may want to throw some kind of log warning or something to tell the user this
+        }
+        /**
+         *  If we still don't have a cell.   Then we're just going to return rowHeight
+         */
+        if (!cell) {
+            if (self.tableView) {
+                CGFloat height = [self.tableView rowHeight] ?: [self.tableView estimatedRowHeight];
+                return  CGSizeMake(0, height);
+            }
+            else {
+                UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+                if ([flowLayout isKindOfClass:[UICollectionViewFlowLayout class]]) {
+                    CGSize size = CGSizeEqualToSize([flowLayout itemSize], CGSizeZero) ? [flowLayout estimatedItemSize] : [flowLayout itemSize];
+                    if (!CGSizeEqualToSize(size, CGSizeZero)) {
+                        return size;
+                    }
+                }
+
+                // If collectionView doesn't have anything we want, then just return this
+                return [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath].frame.size;
+            }
+        }
+        
+        // Now that we've got a cell, let's cache it.
+        self.prototypeCells[identifier] = cell;
+    }
+    
+    URBNCellConfigureBlock configBlock = [self cellConfigurationBlockForIdentifier:identifier];
+    configBlock(cell, [self itemAtIndexPath:indexPath], indexPath);
+    return [cell systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+}
+
+- (CGSize)heightForSupplementaryViewOfType:(URBNSupplementaryViewType)type atIndexPath:(NSIndexPath *)indexPath {
+    NSString *identifier = [self supplementaryIdentifierForType:type atIndexPath:indexPath];
+    NSString *suppKind = [[self class] normalizedKindForSupplementaryType:type withView:self.collectionView?:self.tableView];
+    id view = self.prototypeHeaders[identifier];
+    if (!view) {
+        if (self.tableView) {
+            view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+        }
+        else {
+            // This is a cell that came from a storyboard or something.   The reason we can't cache this here is because
+            // this will call an infinite loop within itemSize.   We may want to throw some kind of log warning or something to tell the user this
+        }
+        
+        if (!view) {
+            if (self.tableView) {
+                CGFloat height = (type == URBNSupplementaryViewTypeFooter ? [self.tableView sectionFooterHeight] : [self.tableView sectionHeaderHeight]) ?:
+                    (type == URBNSupplementaryViewTypeFooter ? [self.tableView estimatedSectionFooterHeight] : [self.tableView estimatedSectionHeaderHeight]);
+                return CGSizeMake(0, height);
+            }
+            else {
+                UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+                if ([flowLayout isKindOfClass:[UICollectionViewFlowLayout class]]) {
+                    CGSize size = type == URBNSupplementaryViewTypeFooter ? [flowLayout footerReferenceSize] : [flowLayout headerReferenceSize];
+                    if (!CGSizeEqualToSize(size, CGSizeZero)) {
+                        return size;
+                    }
+                }
+                
+                // If collectionView doesn't have anything we want, then just return this
+                return [self.collectionView.collectionViewLayout layoutAttributesForSupplementaryViewOfKind:suppKind atIndexPath:indexPath].frame.size;
+            }
+        }
+    }
+    
+    URBNSupplementaryViewConfigureBlock configBlock = [self viewConfigurationBlockForIdentifier:identifier withKind:suppKind];
+    configBlock(view, type, indexPath);
+    return [view systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
 }
 
 #pragma mark - Registration
@@ -61,10 +236,12 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
     if (nib) {
         [self.tableView registerNib:nib forCellReuseIdentifier:identifier];
         [self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
+        [self cacheAndSaveCellWithNib:nib withIdentifier:identifier];
     }
     else if (cellClass != NULL) {
         [self.tableView registerClass:cellClass forCellReuseIdentifier:identifier];
         [self.collectionView registerClass:cellClass forCellWithReuseIdentifier:identifier];
+        [self cacheAndSaveCellOfClass:cellClass withIdentifier:identifier];
     }
     
     self.cellConfigurationBlocks[identifier] = configurationBlock;
@@ -231,65 +408,32 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
     return nib;
 }
 
-#pragma mark - Forwarding
-- (BOOL)conformsToProtocol:(Protocol *)aProtocol {
-    if ([super conformsToProtocol:aProtocol]) {
-        return YES;
-    }
-    
-    if ([self.fallbackDataSource conformsToProtocol:aProtocol]) {
-        return YES;
-    }
-    
-    return NO;
-}
-
-- (BOOL)respondsToSelector:(SEL)aSelector {
-    if ([super respondsToSelector:aSelector]) {
-        return YES;
-    }
-    
-    if ([self.fallbackDataSource respondsToSelector:aSelector]) {
-        return YES;
-    }
-    
-    return NO;
-}
-
-- (id)forwardingTargetForSelector:(SEL)aSelector {
-    if ([self.fallbackDataSource respondsToSelector:aSelector]) {
-        return self.fallbackDataSource;
-    }
-    
-    return [super forwardingTargetForSelector:aSelector];
-}
-
 @end
 
 
 /**
  *  Here we wrap up the methods that we care about from our collectionView and tableView
  */
-@implementation URBNDataSourceAdapter (UITableView)
+@implementation URBNDataSourceTableViewDataSourceDelegate
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self numberOfSections];
+    return [self.ds numberOfSections];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self numberOfItemsInSection:section];
+    return [self.ds numberOfItemsInSection:section];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
-    NSString *identifier = [self supplementaryIdentifierForType:URBNSupplementaryViewTypeHeader atIndexPath:indexPath];
+    NSString *identifier = [self.ds supplementaryIdentifierForType:URBNSupplementaryViewTypeHeader atIndexPath:indexPath];
     
     if (identifier == nil) {
         return nil;
     }
     
-    URBNSupplementaryViewConfigureBlock configBlock = [self viewConfigurationBlockForIdentifier:identifier withKind:URBNSupplementaryViewKindHeader];
+    URBNSupplementaryViewConfigureBlock configBlock = [self.ds viewConfigurationBlockForIdentifier:identifier withKind:URBNSupplementaryViewKindHeader];
     UITableViewHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
     
     if (configBlock) {
@@ -301,13 +445,13 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
-    NSString *identifier = [self supplementaryIdentifierForType:URBNSupplementaryViewTypeFooter atIndexPath:indexPath];
+    NSString *identifier = [self.ds supplementaryIdentifierForType:URBNSupplementaryViewTypeFooter atIndexPath:indexPath];
     
     if (!identifier) {
         return nil;
     }
     
-    URBNSupplementaryViewConfigureBlock configBlock = [self viewConfigurationBlockForIdentifier:identifier withKind:URBNSupplementaryViewKindFooter];
+    URBNSupplementaryViewConfigureBlock configBlock = [self.ds viewConfigurationBlockForIdentifier:identifier withKind:URBNSupplementaryViewKindFooter];
     UITableViewHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
     
     if (configBlock) {
@@ -318,9 +462,9 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)ip {
-    id item = [self itemAtIndexPath:ip];
-    NSString *identifier = [self identifierForItemAtIndexPath:ip];
-    URBNCellConfigureBlock cellBlock = [self cellConfigurationBlockForIdentifier:identifier];
+    id item = [self.ds itemAtIndexPath:ip];
+    NSString *identifier = [self.ds identifierForItemAtIndexPath:ip];
+    URBNCellConfigureBlock cellBlock = [self.ds cellConfigurationBlockForIdentifier:identifier];
     
     UITableViewCell *cell = [tv dequeueReusableCellWithIdentifier:identifier forIndexPath:ip];
     
@@ -331,24 +475,37 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
     return cell;
 }
 
+#pragma mark - UITableViewDelegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [self.ds heightForRowAtIndexPath:indexPath].height;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return [self.ds heightForSupplementaryViewOfType:URBNSupplementaryViewTypeHeader atIndexPath:[NSIndexPath indexPathForRow:-1 inSection:section]].height;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return [self.ds heightForSupplementaryViewOfType:URBNSupplementaryViewTypeFooter atIndexPath:[NSIndexPath indexPathForRow:-1 inSection:section]].height;
+}
+
 @end
 
 
-@implementation URBNDataSourceAdapter (UICollectionView)
+@implementation URBNDataSourceCollectioniewDataSourceDelegate
 
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return [self numberOfSections];
+    return [self.ds numberOfSections];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [self numberOfItemsInSection:section];
+    return [self.ds numberOfItemsInSection:section];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)ip {
-    id item = [self itemAtIndexPath:ip];
-    NSString *identifier = [self identifierForItemAtIndexPath:ip];
-    URBNCellConfigureBlock cellBlock = [self cellConfigurationBlockForIdentifier:identifier];
+    id item = [self.ds itemAtIndexPath:ip];
+    NSString *identifier = [self.ds identifierForItemAtIndexPath:ip];
+    URBNCellConfigureBlock cellBlock = [self.ds cellConfigurationBlockForIdentifier:identifier];
     
     UICollectionViewCell *cell = [cv dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:ip];
     
@@ -361,20 +518,37 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)cv viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     URBNSupplementaryViewType normalizedType = ([kind isEqualToString:UICollectionElementKindSectionFooter] ? URBNSupplementaryViewTypeFooter : URBNSupplementaryViewTypeHeader);
-
-    NSString *identifier = [self supplementaryIdentifierForType:normalizedType atIndexPath:indexPath];
+    
+    NSString *identifier = [self.ds supplementaryIdentifierForType:normalizedType atIndexPath:indexPath];
     if (identifier == nil) {
         return nil;
     }
     
-    URBNSupplementaryViewConfigureBlock configBlock = [self viewConfigurationBlockForIdentifier:identifier withKind:kind];
+    URBNSupplementaryViewConfigureBlock configBlock = [self.ds viewConfigurationBlockForIdentifier:identifier withKind:kind];
     
-    UICollectionReusableView* view = (id)[self.collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:identifier forIndexPath:indexPath];
+    UICollectionReusableView* view = (id)[self.ds.collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:identifier forIndexPath:indexPath];
     if (configBlock) {
         configBlock(view, normalizedType, indexPath);
     }
     
     return view;
+}
+
+#pragma mark - CollectionView Flow Delegate
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    CGSize size = [self.ds heightForRowAtIndexPath:indexPath];
+    return size;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    CGSize size = [self.ds heightForSupplementaryViewOfType:URBNSupplementaryViewTypeFooter atIndexPath:[NSIndexPath indexPathForItem:-1 inSection:section]];
+    
+    return size;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+    CGSize size = [self.ds heightForSupplementaryViewOfType:URBNSupplementaryViewTypeHeader atIndexPath:[NSIndexPath indexPathForItem:-1 inSection:section]];
+    return size;
 }
 
 @end
