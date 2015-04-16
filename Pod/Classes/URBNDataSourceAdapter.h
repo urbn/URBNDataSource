@@ -53,9 +53,15 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
 @end
 
 
-@interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapterProtocol>
+IB_DESIGNABLE @interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapterProtocol>
 
 #pragma mark - Outlets
+/**
+ *  This determines whether you want us to implement the sizing delegate methods
+ *  as well.
+ */
+@property (nonatomic, assign) IBInspectable BOOL autoSizingEnabled;
+
 /**
  * Optional: If the tableview property is assigned, the data source will perform
  * insert/reload/delete calls on it as data changes.
@@ -99,6 +105,8 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
 
 - (URBNCellConfigureBlock)cellConfigurationBlockForIdentifier:(NSString *)identifier;
 
+- (NSString *)identifierForItemAtIndexPath:(NSIndexPath *)indexPath;
+
 #pragma mark - Supplimentary Views
 /**
  *  This is a convenience method for the `-registerSupplementaryViewClass:ofKind:withIdentifier:`.   This method will use the
@@ -123,11 +131,35 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
  */
 - (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock;
 
+- (URBNSupplementaryViewConfigureBlock)viewConfigurationBlockForIdentifier:(NSString *)identifier withKind:(NSString *)kind;
+
 - (NSString *)supplementaryIdentifierForType:(URBNSupplementaryViewType)type atIndexPath:(NSIndexPath *)indexPath;
 
-- (NSString *)identifierForItemAtIndexPath:(NSIndexPath *)indexPath;
-
 #pragma mark - Advanced configuration
+
+/**
+ *  Method to calculate the height for a given indexPath based on
+ *  prototypeCell logic.   If the dataSource cannot get a prototypeCell for any
+ *  reason, it will default to the tableView/collectionView default size or estimatedSize
+ *  methods.
+ *
+ *  @param indexPath The indexpath of the row we want to calculate size on.
+ *
+ *  @return The calculated size for the given row.
+ */
+- (CGSize)sizeForRowAtIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ *  Method to calculate the size of a supplementary view at a given indexPath.
+ *  The logic for this sizing is the same as the row sizing methods.
+ *
+ *  @param type     The supplementary view type to calculate for.
+ *  @param indexPath    The indexPath of the supplementaryView to calculate for
+ *
+ *  @return The calculated size for the supplementaryView
+ */
+- (CGSize)sizeForSupplementaryViewOfType:(URBNSupplementaryViewType)type atIndexPath:(NSIndexPath *)indexPath;
+
 /**
  *  If your table / collectionView has more than 1 cell identifier, then you can handle that with this block.
  *  You pass back the reuseIdentifier of the cell you expect to use at the given indexPath / item.
