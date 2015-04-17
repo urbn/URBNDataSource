@@ -30,6 +30,7 @@
     self.adapter = [[URBNArrayDataSourceAdapter alloc] initWithItems:items];
     self.adapter.fallbackDataSource = self;
     self.adapter.tableView = self.tableView;
+    self.adapter.autoSizingEnabled = YES;
     
     /// If all of your cell classes are unique, then you can just call regsiter cell with that class.
     /// The identifier will be the className
@@ -81,6 +82,9 @@
         return cellIdentifiers[(indexPath.item % cellIdentifiers.count)];
     }];
     
+    self.tableView.sectionFooterHeight = 20.0;
+    self.tableView.rowHeight = 20.f;
+
     self.tableView.delegate = self.adapter;
     self.tableView.dataSource = self.adapter;
 }
@@ -115,6 +119,10 @@
     [self.adapter replaceItems:data];
 }
 
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 100.0;
+}
 
 #pragma mark - Fallback Methods
 
