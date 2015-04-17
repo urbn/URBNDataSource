@@ -183,5 +183,5 @@ IB_DESIGNABLE @interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapter
 @interface URBNDataSourceAdapter (UITableView) <UITableViewDataSource, UITableViewDelegate>
 @end
 
-@interface URBNDataSourceAdapter (UICollectionView) <UICollectionViewDataSource>
+@interface URBNDataSourceAdapter (UICollectionView) <UICollectionViewDataSource, UICollectionViewDelegate>
 @end
