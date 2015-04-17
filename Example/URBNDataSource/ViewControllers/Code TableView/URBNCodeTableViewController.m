@@ -22,7 +22,7 @@
     [super viewDidLoad];
     
     NSMutableArray *items = [NSMutableArray array];
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < 50; i++)
     {
         [items addObject:[NSString stringWithFormat:@"Item %i", i]];
     }
@@ -82,7 +82,7 @@
         return cellIdentifiers[(indexPath.item % cellIdentifiers.count)];
     }];
     
-    self.tableView.sectionFooterHeight = 20.0;
+    self.tableView.sectionFooterHeight = 100.f;
     self.tableView.rowHeight = 20.f;
 
     self.tableView.delegate = self.adapter;
@@ -119,12 +119,21 @@
     [self.adapter replaceItems:data];
 }
 
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 100.0;
+- (IBAction)toggleAutoSizing:(UIBarButtonItem *)sender
+{
+    sender.title = [NSString stringWithFormat:@"AutoSizing: %@", self.adapter.autoSizingEnabled ? @"Off" : @"On"];
+    self.adapter.autoSizingEnabled = !self.adapter.autoSizingEnabled;
+    [self.tableView reloadData];
 }
 
 #pragma mark - Fallback Methods
+
+/**
+ *  Notice that regardless of autoSizingEnabled this method will take presedence
+ */
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 100.f;
+}
 
 @end
 

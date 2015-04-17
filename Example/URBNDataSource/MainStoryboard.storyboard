@@ -150,6 +150,15 @@
                             <outlet property="delegate" destination="l5n-mc-xcb" id="GJz-tL-MQt"/>
                         </connections>
                     </tableView>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="sZH-Uv-QAs"/>
+                        <barButtonItem title="AutoSizing: On" id="hdm-Fk-Xwo">
+                            <connections>
+                                <action selector="toggleAutoSizing:" destination="l5n-mc-xcb" id="5E5-sn-fnR"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Kyl-5V-uc6"/>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="Table View" id="wxV-5A-RXZ">
                         <barButtonItem key="rightBarButtonItem" title="Sections: Off" id="rBj-2n-hsB">
                             <connections>
@@ -182,6 +191,7 @@
                             <outlet property="delegate" destination="iC9-fZ-uC0" id="oQk-RQ-PPO"/>
                         </connections>
                     </collectionView>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="Collection View" id="UDC-oR-dfN">
                         <barButtonItem key="rightBarButtonItem" title="Sections: Off" id="u13-ZZ-5Xv">
                             <connections>
@@ -513,11 +523,14 @@
         <!--Navigation Controller-->
         <scene sceneID="n5d-IP-Zbr">
             <objects>
-                <navigationController id="lR3-u2-hJp" sceneMemberID="viewController">
+                <navigationController toolbarHidden="NO" id="lR3-u2-hJp" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="2Rj-Sy-jIa">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="xcs-Wf-EZd">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="xOB-NG-YYV" kind="relationship" relationship="rootViewController" id="ZqK-h5-uUU"/>
                     </connections>

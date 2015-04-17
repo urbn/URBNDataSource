@@ -37,6 +37,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
  */
 @interface URBNDataSourceInternalResponder : NSObject
 @property (nonatomic, weak) URBNDataSourceAdapter *ds;
++ (instancetype)instanceWithDataSource:(URBNDataSourceAdapter *)ds;
 @end
 
 /**
@@ -45,22 +46,29 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 @interface URBNDSITableDataSource: URBNDataSourceInternalResponder <UITableViewDataSource, UITableViewDelegate> @end
 @interface URBNDSICollectionDataSource: URBNDataSourceInternalResponder <UICollectionViewDataSource> @end
 
-@interface URBNDSITableDelegate: URBNDataSourceInternalResponder <UITableViewDelegate> @end
-@interface URBNDSICollectionDelegate: URBNDataSourceInternalResponder <UICollectionViewDelegateFlowLayout> @end
+/**
+ *  This is our internal object that implements autoSizing methods for tableView/collectionView.
+ *  This gets enabled/disabled based off of the @autoSizingEnabled flag
+ */
+@interface URBNDSISizingDelegate: URBNDataSourceInternalResponder <UICollectionViewDelegateFlowLayout, UITableViewDelegate> @end
+
 
 @interface URBNDataSourceAdapter ()
 
-@property (nonatomic, strong) URBNDSICollectionDelegate *internalCollectionDelegate;
-@property (nonatomic, strong) URBNDSITableDelegate *internalTableDelegate;
+// AutoSizing
+@property (nonatomic, strong) URBNDSISizingDelegate *autoSizingDelegate;
+@property (nonatomic, strong) NSMutableDictionary *prototypeCells;
+@property (nonatomic, strong) NSMutableDictionary *prototypeSuppleViews;
 
+// Cell Configuration
 @property (nonatomic, strong) NSMutableDictionary *cellConfigurationBlocks;
 @property (nonatomic, strong) NSMutableDictionary *viewConfigurationBlocks;
 
+// DataSource responders
 @property (nonatomic, strong) NSMutableArray *dataSources;
-@property (nonatomic, strong) NSMutableDictionary *prototypeCells;
-@property (nonatomic, strong) NSMutableDictionary *prototypeHeaders;
 
 @end
+
 
 @implementation URBNDataSourceAdapter
 
@@ -73,22 +81,15 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
         self.viewConfigurationBlocks = [NSMutableDictionary dictionary];
         self.dataSources = [NSMutableArray array];
         self.prototypeCells = [NSMutableDictionary dictionary];
-        self.prototypeHeaders = [NSMutableDictionary dictionary];
+        self.prototypeSuppleViews = [NSMutableDictionary dictionary];
         
         // Wire up our collection/table dataSources.
-        URBNDSICollectionDataSource *cd = [URBNDSICollectionDataSource new];
-        URBNDSITableDataSource *td = [URBNDSITableDataSource new];
-        cd.ds =
-        td.ds = self;
-        [self.dataSources addObject:cd];
-        [self.dataSources addObject:td];
+        [self.dataSources addObject:[URBNDSICollectionDataSource instanceWithDataSource:self]]; // CollectionView Datasource
+        [self.dataSources addObject:[URBNDSITableDataSource instanceWithDataSource:self]];  // TableView datasource
         
         // Let's go ahead and create our internal delegate stuff here.
         // We won't wire them up until told to do so.
-        self.internalTableDelegate = [URBNDSITableDelegate new];
-        self.internalCollectionDelegate = [URBNDSICollectionDelegate new];
-        self.internalTableDelegate.ds =
-        self.internalCollectionDelegate.ds = self;
+        self.autoSizingDelegate = [URBNDSISizingDelegate instanceWithDataSource:self];
     }
     return self;
 }
@@ -108,10 +109,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
     }
     
     // Flush the caches
-    self.collectionView.dataSource = nil;
-    self.collectionView.dataSource = self;
-    self.tableView.dataSource = nil;
-    self.tableView.dataSource = self;
+    [self flushResponderCache];
 }
 
 - (void)setAutoSizingEnabled:(BOOL)autoSizingEnabled {
@@ -123,14 +121,14 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
     
     if (autoSizingEnabled) {
         // We're going to add our tableViewDelegate object into our list of dataSources.
-        [self.dataSources addObject:self.internalCollectionDelegate];
-        [self.dataSources addObject:self.internalTableDelegate];
+        [self.dataSources addObject:self.autoSizingDelegate];
     }
     else {
         // We're going to remove our delegate objects from our list of dataSources.
-        [self.dataSources removeObject:self.internalCollectionDelegate];
-        [self.dataSources removeObject:self.internalTableDelegate];
+        [self.dataSources removeObject:self.autoSizingDelegate];
     }
+    
+    [self flushResponderCache];
 }
 
 #pragma mark - Forwarding
@@ -237,7 +235,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 - (CGSize)sizeForSupplementaryViewOfType:(URBNSupplementaryViewType)type atIndexPath:(NSIndexPath *)indexPath {
     NSString *identifier = [self supplementaryIdentifierForType:type atIndexPath:indexPath];
     NSString *suppKind = [[self class] normalizedKindForSupplementaryType:type withView:self.collectionView?:self.tableView];
-    id view = self.prototypeHeaders[identifier];
+    id view = self.prototypeSuppleViews[identifier];
     if (!view) {
         if (self.tableView) {
             view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
@@ -450,17 +448,48 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
     return nib;
 }
 
+/**
+ *  ScrollView keeps an internal cache of delegate/dataSource responders.   
+ *  So anytime we update the dataSources, we should flush that cache
+ */
+- (void)flushResponderCache {
+    if (self.tableView) {
+        self.tableView.dataSource = nil;
+        if (self.tableView.delegate == self) {
+            self.tableView.delegate = nil;
+            self.tableView.delegate = self;
+        }
+        self.tableView.dataSource = self;
+    }
+    else {
+        self.collectionView.dataSource = nil;
+        if (self.collectionView.delegate == self) {
+            self.collectionView.delegate = nil;
+            self.collectionView.delegate = self;
+        }
+        self.collectionView.dataSource = self;
+    }
+}
+
 @end
 
 
-// This is only an object to give all of our DSI objects the same properties
-@implementation URBNDataSourceInternalResponder @end
+// This is an abstract class for all of our internal responders
+@implementation URBNDataSourceInternalResponder
++ (instancetype)instanceWithDataSource:(URBNDataSourceAdapter *)ds {
+    URBNDataSourceInternalResponder *instance = [[[self class] alloc] init];
+    instance.ds = ds;
+    return instance;
+}
+@end
+
+
 /**
  *  Here we wrap up the methods that we care about from our collectionView and tableView
  */
+#pragma mark - UITableViewDataSource
 @implementation URBNDSITableDataSource
 
-#pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return [self.ds numberOfSections];
 }
@@ -521,26 +550,9 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 
 @end
 
-@implementation URBNDSITableDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [self.ds sizeForRowAtIndexPath:indexPath].height;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return [self.ds sizeForSupplementaryViewOfType:URBNSupplementaryViewTypeHeader atIndexPath:[NSIndexPath indexPathForRow:-1 inSection:section]].height;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return [self.ds sizeForSupplementaryViewOfType:URBNSupplementaryViewTypeFooter atIndexPath:[NSIndexPath indexPathForRow:-1 inSection:section]].height;
-}
-
-@end
-
-
+#pragma mark - UICollectionViewDataSource
 @implementation URBNDSICollectionDataSource
 
-#pragma mark - UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return [self.ds numberOfSections];
 }
@@ -583,8 +595,26 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 
 @end
 
-@implementation URBNDSICollectionDelegate
 
+#pragma mark - AutoSizing
+#pragma mark -
+@implementation URBNDSISizingDelegate
+
+#pragma mark - TableView Sizing
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [self.ds sizeForRowAtIndexPath:indexPath].height;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return [self.ds sizeForSupplementaryViewOfType:URBNSupplementaryViewTypeHeader atIndexPath:[NSIndexPath indexPathForRow:-1 inSection:section]].height;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return [self.ds sizeForSupplementaryViewOfType:URBNSupplementaryViewTypeFooter atIndexPath:[NSIndexPath indexPathForRow:-1 inSection:section]].height;
+}
+
+
+#pragma mark - CollectionView Sizing
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGSize size = [self.ds sizeForRowAtIndexPath:indexPath];
     return size;
@@ -602,3 +632,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 }
 
 @end
+
+
+
+
