@@ -58,7 +58,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 // AutoSizing
 @property (nonatomic, strong) URBNDSISizingDelegate *autoSizingDelegate;
 @property (nonatomic, strong) NSMutableDictionary *prototypeCells;
-@property (nonatomic, strong) NSMutableDictionary *prototypeHeaders;
+@property (nonatomic, strong) NSMutableDictionary *prototypeSuppleViews;
 
 // Cell Configuration
 @property (nonatomic, strong) NSMutableDictionary *cellConfigurationBlocks;
@@ -81,7 +81,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
         self.viewConfigurationBlocks = [NSMutableDictionary dictionary];
         self.dataSources = [NSMutableArray array];
         self.prototypeCells = [NSMutableDictionary dictionary];
-        self.prototypeHeaders = [NSMutableDictionary dictionary];
+        self.prototypeSuppleViews = [NSMutableDictionary dictionary];
         
         // Wire up our collection/table dataSources.
         [self.dataSources addObject:[URBNDSICollectionDataSource instanceWithDataSource:self]]; // CollectionView Datasource
@@ -235,7 +235,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 - (CGSize)sizeForSupplementaryViewOfType:(URBNSupplementaryViewType)type atIndexPath:(NSIndexPath *)indexPath {
     NSString *identifier = [self supplementaryIdentifierForType:type atIndexPath:indexPath];
     NSString *suppKind = [[self class] normalizedKindForSupplementaryType:type withView:self.collectionView?:self.tableView];
-    id view = self.prototypeHeaders[identifier];
+    id view = self.prototypeSuppleViews[identifier];
     if (!view) {
         if (self.tableView) {
             view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
