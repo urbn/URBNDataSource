@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+OBJC_EXPORT NSString *const URBNSupplementaryViewKindHeader;
+OBJC_EXPORT NSString *const URBNSupplementaryViewKindFooter;
+
 typedef NS_ENUM(NSUInteger, URBNSupplementaryViewType) {
     URBNSupplementaryViewTypeHeader,
     URBNSupplementaryViewTypeFooter
