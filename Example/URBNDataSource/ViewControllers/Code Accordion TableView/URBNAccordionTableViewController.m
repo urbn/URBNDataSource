@@ -22,8 +22,9 @@
 
 @implementation URBNAccordionHeader
 
-- (instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
+- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithReuseIdentifier:reuseIdentifier];
+    
     if (self) {
         self.contentView.backgroundColor = [UIColor whiteColor];
         
