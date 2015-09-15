@@ -130,8 +130,11 @@ IB_DESIGNABLE @interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapter
  *  @param viewClass                The supplementary view class to configure
  *  @param ofKind                   The supplementary view kind (UICollectionElementKindSectionHeader or UICollectionElementKindSectionFooter).
  *  @param identifier (optional)    The reuseIdentifier to be used for this cell.  If nil the @cellClass will be used.
+ *  @param nibName (optional)       The nibName to be used for this cell.  If nil the @cellClass will be used.
  *  @param configurationBlock       The block that configures instances of the class
  */
+- (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withIdentifier:(NSString *)identifier withNibName:(NSString*)nibName withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock;
+- (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withNibName:(NSString *)nibName withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock;
 - (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock;
 
 - (URBNSupplementaryViewConfigureBlock)viewConfigurationBlockForIdentifier:(NSString *)identifier withKind:(NSString *)kind;

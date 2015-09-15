@@ -305,10 +305,19 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 }
 
 - (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock {
+    [self registerSupplementaryViewClass:viewClass ofKind:kind withIdentifier:identifier withNibName:nil withConfigurationBlock:configurationBlock];
+}
+
+- (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withNibName:(NSString *)nibName withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock {
+    [self registerSupplementaryViewClass:viewClass ofKind:kind withIdentifier:nil withNibName:nibName withConfigurationBlock:configurationBlock];
+}
+
+- (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withIdentifier:(NSString *)identifier withNibName:(NSString*)nibName withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock {
     ASSERT_TRUE(self.collectionView || self.tableView);
     
     NSString *kindString = [[self class] normalizedKindForSupplementaryType:kind withView:(self.collectionView?:self.tableView)];
-    UINib *nib = [self nibWithName:NSStringFromClass(viewClass)];
+    nibName = nibName ? nibName : NSStringFromClass(viewClass);
+    UINib *nib = [self nibWithName:nibName];
     
     /// Do our registrations here
     if (self.tableView) {
