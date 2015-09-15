@@ -99,9 +99,12 @@ IB_DESIGNABLE @interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapter
  *
  *  @param cellClass                The cell class o configure
  *  @param identifier (optional)    The reuseIdentifier to be used for this cell.  If nil the @cellClass will be used.
+ *  @param nibName (optional)       The nibName to be used for this cell.  If nil the @cellClass will be used.
  *  @param configurationBlock       The block that configures instances of the cell class
  */
 - (void)registerCellClass:(Class)cellClass withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock;
+- (void)registerCellClass:(Class)cellClass withNibName:(NSString *)nibName withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock;
+- (void)registerCellClass:(Class)cellClass withIdentifier:(NSString *)identifier withNibName:(NSString *)nibName withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock;
 
 - (URBNCellConfigureBlock)cellConfigurationBlockForIdentifier:(NSString *)identifier;
 

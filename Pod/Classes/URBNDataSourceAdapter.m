@@ -217,7 +217,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
                         return size;
                     }
                 }
-
+                
                 // If collectionView doesn't have anything we want, then just return this
                 return [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath].frame.size;
             }
@@ -248,7 +248,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
         if (!view) {
             if (self.tableView) {
                 CGFloat height = (type == URBNSupplementaryViewTypeFooter ? [self.tableView sectionFooterHeight] : [self.tableView sectionHeaderHeight]) ?:
-                    (type == URBNSupplementaryViewTypeFooter ? [self.tableView estimatedSectionFooterHeight] : [self.tableView estimatedSectionHeaderHeight]);
+                (type == URBNSupplementaryViewTypeFooter ? [self.tableView estimatedSectionFooterHeight] : [self.tableView estimatedSectionHeaderHeight]);
                 return CGSizeMake(0, height);
             }
             else {
@@ -273,10 +273,19 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 
 #pragma mark - Registration
 - (void)registerCellClass:(Class)cellClass withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock {
+    [self registerCellClass:cellClass withIdentifier:identifier withNibName:nil withConfigurationBlock:configurationBlock];
+}
+
+- (void)registerCellClass:(Class)cellClass withNibName:(NSString *)nibName withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock {
+    [self registerCellClass:cellClass withIdentifier:nil withNibName:nibName withConfigurationBlock:configurationBlock];
+}
+
+- (void)registerCellClass:(Class)cellClass withIdentifier:(NSString *)identifier withNibName:(NSString *)nibName withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock {
     ASSERT_TRUE(self.tableView || self.collectionView);
     
     identifier = identifier?:NSStringFromClass(cellClass);
-    UINib* nib = [self nibWithName:identifier];
+    nibName = nibName?:NSStringFromClass(cellClass);
+    UINib* nib = [self nibWithName:nibName];
     if (nib) {
         [self.tableView registerNib:nib forCellReuseIdentifier:identifier];
         [self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
@@ -449,7 +458,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 }
 
 /**
- *  ScrollView keeps an internal cache of delegate/dataSource responders.   
+ *  ScrollView keeps an internal cache of delegate/dataSource responders.
  *  So anytime we update the dataSources, we should flush that cache
  */
 - (void)flushResponderCache {

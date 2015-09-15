@@ -16,5 +16,6 @@ DerivedData
 *.hmap
 *.ipa
 .bundle
+*. xcscmblueprint
 Example/Pods/Pods.xcodeproj/xcuserdata/joe.xcuserdatad/xcschemes/xcschememanagement.plist
 Example/URBNDataSource.xcworkspace/xcuserdata/joe.xcuserdatad/UserInterfaceState.xcuserstate
