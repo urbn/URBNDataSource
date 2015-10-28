@@ -21,6 +21,10 @@
     return self;
 }
 
+- (instancetype)init {
+    return [self initWithItems:@[]];
+}
+
 #pragma mark - Index Path Helpers
 - (NSArray *)indexPathArrayWithRange:(NSRange)range inSection:(NSInteger)section {
     return [[self class] indexPathArrayWithRange:range inSection:section];
