@@ -23,8 +23,9 @@ NSString * const kProtoTableViewCell2_ID                = @"kProtoTableViewCell2
     [self.navigationController setToolbarHidden:NO];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
     [self.navigationController setToolbarHidden:YES];
 }
 
