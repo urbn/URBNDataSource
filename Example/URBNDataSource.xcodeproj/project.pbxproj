@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		324A0DAD1BE16FF100307E13 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 324A0DAC1BE16FF100307E13 /* Launch Screen.storyboard */; };
 		458B18511AB5074600B5169E /* URBNAccordionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458B18501AB5074600B5169E /* URBNAccordionTableViewController.m */; };
 		45ADDCA11AB60A36005E4C21 /* URBNAccordionCollectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 45ADDCA01AB60A36005E4C21 /* URBNAccordionCollectionVC.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -47,6 +48,7 @@
 		19A5EDBCB8E82537F32F9A9C /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		1A337109D74CCD3F61BE61C5 /* Pods-URBNDataSource.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-URBNDataSource.debug.xcconfig"; path = "Pods/Target Support Files/Pods-URBNDataSource/Pods-URBNDataSource.debug.xcconfig"; sourceTree = "<group>"; };
 		323A29292EB455972486CDF2 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		324A0DAC1BE16FF100307E13 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		3963D55A29A783E72F15CCCE /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		458B184F1AB5074600B5169E /* URBNAccordionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = URBNAccordionTableViewController.h; path = "ViewControllers/Code Accordion TableView/URBNAccordionTableViewController.h"; sourceTree = "<group>"; };
 		458B18501AB5074600B5169E /* URBNAccordionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = URBNAccordionTableViewController.m; path = "ViewControllers/Code Accordion TableView/URBNAccordionTableViewController.m"; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
 				D86D97E51A13DDF10054EEE2 /* MainStoryboard.storyboard */,
+				324A0DAC1BE16FF100307E13 /* Launch Screen.storyboard */,
 			);
 			path = URBNDataSource;
 			sourceTree = "<group>";
@@ -365,6 +368,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				324A0DAD1BE16FF100307E13 /* Launch Screen.storyboard in Resources */,
 				D86D97E61A13DDF10054EEE2 /* MainStoryboard.storyboard in Resources */,
 				D86D97F61A14175C0054EEE2 /* CustomCollectionCellFromNib.xib in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
