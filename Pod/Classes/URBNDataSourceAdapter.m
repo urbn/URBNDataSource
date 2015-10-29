@@ -99,14 +99,8 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
     if (_fallbackDataSource == fallbackDataSource) {
         return;
     }
-    if (!fallbackDataSource) {
-        [self.dataSources removeObject:_fallbackDataSource];
-    }
+
     _fallbackDataSource = fallbackDataSource;
-    
-    if (fallbackDataSource) {
-        [self.dataSources addObject:fallbackDataSource];
-    }
     
     // Flush the caches
     [self flushResponderCache];
@@ -142,6 +136,11 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
             return YES;
         }
     }
+    
+    if ([self.fallbackDataSource conformsToProtocol:aProtocol]) {
+        return YES;
+    }
+    
     return NO;
 }
 
@@ -156,6 +155,10 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
         }
     }
     
+    if ([self.fallbackDataSource respondsToSelector:aSelector]) {
+        return YES;
+    }
+    
     return NO;
 }
 
@@ -165,6 +168,11 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
             return obj;
         }
     }
+    
+    if ([self.fallbackDataSource respondsToSelector:aSelector]) {
+        return self.fallbackDataSource;
+    }
+    
     return nil;
 }
 
