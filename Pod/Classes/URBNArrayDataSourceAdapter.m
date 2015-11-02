@@ -22,7 +22,7 @@
 }
 
 - (instancetype)init {
-    return [self initWithItems:@[]];
+    return [self initWithItems:nil];
 }
 
 #pragma mark - Index Path Helpers
