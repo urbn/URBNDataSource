@@ -19,8 +19,8 @@ typedef NS_ENUM(NSUInteger, URBNSupplementaryViewType) {
 typedef NSString * _Nonnull (^URBNSupplementaryViewReuseIdentifierBlock) (NSString *kind, NSIndexPath * _Nullable indexPath);
 typedef NSString * _Nonnull (^URBNReuseableIdentifierBlock) (id _Nullable item, NSIndexPath * _Nullable indexPath);
 
-typedef void (^URBNCellConfigureBlock) (id _Nullable cell, id _Nullable object, NSIndexPath *indexPath);
-typedef void (^URBNSupplementaryViewConfigureBlock) (id _Nullable view, URBNSupplementaryViewType kind, NSIndexPath * _Nullable indexPath);
+typedef void (^URBNCellConfigureBlock) (UITableViewCell * _Nullable cell, id _Nullable object, NSIndexPath *indexPath);
+typedef void (^URBNSupplementaryViewConfigureBlock) (UIView * _Nullable view, URBNSupplementaryViewType kind, NSIndexPath * _Nullable indexPath);
 
 @protocol URBNDataSourceAdapterProtocol <NSObject>
 
