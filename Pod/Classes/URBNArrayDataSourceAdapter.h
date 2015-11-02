@@ -8,12 +8,14 @@
 
 #import "URBNDataSourceAdapter.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface URBNArrayDataSourceAdapter : URBNDataSourceAdapter
 
 /**
  * Create a new array data source by specifying an array of items. Items can be nil.
  */
-- (instancetype)initWithItems:(NSArray *)items __attribute__((objc_designated_initializer));
+- (instancetype)initWithItems:(nullable NSArray *)items NS_DESIGNATED_INITIALIZER;
 
 /**
  * Using the methods below to manipulate the items
@@ -125,3 +127,5 @@
 - (NSArray *)indexPathArrayWithIndexSet:(NSIndexSet *)indexes inSection:(NSInteger)section;
 
 @end
+
+NS_ASSUME_NONNULL_END

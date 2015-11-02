@@ -9,16 +9,18 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSUInteger, URBNSupplementaryViewType) {
     URBNSupplementaryViewTypeHeader,
     URBNSupplementaryViewTypeFooter
 };
 
-typedef NSString *(^URBNSupplementaryViewReuseIdentifierBlock) (NSString *kind, NSIndexPath *indexPath);
-typedef NSString *(^URBNReuseableIdentifierBlock) (id item, NSIndexPath *indexPath);
+typedef NSString * _Nonnull (^URBNSupplementaryViewReuseIdentifierBlock) (NSString *kind, NSIndexPath *indexPath);
+typedef NSString * _Nonnull (^URBNReuseableIdentifierBlock) (id _Nullable item, NSIndexPath *indexPath);
 
-typedef void (^URBNCellConfigureBlock) (id cell, id object, NSIndexPath* indexPath);
-typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryViewType kind, NSIndexPath* indexPath);
+typedef void (^URBNCellConfigureBlock) (id _Nullable cell, id _Nullable object, NSIndexPath *indexPath);
+typedef void (^URBNSupplementaryViewConfigureBlock) (id _Nullable view, URBNSupplementaryViewType kind, NSIndexPath *indexPath);
 
 @protocol URBNDataSourceAdapterProtocol <NSObject>
 
@@ -39,7 +41,7 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
  *
  *  @return The item, or nil if not found
  */
-- (id)itemAtIndexPath:(NSIndexPath *)indexPath;
+- (nullable id)itemAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  Get the index path for an item if it is contained in the array.
@@ -48,7 +50,7 @@ typedef void (^URBNSupplementaryViewConfigureBlock) (id view, URBNSupplementaryV
  *
  *  @return The index path, or nil if it is not contained in the datasource.
  */
-- (NSIndexPath *)indexPathForItem:(id)item;
+- (nullable NSIndexPath *)indexPathForItem:(id)item;
 
 @end
 
@@ -66,7 +68,7 @@ IB_DESIGNABLE @interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapter
  * Optional: If the tableview property is assigned, the data source will perform
  * insert/reload/delete calls on it as data changes.
  */
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak, nullable) IBOutlet UITableView *tableView;
 @property (nonatomic, assign) UITableViewRowAnimation rowAnimation;
 
 /**
@@ -79,7 +81,7 @@ IB_DESIGNABLE @interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapter
  *  Optional:  If the @fallbackDataSource property is assigned, any collectionView or tableView
  *  will attempt to fallback to this dataSource.
  **/
-@property (nonatomic, weak) IBOutlet id fallbackDataSource;
+@property (nonatomic, weak, nullable) IBOutlet id fallbackDataSource;
 
 #pragma mark - Cells
 /**
@@ -89,7 +91,7 @@ IB_DESIGNABLE @interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapter
  *  @param cellClass          The cell class o configure
  *  @param configurationBlock The block that configures instances of the cell class
  */
-- (void)registerCellClass:(Class)cellClass withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock;
+- (void)registerCellClass:(nullable Class)cellClass withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock;
 
 /**
  * Provide a configuration block, called for each cell with the object to display in that cell.
@@ -101,11 +103,11 @@ IB_DESIGNABLE @interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapter
  *  @param identifier (optional)    The reuseIdentifier to be used for this cell.  If nil the @cellClass will be used.
  *  @param configurationBlock       The block that configures instances of the cell class
  */
-- (void)registerCellClass:(Class)cellClass withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock;
+- (void)registerCellClass:(nullable Class)cellClass withIdentifier:(nullable NSString *)identifier withConfigurationBlock:(URBNCellConfigureBlock)configurationBlock;
 
-- (URBNCellConfigureBlock)cellConfigurationBlockForIdentifier:(NSString *)identifier;
+- (nullable URBNCellConfigureBlock)cellConfigurationBlockForIdentifier:(NSString *)identifier;
 
-- (NSString *)identifierForItemAtIndexPath:(NSIndexPath *)indexPath;
+- (nullable NSString *)identifierForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 #pragma mark - Supplimentary Views
 /**
@@ -116,7 +118,7 @@ IB_DESIGNABLE @interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapter
  *  @param ofKind               The supplementary view kind (UICollectionElementKindSectionHeader or UICollectionElementKindSectionFooter).
  *  @param configurationBlock   The block that configures instances of the class
  */
-- (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock;
+- (void)registerSupplementaryViewClass:(nullable Class)viewClass ofKind:(URBNSupplementaryViewType)kind withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock;
 
 /**
  * Provide a configuration block, called for each supplementary view to display.
@@ -129,11 +131,11 @@ IB_DESIGNABLE @interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapter
  *  @param identifier (optional)    The reuseIdentifier to be used for this cell.  If nil the @cellClass will be used.
  *  @param configurationBlock       The block that configures instances of the class
  */
-- (void)registerSupplementaryViewClass:(Class)viewClass ofKind:(URBNSupplementaryViewType)kind withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock;
+- (void)registerSupplementaryViewClass:(nullable Class)viewClass ofKind:(URBNSupplementaryViewType)kind withIdentifier:(nullable NSString *)identifier withConfigurationBlock:(URBNSupplementaryViewConfigureBlock)configurationBlock;
 
-- (URBNSupplementaryViewConfigureBlock)viewConfigurationBlockForIdentifier:(NSString *)identifier withKind:(NSString *)kind;
+- (nullable URBNSupplementaryViewConfigureBlock)viewConfigurationBlockForIdentifier:(NSString *)identifier withKind:(NSString *)kind;
 
-- (NSString *)supplementaryIdentifierForType:(URBNSupplementaryViewType)type atIndexPath:(NSIndexPath *)indexPath;
+- (nullable NSString *)supplementaryIdentifierForType:(URBNSupplementaryViewType)type atIndexPath:(NSIndexPath *)indexPath;
 
 #pragma mark - Advanced configuration
 
@@ -164,11 +166,9 @@ IB_DESIGNABLE @interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapter
  *  If your table / collectionView has more than 1 cell identifier, then you can handle that with this block.
  *  You pass back the reuseIdentifier of the cell you expect to use at the given indexPath / item.
  */
-@property (nonatomic, copy) URBNReuseableIdentifierBlock cellIdentifierBlock;
-- (void)setCellIdentifierBlock:(URBNReuseableIdentifierBlock)cellIdentifierBlock;
+@property (nonatomic, copy, nullable) URBNReuseableIdentifierBlock cellIdentifierBlock;
 
-@property (nonatomic, copy) URBNSupplementaryViewReuseIdentifierBlock supplementaryViewIdentifierBlock;
-- (void)setSupplementaryViewIdentifierBlock:(URBNSupplementaryViewReuseIdentifierBlock)supplementaryViewIdentifierBlock;
+@property (nonatomic, copy, nullable) URBNSupplementaryViewReuseIdentifierBlock supplementaryViewIdentifierBlock;
 
 #pragma mark - helpers
 /**
@@ -185,3 +185,5 @@ IB_DESIGNABLE @interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapter
 
 @interface URBNDataSourceAdapter (UICollectionView) <UICollectionViewDataSource, UICollectionViewDelegate>
 @end
+
+NS_ASSUME_NONNULL_END

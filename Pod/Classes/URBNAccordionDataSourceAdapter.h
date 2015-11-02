@@ -8,12 +8,14 @@
 
 #import "URBNArrayDataSourceAdapter.h"
 
-typedef void (^URBNAccordionHeaderViewConfigureBlock) (id view, id object, NSInteger section, BOOL expanded);
+NS_ASSUME_NONNULL_BEGIN
+
+typedef void (^URBNAccordionHeaderViewConfigureBlock) (id _Nullable view, id _Nullable object, NSInteger section, BOOL expanded);
 
 @interface URBNAccordionDataSourceAdapter : URBNArrayDataSourceAdapter
 
 @property (nonatomic, assign) BOOL allowMultipleExpandedSections;
-@property (nonatomic, strong) NSIndexSet *sectionsToKeepOpen;
+@property (nonatomic, strong, nullable) NSIndexSet *sectionsToKeepOpen;
 
 /**
  *  Create a new accordion data source specifying an array of sections and and array of items. Items can be nil, sections can not.
@@ -27,7 +29,7 @@ typedef void (^URBNAccordionHeaderViewConfigureBlock) (id view, id object, NSInt
  *  @param viewClass          The view class to configure.
  *  @param configurationBlock The block that configures instances of the cell class.
  */
-- (void)registerAccordionHeaderViewClass:(Class)viewClass withConfigurationBlock:(URBNAccordionHeaderViewConfigureBlock)configurationBlock;
+- (void)registerAccordionHeaderViewClass:(nullable Class)viewClass withConfigurationBlock:(URBNAccordionHeaderViewConfigureBlock)configurationBlock;
 
 /**
  *  Provide a configuration block, called for each accordion header view with the object to display in that view.
@@ -39,7 +41,7 @@ typedef void (^URBNAccordionHeaderViewConfigureBlock) (id view, id object, NSInt
  *  @param identifier (optional)    The reuseIdentifier to be used for this view.  If nil the @viewClass will be used.
  *  @param configurationBlock       The block that configures instances of the view class.
  */
-- (void)registerAccordionHeaderViewClass:(Class)viewClass withIdentifier:(NSString *)identifier withConfigurationBlock:(URBNAccordionHeaderViewConfigureBlock)configurationBlock;
+- (void)registerAccordionHeaderViewClass:(nullable Class)viewClass withIdentifier:(nullable NSString *)identifier withConfigurationBlock:(URBNAccordionHeaderViewConfigureBlock)configurationBlock;
 
 /**
  *  Call this method to expanded/close a given section. This method will use the previously set rowAnimation for tableview 
@@ -75,3 +77,5 @@ typedef void (^URBNAccordionHeaderViewConfigureBlock) (id view, id object, NSInt
 - (NSArray *)allSections;
 
 @end
+
+NS_ASSUME_NONNULL_END
