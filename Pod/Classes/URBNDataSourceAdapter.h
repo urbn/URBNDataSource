@@ -16,11 +16,11 @@ typedef NS_ENUM(NSUInteger, URBNSupplementaryViewType) {
     URBNSupplementaryViewTypeFooter
 };
 
-typedef NSString * _Nonnull (^URBNSupplementaryViewReuseIdentifierBlock) (NSString *kind, NSIndexPath * _Nullable indexPath);
-typedef NSString * _Nonnull (^URBNReuseableIdentifierBlock) (id _Nullable item, NSIndexPath * _Nullable indexPath);
+typedef NSString * _Nonnull (^URBNSupplementaryViewReuseIdentifierBlock) (NSString *kind, NSIndexPath *indexPath);
+typedef NSString * _Nonnull (^URBNReuseableIdentifierBlock) (id _Nullable item, NSIndexPath *indexPath);
 
 typedef void (^URBNCellConfigureBlock) (id _Nullable cell, id _Nullable object, NSIndexPath *indexPath);
-typedef void (^URBNSupplementaryViewConfigureBlock) (id _Nullable view, URBNSupplementaryViewType kind, NSIndexPath * _Nullable indexPath);
+typedef void (^URBNSupplementaryViewConfigureBlock) (id _Nullable view, URBNSupplementaryViewType kind, NSIndexPath *indexPath);
 
 @protocol URBNDataSourceAdapterProtocol <NSObject>
 
