@@ -20,7 +20,7 @@
 @implementation URBNAccordionDataSourceAdapter
 
 - (instancetype)initWithItems:(NSArray *)items {
-    NSAssert(NO, @"Please call initWithSectionObjects:andItems: instead");
+    NSAssert(NO, @"You need sections for an accordion. Stop being a jerk.");
     return [self initWithSectionObjects:@[] andItems:items];
 }
 
