@@ -135,7 +135,7 @@ IB_DESIGNABLE @interface URBNDataSourceAdapter : NSObject <URBNDataSourceAdapter
 
 - (nullable URBNSupplementaryViewConfigureBlock)viewConfigurationBlockForIdentifier:(NSString *)identifier withKind:(NSString *)kind;
 
-- (nullable NSString *)supplementaryIdentifierForType:(URBNSupplementaryViewType)type atIndexPath:(nullable NSIndexPath *)indexPath;
+- (nullable NSString *)supplementaryIdentifierForType:(URBNSupplementaryViewType)type atIndexPath:(NSIndexPath *)indexPath;
 
 #pragma mark - Advanced configuration
 
