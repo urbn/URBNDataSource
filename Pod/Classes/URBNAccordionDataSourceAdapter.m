@@ -118,7 +118,7 @@
 }
 
 - (void)appendSectionWithItems:(NSArray *)newItems {
-    [self appendSectionObject:nil items:newItems];
+    NSAssert(NO, @"A sectionObject must be included when appending a section. Call appendSectionObject:items: instead");
 }
 
 - (void)appendSectionObject:(id)sectionObject items:(NSArray *)items {
