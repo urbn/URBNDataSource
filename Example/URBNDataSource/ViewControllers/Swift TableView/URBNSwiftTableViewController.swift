@@ -21,7 +21,7 @@ class URBNSwiftTableViewController: UITableViewController {
         }
         
         adapter = URBNArrayDataSourceAdapter(items: items)
-        adapter?.fallbackDataSource = self
+        adapter!.fallbackDataSource = self
         adapter?.tableView = tableView
         adapter?.autoSizingEnabled = true
         
@@ -74,13 +74,8 @@ class URBNSwiftTableViewController: UITableViewController {
         /// Since we want more than  1 identifier, we need to supply an identifier configuration here.
         adapter?.cellIdentifierBlock = { (type, indexPath) -> String in
             let cellIdentifiers = [NSStringFromClass(UITableViewCell.self), NSStringFromClass(CustomTableCellFromNib.self), "My Identifier"]
-            var test = cellIdentifiers[indexPath.row]
-//            
-//            
-//            return NSStringFromClass(UITableViewCell.self)
-        
-            
-            return cellIdentifiers[indexPath.row]
+
+            return cellIdentifiers[(indexPath.item % cellIdentifiers.count)];
         }
         
         tableView.sectionFooterHeight = 100.0
@@ -92,5 +87,28 @@ class URBNSwiftTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 100.0
+    }
+    
+    @IBAction func toggleSectionedData(sender: UIBarButtonItem) {
+        var data = [AnyObject]()
+ 
+        if let dsAdapter = adapter {
+            if dsAdapter.isSectioned() {
+                /// We're not sectioned.  Let's make it sectioned
+                data = ["Item 1", "Item 2", "Item 3", "Item 4"];
+            }
+            else {
+                /// We're already sectioned.  Make this a flat list
+                data = [["Section 1 item 1", "Section 1 Item 2"],   // Section1
+                    ["Section 2 item 1", "Section 2 Item 2"],   // Section2
+                    ["Section 3 item 1", "Section 3 Item 2"],   // Section3
+                    ["Section 4 item 1", "Section 4 Item 2"]]   // Section4
+            }
+            
+            let sectionStatus = dsAdapter.isSectioned() ? "Off" : "On"
+            sender.title = "Sections: " + sectionStatus
+            
+            dsAdapter.replaceItems(data)
+        }
     }
 }
