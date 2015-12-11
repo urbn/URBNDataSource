@@ -53,7 +53,6 @@
 		458B18501AB5074600B5169E /* URBNAccordionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = URBNAccordionTableViewController.m; path = "ViewControllers/Code Accordion TableView/URBNAccordionTableViewController.m"; sourceTree = "<group>"; };
 		45ADDC9F1AB60A36005E4C21 /* URBNAccordionCollectionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URBNAccordionCollectionVC.h; sourceTree = "<group>"; };
 		45ADDCA01AB60A36005E4C21 /* URBNAccordionCollectionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URBNAccordionCollectionVC.m; sourceTree = "<group>"; };
-		4696C38F1C19FDF700484EE0 /* URBNDataSource-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "URBNDataSource-Bridging-Header.h"; path = "ViewControllers/Code TableView/URBNDataSource-Bridging-Header.h"; sourceTree = "<group>"; };
 		4696C3901C19FDF800484EE0 /* URBNSwiftTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URBNSwiftTableViewController.swift; path = "URBNDataSource/ViewControllers/Swift TableView/URBNSwiftTableViewController.swift"; sourceTree = SOURCE_ROOT; };
 		4696C3921C1A086B00484EE0 /* URBNDataSource-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "URBNDataSource-Bridging-Header.h"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* URBNDataSource.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = URBNDataSource.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -194,7 +193,6 @@
 		6003F594195388D20070C39A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4696C38F1C19FDF700484EE0 /* URBNDataSource-Bridging-Header.h */,
 				4696C3921C1A086B00484EE0 /* URBNDataSource-Bridging-Header.h */,
 				6003F595195388D20070C39A /* URBNDataSource-Info.plist */,
 				6003F596195388D20070C39A /* InfoPlist.strings */,
