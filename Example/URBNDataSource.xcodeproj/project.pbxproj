@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		458B18511AB5074600B5169E /* URBNAccordionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458B18501AB5074600B5169E /* URBNAccordionTableViewController.m */; };
 		45ADDCA11AB60A36005E4C21 /* URBNAccordionCollectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 45ADDCA01AB60A36005E4C21 /* URBNAccordionCollectionVC.m */; };
+		460A74631C1F65A300C170E0 /* URBNSwiftCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460A74621C1F65A300C170E0 /* URBNSwiftCollectionViewController.swift */; };
 		4696C3911C19FDF800484EE0 /* URBNSwiftTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4696C3901C19FDF800484EE0 /* URBNSwiftTableViewController.swift */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
@@ -53,6 +54,7 @@
 		458B18501AB5074600B5169E /* URBNAccordionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = URBNAccordionTableViewController.m; path = "ViewControllers/Code Accordion TableView/URBNAccordionTableViewController.m"; sourceTree = "<group>"; };
 		45ADDC9F1AB60A36005E4C21 /* URBNAccordionCollectionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URBNAccordionCollectionVC.h; sourceTree = "<group>"; };
 		45ADDCA01AB60A36005E4C21 /* URBNAccordionCollectionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URBNAccordionCollectionVC.m; sourceTree = "<group>"; };
+		460A74621C1F65A300C170E0 /* URBNSwiftCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URBNSwiftCollectionViewController.swift; path = "URBNDataSource/ViewControllers/Swift CollectionView/URBNSwiftCollectionViewController.swift"; sourceTree = SOURCE_ROOT; };
 		4696C3901C19FDF800484EE0 /* URBNSwiftTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URBNSwiftTableViewController.swift; path = "URBNDataSource/ViewControllers/Swift TableView/URBNSwiftTableViewController.swift"; sourceTree = SOURCE_ROOT; };
 		4696C3921C1A086B00484EE0 /* URBNDataSource-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "URBNDataSource-Bridging-Header.h"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* URBNDataSource.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = URBNDataSource.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,12 +136,21 @@
 			path = "ViewControllers/Code Accordion CollectionView";
 			sourceTree = "<group>";
 		};
-		4696C38E1C19F9FE00484EE0 /* TableView Swift */ = {
+		460A74611C1F64A400C170E0 /* Swift CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				460A74621C1F65A300C170E0 /* URBNSwiftCollectionViewController.swift */,
+			);
+			name = "Swift CollectionView";
+			path = "ViewControllers/Code CollectionView";
+			sourceTree = "<group>";
+		};
+		4696C38E1C19F9FE00484EE0 /* Swift TableView */ = {
 			isa = PBXGroup;
 			children = (
 				4696C3901C19FDF800484EE0 /* URBNSwiftTableViewController.swift */,
 			);
-			name = "TableView Swift";
+			name = "Swift TableView";
 			path = "ViewControllers/Code TableView";
 			sourceTree = "<group>";
 		};
@@ -265,9 +276,10 @@
 			children = (
 				D849C6C21A1A7B0F00E140DA /* Prototype CollectionView */,
 				D849C6BE1A1A5CDD00E140DA /* Prototype TableView */,
-				4696C38E1C19F9FE00484EE0 /* TableView Swift */,
 				D86D97EE1A13E9330054EEE2 /* Code TableView */,
+				4696C38E1C19F9FE00484EE0 /* Swift TableView */,
 				D86D97EB1A13E9330054EEE2 /* Code CollectionView */,
+				460A74611C1F64A400C170E0 /* Swift CollectionView */,
 				458B18521AB5076100B5169E /* Code Accordion TableView */,
 				45ADDC9E1AB60A36005E4C21 /* Code Accordion CollectionView */,
 			);
@@ -504,6 +516,7 @@
 				6003F59E195388D20070C39A /* URBNAppDelegate.m in Sources */,
 				458B18511AB5074600B5169E /* URBNAccordionTableViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				460A74631C1F65A300C170E0 /* URBNSwiftCollectionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

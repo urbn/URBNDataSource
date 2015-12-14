@@ -180,6 +180,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="eOD-04-Vex" kind="show" id="jsm-8e-xhH"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -455,6 +458,38 @@
             </objects>
             <point key="canvasLocation" x="2546" y="-296"/>
         </scene>
+        <!--Swift Collection View-->
+        <scene sceneID="Oo0-1i-RRz">
+            <objects>
+                <collectionViewController id="eOD-04-Vex" customClass="URBNSwiftCollectionViewController" customModule="URBNDataSource" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="1ah-KA-jtZ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="6pF-JY-DkV">
+                            <size key="itemSize" width="150" height="150"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells/>
+                        <connections>
+                            <outlet property="dataSource" destination="eOD-04-Vex" id="Ilw-qv-bNu"/>
+                            <outlet property="delegate" destination="eOD-04-Vex" id="2l9-QB-CR7"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" title="Swift Collection View" id="L5L-LA-koH">
+                        <barButtonItem key="rightBarButtonItem" title="Sections: Off" id="eAo-aY-FGf">
+                            <connections>
+                                <action selector="toggleSectionedData:" destination="eOD-04-Vex" id="Jqd-7M-KRo"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mm0-pC-wTN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="988" y="298"/>
+        </scene>
         <!--Fallback Data Source-->
         <scene sceneID="AhB-Cl-eYV">
             <objects>
@@ -585,7 +620,7 @@
                     </connections>
                 </customObject>
             </objects>
-            <point key="canvasLocation" x="1684" y="555"/>
+            <point key="canvasLocation" x="1684" y="756"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="n5d-IP-Zbr">
