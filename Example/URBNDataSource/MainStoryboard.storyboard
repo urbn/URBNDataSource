@@ -227,7 +227,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x01-aQ-ev4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1312" y="-1462"/>
+            <point key="canvasLocation" x="1246" y="-1438"/>
         </scene>
         <!--Collection View-->
         <scene sceneID="ErR-4E-OvP">
@@ -607,7 +607,7 @@
             </objects>
             <point key="canvasLocation" x="602" y="-500"/>
         </scene>
-        <!--TableView Swift-->
+        <!--Table View Swift-->
         <scene sceneID="ndM-w4-Nqg">
             <objects>
                 <tableViewController id="uTL-oq-6U1" customClass="URBNSwiftTableViewController" customModule="URBNDataSource" customModuleProvider="target" sceneMemberID="viewController">
@@ -616,11 +616,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <connections>
-                            <outlet property="dataSource" destination="uTL-oq-6U1" id="Jju-aK-2Zr"/>
-                            <outlet property="delegate" destination="uTL-oq-6U1" id="dwZ-Rr-7Wv"/>
+                            <outlet property="dataSource" destination="uTL-oq-6U1" id="470-SM-YqP"/>
+                            <outlet property="delegate" destination="uTL-oq-6U1" id="2Aj-ho-EQ4"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="TableView Swift" id="zh6-kj-Xd9">
+                    <toolbarItems>
+                        <barButtonItem id="YGq-dX-ow0"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="eiA-om-4Xg"/>
+                        <barButtonItem title="AutoSizing: On" id="ToV-s9-rDo">
+                            <connections>
+                                <action selector="toggleAutoSizing:" destination="uTL-oq-6U1" id="Jiw-Bf-31L"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="uxR-js-QD6"/>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="Table View Swift" id="zh6-kj-Xd9">
                         <barButtonItem key="rightBarButtonItem" title="Sections: Off" id="pn7-Zm-ZmV">
                             <connections>
                                 <action selector="toggleSectionedData:" destination="uTL-oq-6U1" id="npm-3J-W0T"/>
@@ -630,7 +640,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pPT-xW-mSJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="683" y="266"/>
+            <point key="canvasLocation" x="609" y="-1438"/>
         </scene>
     </scenes>
 </document>

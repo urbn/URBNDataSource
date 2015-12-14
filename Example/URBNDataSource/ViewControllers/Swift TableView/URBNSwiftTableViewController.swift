@@ -21,7 +21,7 @@ class URBNSwiftTableViewController: UITableViewController {
         }
         
         adapter = URBNArrayDataSourceAdapter(items: items)
-        adapter!.fallbackDataSource = self
+        adapter?.fallbackDataSource = self
         adapter?.tableView = tableView
         adapter?.autoSizingEnabled = true
         
@@ -46,21 +46,17 @@ class URBNSwiftTableViewController: UITableViewController {
         
         /// Since we've registered an `UITableViewCell` above, we should supply an identifier for this cell
         adapter?.registerCellClass(UITableViewCell.self, withIdentifier: "My Identifier") { (cell, object, indexPath) in
-            guard let cell = cell as? CustomTableCellFromNib else { return }
+            guard let cell = cell as? UITableViewCell else { return }
             guard let object = object as? String else { return }
             
             cell.textLabel?.textColor = .redColor()
             cell.textLabel?.text = object;
         }
         
-        /// Here we're registering a reuseableTableHeaderView for our section footers.  Pretty sweet.
-        /// Notice that we're not supplying an identifier here.  That's because it's not needed.
-        /// Even though we're registering configuration blocks for the same class, since they're different kinds (`URBNSupplementaryViewTypeFooter` vs. `URBNSupplementaryViewTypeHeader`)
-        /// we can ignore the identifier
+        /// Here we're registering a reuseableTableHeaderView for our section headers.  Pretty sweet
         adapter?.registerSupplementaryViewClass(UITableViewHeaderFooterView.self, ofKind: .Header) { (view, kind, indexPath) in
             guard let headerView = view as? UITableViewHeaderFooterView else { return }
-            guard let indexPath = view as? NSIndexPath else { return }
-            
+
             if (headerView.tag == 0) {
                 headerView.tag = 100
                 headerView.contentView.backgroundColor = UIColor.blueColor().colorWithAlphaComponent(0.1)
@@ -70,7 +66,18 @@ class URBNSwiftTableViewController: UITableViewController {
             headerView.textLabel?.text = "Table HeaderView " + String(indexPath.section)
         }
         
-
+        /// Here we're registering a reuseableTableHeaderView for our section footers.  Pretty sweet.
+        /// Notice that we're not supplying an identifier here.  That's because it's not needed.
+        /// Even though we're registering configuration blocks for the same class, since they're different kinds (`URBNSupplementaryViewTypeFooter` vs. `URBNSupplementaryViewTypeHeader`)
+        /// we can ignore the identifier
+        adapter?.registerSupplementaryViewClass(UITableViewHeaderFooterView.self, ofKind: .Footer) { (view, kind, indexPath) in
+            guard let footerView = view as? UITableViewHeaderFooterView else { return }
+            
+            footerView.contentView.backgroundColor = UIColor.orangeColor().colorWithAlphaComponent(0.1)
+            footerView.textLabel?.textColor = .blackColor()
+            footerView.textLabel?.text = "Table footer " + String(indexPath.section)
+        }
+        
         /// Since we want more than  1 identifier, we need to supply an identifier configuration here.
         adapter?.cellIdentifierBlock = { (type, indexPath) -> String in
             let cellIdentifiers = [NSStringFromClass(UITableViewCell.self), NSStringFromClass(CustomTableCellFromNib.self), "My Identifier"]
@@ -85,8 +92,18 @@ class URBNSwiftTableViewController: UITableViewController {
         tableView.dataSource = adapter
     }
     
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 100.0
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 100.0;
+    }
+    
+    @IBAction func toggleAutoSizing(sender: UIBarButtonItem) {
+        if let dsAdapter = adapter {
+                    
+            let sizingStatus = dsAdapter.autoSizingEnabled ? "Off" : "On"
+            sender.title = "AutoSizing: " + sizingStatus
+            dsAdapter.autoSizingEnabled  = !dsAdapter.autoSizingEnabled
+            tableView.reloadData()
+        }
     }
     
     @IBAction func toggleSectionedData(sender: UIBarButtonItem) {
