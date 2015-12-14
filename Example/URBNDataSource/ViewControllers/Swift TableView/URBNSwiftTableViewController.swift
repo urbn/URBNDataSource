@@ -86,7 +86,6 @@ class URBNSwiftTableViewController: UITableViewController {
         }
         
         tableView.sectionFooterHeight = 100.0
-        tableView.sectionHeaderHeight = 30.0
         tableView.rowHeight = 20.0
         
         tableView.delegate = adapter
