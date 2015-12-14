@@ -86,6 +86,7 @@ class URBNSwiftTableViewController: UITableViewController {
         }
         
         tableView.sectionFooterHeight = 100.0
+        tableView.sectionHeaderHeight = 30.0
         tableView.rowHeight = 20.0
         
         tableView.delegate = adapter
@@ -93,7 +94,7 @@ class URBNSwiftTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 100.0;
+        return 100.0
     }
     
     @IBAction func toggleAutoSizing(sender: UIBarButtonItem) {
