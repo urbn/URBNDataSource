@@ -47,7 +47,7 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
             }
         }
         
-        /// Since this is a different subclass than the UITableViewCell we're doing above, there's no need to supply an identifier
+        /// Since this is a different subclass than the UICollectionViewCell we're doing above, there's no need to supply an identifier
         /// Since this Cell has a nib file, it will be instantiated from that nib as well.
         adapter?.registerCellClass(CustomCollectionCellFromNib.self) { (cell, object, indexPath) in
             guard let cell = cell as? CustomCollectionCellFromNib else { return }
@@ -58,7 +58,7 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
             }
         }
         
-        /// Since we've registered an `UITableViewCell` above, we should supply an identifier for this cell
+        /// Since we've registered an `UICollectionViewCell` above, we should supply an identifier for this cell
         adapter?.registerCellClass(UICollectionViewCell.self, withIdentifier: "My Identifier") { (cell, object, indexPath) in
             guard let cell = cell as? UICollectionViewCell else { return }
             guard let object = object as? String else { return }
@@ -80,15 +80,15 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
             }
         }
         
-        /// Here we're registering a reuseableTableHeaderView for our section headers.  Pretty sweet
+        /// Here we're registering a UICollectionReusableView for our section headers.  Pretty sweet
         adapter?.registerSupplementaryViewClass(UICollectionReusableView.self, ofKind: .Header) { (view, kind, indexPath) in
             guard let headerView = view as? UICollectionReusableView else { return }
             
-            headerView.backgroundColor = UIColor.cyanColor().colorWithAlphaComponent(0.8)
+            headerView.backgroundColor = UIColor.orangeColor().colorWithAlphaComponent(0.8)
             headerView.layer.borderWidth = 1.0
             
             if let viewLabel = headerView.viewWithTag(100) as? UILabel {
-                viewLabel.text = "Table HeaderView " + String(indexPath.section)
+                viewLabel.text = "Collection HeaderView " + String(indexPath.section)
             }
             else {
                 let viewLabel = UILabel(frame: headerView.bounds)
@@ -98,12 +98,12 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
                 viewLabel.font = UIFont.systemFontOfSize(30.0)
                 viewLabel.textColor = .blackColor()
                 viewLabel.textAlignment = .Center
-                viewLabel.text = "Table HeaderView " + String(indexPath.section)
+                viewLabel.text = "Collection HeaderView " + String(indexPath.section)
                 headerView.addSubview(viewLabel)
             }
         }
         
-        /// Here we're registering a reuseableTableHeaderView for our section footers.  Pretty sweet.
+        /// Here we're registering a UICollectionReusableView for our section footers.  Pretty sweet.
         /// Notice that we're not supplying an identifier here.  That's because it's not needed.
         /// Even though we're registering configuration blocks for the same class, since they're different kinds (`URBNSupplementaryViewTypeFooter` vs. `URBNSupplementaryViewTypeHeader`)
         /// we can ignore the identifier
