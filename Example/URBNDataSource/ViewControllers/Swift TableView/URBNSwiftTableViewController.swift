@@ -50,7 +50,7 @@ class URBNSwiftTableViewController: UITableViewController {
             guard let object = object as? String else { return }
             
             cell.textLabel?.textColor = .redColor()
-            cell.textLabel?.text = object;
+            cell.textLabel?.text = object
         }
         
         /// Here we're registering a reuseableTableHeaderView for our section headers.  Pretty sweet
@@ -82,7 +82,7 @@ class URBNSwiftTableViewController: UITableViewController {
         adapter?.cellIdentifierBlock = { (type, indexPath) -> String in
             let cellIdentifiers = [NSStringFromClass(UITableViewCell.self), NSStringFromClass(CustomTableCellFromNib.self), "My Identifier"]
 
-            return cellIdentifiers[(indexPath.item % cellIdentifiers.count)];
+            return cellIdentifiers[(indexPath.item % cellIdentifiers.count)]
         }
         
         tableView.sectionFooterHeight = 100.0
@@ -112,7 +112,7 @@ class URBNSwiftTableViewController: UITableViewController {
         if let dsAdapter = adapter {
             if dsAdapter.isSectioned() {
                 /// We're not sectioned.  Let's make it sectioned
-                data = ["Item 1", "Item 2", "Item 3", "Item 4"];
+                data = ["Item 1", "Item 2", "Item 3", "Item 4"]
             }
             else {
                 /// We're already sectioned.  Make this a flat list

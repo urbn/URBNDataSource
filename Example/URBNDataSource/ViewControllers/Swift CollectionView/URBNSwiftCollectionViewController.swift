@@ -16,13 +16,13 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
 
         if let layout = collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.headerReferenceSize = CGSizeMake(300.0, 50.0);
-            layout.footerReferenceSize = CGSizeMake(300.0, 50.0);
+            layout.headerReferenceSize = CGSizeMake(300.0, 50.0)
+            layout.footerReferenceSize = CGSizeMake(300.0, 50.0)
         }
         
-        adapter = URBNArrayDataSourceAdapter(items: ["Item 1", "Item 2", "Item 3", "Item 4"]);
-        self.adapter?.fallbackDataSource = self;
-        self.adapter?.collectionView = collectionView;
+        adapter = URBNArrayDataSourceAdapter(items: ["Item 1", "Item 2", "Item 3", "Item 4"])
+        self.adapter?.fallbackDataSource = self
+        self.adapter?.collectionView = collectionView
         
         /// If all of your cell classes are unique, then you can just call regsiter cell with that class.
         /// The identifier will be the className
@@ -37,7 +37,7 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
             else {
                 let cellLabel = UILabel(frame: cell.contentView.bounds)
                 cellLabel.tag = 100
-                cellLabel.numberOfLines = 0;
+                cellLabel.numberOfLines = 0
                 cellLabel.backgroundColor = .clearColor()
                 cellLabel.font = UIFont.systemFontOfSize(30.0)
                 cellLabel.textColor = .blackColor()
@@ -70,7 +70,7 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
             else {
                 let cellLabel = UILabel(frame: cell.contentView.bounds)
                 cellLabel.tag = 100
-                cellLabel.numberOfLines = 0;
+                cellLabel.numberOfLines = 0
                 cellLabel.backgroundColor = .clearColor()
                 cellLabel.font = UIFont.systemFontOfSize(30.0)
                 cellLabel.textColor = .blackColor()
@@ -93,7 +93,7 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
             else {
                 let viewLabel = UILabel(frame: headerView.bounds)
                 viewLabel.tag = 100
-                viewLabel.numberOfLines = 0;
+                viewLabel.numberOfLines = 0
                 viewLabel.backgroundColor = .clearColor()
                 viewLabel.font = UIFont.systemFontOfSize(30.0)
                 viewLabel.textColor = .blackColor()
@@ -119,7 +119,7 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
             else {
                 let viewLabel = UILabel(frame: footerView.bounds)
                 viewLabel.tag = 100
-                viewLabel.numberOfLines = 0;
+                viewLabel.numberOfLines = 0
                 viewLabel.backgroundColor = .clearColor()
                 viewLabel.font = UIFont.systemFontOfSize(30.0)
                 viewLabel.textColor = .blackColor()
@@ -133,7 +133,7 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
         adapter?.cellIdentifierBlock = { (type, indexPath) -> String in
             let cellIdentifiers = [NSStringFromClass(UICollectionViewCell.self), NSStringFromClass(CustomCollectionCellFromNib.self), "My Identifier"]
             
-            return cellIdentifiers[(indexPath.item % cellIdentifiers.count)];
+            return cellIdentifiers[(indexPath.item % cellIdentifiers.count)]
         }
         
         collectionView?.dataSource = adapter
@@ -145,7 +145,7 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
         if let dsAdapter = adapter {
             if dsAdapter.isSectioned() {
                 /// We're not sectioned.  Let's make it sectioned
-                data = ["Item 1", "Item 2", "Item 3", "Item 4"];
+                data = ["Item 1", "Item 2", "Item 3", "Item 4"]
             }
             else {
                 /// We're already sectioned.  Make this a flat list

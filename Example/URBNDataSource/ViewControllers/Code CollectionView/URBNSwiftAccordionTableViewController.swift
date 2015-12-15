@@ -44,10 +44,10 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
         adapter?.registerAccordionHeaderViewClass(URBNAccordionHeader.self) { (view, object, section, expanded) in
             guard let accordionView = view as? URBNAccordionHeader else { return }
             guard let itemText = object as? String else { return }
-           // guard let expanded = expanded as? Bool else { return }
             
-            accordionView.catLabel.text = itemText;
+            accordionView.catLabel.text = itemText
             accordionView.expanded = expanded
+            
             accordionView.tappedAction = { [unowned self] in
                 self.adapter?.toggleSection(section)
             }
@@ -55,8 +55,8 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
         
         adapter?.sectionsToKeepOpen = NSIndexSet.init(index: 0)
         
-        tableView.delegate = self.adapter;
-        tableView.dataSource = self.adapter;
+        tableView.delegate = self.adapter
+        tableView.dataSource = self.adapter
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -90,7 +90,7 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
                     _expanded = willExpand
                     
                     catLabel.textColor = expanded ? UIColor.greenColor() : UIColor.blueColor()
-                    line.hidden = expanded;
+                    line.hidden = expanded
                 }
             }
         }
