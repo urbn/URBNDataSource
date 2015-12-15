@@ -3,5 +3,6 @@
 //
 
 #import <URBNDataSource/URBNArrayDataSourceAdapter.h>
+#import <URBNDataSource/URBNAccordionDataSourceAdapter.h>
 #import "URBNCodeTableViewController.h"
 #import "URBNCodeCollectionViewController.h"

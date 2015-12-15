@@ -11,6 +11,7 @@
 		45ADDCA11AB60A36005E4C21 /* URBNAccordionCollectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 45ADDCA01AB60A36005E4C21 /* URBNAccordionCollectionVC.m */; };
 		460A74631C1F65A300C170E0 /* URBNSwiftCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460A74621C1F65A300C170E0 /* URBNSwiftCollectionViewController.swift */; };
 		4696C3911C19FDF800484EE0 /* URBNSwiftTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4696C3901C19FDF800484EE0 /* URBNSwiftTableViewController.swift */; };
+		46BB255D1C2094EA00B4FC22 /* URBNSwiftAccordionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BB255C1C2094EA00B4FC22 /* URBNSwiftAccordionTableViewController.swift */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -57,6 +58,7 @@
 		460A74621C1F65A300C170E0 /* URBNSwiftCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URBNSwiftCollectionViewController.swift; path = "URBNDataSource/ViewControllers/Swift CollectionView/URBNSwiftCollectionViewController.swift"; sourceTree = SOURCE_ROOT; };
 		4696C3901C19FDF800484EE0 /* URBNSwiftTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URBNSwiftTableViewController.swift; path = "URBNDataSource/ViewControllers/Swift TableView/URBNSwiftTableViewController.swift"; sourceTree = SOURCE_ROOT; };
 		4696C3921C1A086B00484EE0 /* URBNDataSource-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "URBNDataSource-Bridging-Header.h"; sourceTree = "<group>"; };
+		46BB255C1C2094EA00B4FC22 /* URBNSwiftAccordionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URBNSwiftAccordionTableViewController.swift; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* URBNDataSource.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = URBNDataSource.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -152,6 +154,15 @@
 			);
 			name = "Swift TableView";
 			path = "ViewControllers/Code TableView";
+			sourceTree = "<group>";
+		};
+		46BB255B1C20949100B4FC22 /* Swift Accordion TableView */ = {
+			isa = PBXGroup;
+			children = (
+				46BB255C1C2094EA00B4FC22 /* URBNSwiftAccordionTableViewController.swift */,
+			);
+			name = "Swift Accordion TableView";
+			path = "ViewControllers/Code CollectionView";
 			sourceTree = "<group>";
 		};
 		6003F581195388D10070C39A = {
@@ -278,8 +289,9 @@
 				D849C6BE1A1A5CDD00E140DA /* Prototype TableView */,
 				D86D97EE1A13E9330054EEE2 /* Code TableView */,
 				4696C38E1C19F9FE00484EE0 /* Swift TableView */,
-				D86D97EB1A13E9330054EEE2 /* Code CollectionView */,
 				460A74611C1F64A400C170E0 /* Swift CollectionView */,
+				46BB255B1C20949100B4FC22 /* Swift Accordion TableView */,
+				D86D97EB1A13E9330054EEE2 /* Code CollectionView */,
 				458B18521AB5076100B5169E /* Code Accordion TableView */,
 				45ADDC9E1AB60A36005E4C21 /* Code Accordion CollectionView */,
 			);
@@ -508,6 +520,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D86D97F11A13E9330054EEE2 /* URBNCodeCollectionViewController.m in Sources */,
+				46BB255D1C2094EA00B4FC22 /* URBNSwiftAccordionTableViewController.swift in Sources */,
 				4696C3911C19FDF800484EE0 /* URBNSwiftTableViewController.swift in Sources */,
 				D849C6C11A1A5D0F00E140DA /* URBNProtoTableViewController.m in Sources */,
 				D849C6C51A1A7B3100E140DA /* URBNProtoCollectionViewController.m in Sources */,
