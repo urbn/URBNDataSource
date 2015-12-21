@@ -113,17 +113,17 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
             contentView.addSubview(catLabel)
             
             let metrics = ["fifteenPadding":15]
-
-            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-fifteenPadding-[catLabel]", options: [], metrics:metrics, views: ["catLabel": catLabel]))
-            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[catLabel]|", options: [], metrics:metrics, views: ["catLabel": catLabel]))
+            
+            NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-fifteenPadding-[catLabel]", options: [], metrics:metrics, views: ["catLabel": catLabel]))
+            NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[catLabel]|", options: [], metrics:metrics, views: ["catLabel": catLabel]))
             
             expandedImgV.highlightedImage = UIImage(named:"shop-category-minus")
             expandedImgV.translatesAutoresizingMaskIntoConstraints = false
             expandedImgV.contentMode = .ScaleAspectFit
             contentView.addSubview(expandedImgV)
             
-            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[expandedImgV]-fifteenPadding-|", options: [], metrics:metrics, views: ["expandedImgV": expandedImgV]))
-            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[expandedImgV]|", options: [], metrics:metrics, views: ["expandedImgV": expandedImgV]))
+            NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[expandedImgV]-fifteenPadding-|", options: [], metrics:metrics, views: ["expandedImgV": expandedImgV]))
+            NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[expandedImgV]|", options: [], metrics:metrics, views: ["expandedImgV": expandedImgV]))
         
             let tap = UITapGestureRecognizer.init(target: self, action: "tapped:")
             tap.numberOfTapsRequired = 1
@@ -134,8 +134,8 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
             line.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview(line)
             
-            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[line]|", options: [], metrics:metrics, views: ["line": line]))
-            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[line(==0.5)]|", options: [], metrics:metrics, views: ["line": line]))
+            NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[line]|", options: [], metrics:metrics, views: ["line": line]))
+            NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[line(==0.5)]|", options: [], metrics:metrics, views: ["line": line]))
         }
 
         required init?(coder aDecoder: NSCoder) {
