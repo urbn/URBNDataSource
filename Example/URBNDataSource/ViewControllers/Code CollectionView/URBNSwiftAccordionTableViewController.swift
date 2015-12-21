@@ -11,9 +11,19 @@ import UIKit
 typealias CellTappedBlock = () -> Void
 
 class URBNSwiftAccordionTableViewController: UITableViewController {
-    
-    var adapter: URBNAccordionDataSourceAdapter?
-    @IBOutlet var stepper: UIStepper?
+
+    lazy var adapter: URBNAccordionDataSourceAdapter = {
+        var items = [[String]]()
+        var sections = [String]()
+        for i in 0...5 {
+            sections.append("Section " + String(i))
+            items.append(["Item 0", "Item 1", "Item 2", "Item 3", "Item 4"])
+        }
+        
+        return URBNAccordionDataSourceAdapter.init(sectionObjects: sections, andItems: items)
+    }()
+
+    @IBOutlet var stepper: UIStepper!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,23 +35,22 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
             items.append(["Item 0", "Item 1", "Item 2", "Item 3", "Item 4"])
         }
         
-        stepper?.value = Double(sections.count)
-        
-        adapter = URBNAccordionDataSourceAdapter.init(sectionObjects: sections, andItems: items)
-        adapter?.fallbackDataSource = self
-        adapter?.tableView = tableView
-        adapter?.allowMultipleExpandedSections = true
+        stepper.value = Double(sections.count)
+
+        adapter.fallbackDataSource = self
+        adapter.tableView = tableView
+        adapter.allowMultipleExpandedSections = true
         
         /// If all of your cell classes are unique, then you can just call regsiter cell with that class.
         /// The identifier will be the className
-        adapter?.registerCellClass(UITableViewCell.self) { (cell, object, indexPath) in
+        adapter.registerCellClass(UITableViewCell.self) { (cell, object, indexPath) in
             guard let cell = cell as? UITableViewCell else { return }
             guard let object = object as? String else { return }
             
             cell.textLabel?.text = object
         }
 
-        adapter?.registerAccordionHeaderViewClass(URBNAccordionHeader.self) { (view, object, section, expanded) in
+        adapter.registerAccordionHeaderViewClass(URBNAccordionHeader.self) { (view, object, section, expanded) in
             guard let accordionView = view as? URBNAccordionHeader else { return }
             guard let itemText = object as? String else { return }
             
@@ -49,11 +58,11 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
             accordionView.expanded = expanded
             
             accordionView.tappedAction = { [unowned self] in
-                self.adapter?.toggleSection(section)
+                self.adapter.toggleSection(section)
             }
         }
         
-        adapter?.sectionsToKeepOpen = NSIndexSet.init(index: 0)
+        adapter.sectionsToKeepOpen = NSIndexSet.init(index: 0)
         
         tableView.delegate = self.adapter
         tableView.dataSource = self.adapter
@@ -64,13 +73,12 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
     }
     
     @IBAction func stepperPressed(sender: UIStepper) {
-        if let sectionCount = self.adapter?.allSections().count {
-            if (Int(sender.value) > sectionCount) {
-                adapter?.appendSectionObject("Section " + String(sectionCount), items: ["Item A", "Item B", "Item C", "Item D", "Item E"])
-            }
-            else {
-                adapter?.removeLastSection()
-            }
+        let sectionCount = self.adapter.allSections().count
+        if (Int(sender.value) > sectionCount) {
+            adapter.appendSectionObject("Section " + String(sectionCount), items: ["Item A", "Item B", "Item C", "Item D", "Item E"])
+        }
+        else {
+            adapter.removeLastSection()
         }
     }
 
