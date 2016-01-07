@@ -371,7 +371,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
 
 - (NSString *)identifierForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString *identifier = nil;
-    
+
     if (self.cellIdentifierBlock) {
         identifier = self.cellIdentifierBlock([self itemAtIndexPath:indexPath], indexPath);
     }

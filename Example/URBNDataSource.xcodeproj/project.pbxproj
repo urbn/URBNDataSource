@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		458B18511AB5074600B5169E /* URBNAccordionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458B18501AB5074600B5169E /* URBNAccordionTableViewController.m */; };
 		45ADDCA11AB60A36005E4C21 /* URBNAccordionCollectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 45ADDCA01AB60A36005E4C21 /* URBNAccordionCollectionVC.m */; };
+		460A74631C1F65A300C170E0 /* URBNSwiftCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460A74621C1F65A300C170E0 /* URBNSwiftCollectionViewController.swift */; };
+		4696C3911C19FDF800484EE0 /* URBNSwiftTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4696C3901C19FDF800484EE0 /* URBNSwiftTableViewController.swift */; };
+		46BB255D1C2094EA00B4FC22 /* URBNSwiftAccordionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BB255C1C2094EA00B4FC22 /* URBNSwiftAccordionTableViewController.swift */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -52,6 +55,10 @@
 		458B18501AB5074600B5169E /* URBNAccordionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = URBNAccordionTableViewController.m; path = "ViewControllers/Code Accordion TableView/URBNAccordionTableViewController.m"; sourceTree = "<group>"; };
 		45ADDC9F1AB60A36005E4C21 /* URBNAccordionCollectionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URBNAccordionCollectionVC.h; sourceTree = "<group>"; };
 		45ADDCA01AB60A36005E4C21 /* URBNAccordionCollectionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URBNAccordionCollectionVC.m; sourceTree = "<group>"; };
+		460A74621C1F65A300C170E0 /* URBNSwiftCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URBNSwiftCollectionViewController.swift; path = "URBNDataSource/ViewControllers/Swift CollectionView/URBNSwiftCollectionViewController.swift"; sourceTree = SOURCE_ROOT; };
+		4696C3901C19FDF800484EE0 /* URBNSwiftTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URBNSwiftTableViewController.swift; path = "URBNDataSource/ViewControllers/Swift TableView/URBNSwiftTableViewController.swift"; sourceTree = SOURCE_ROOT; };
+		4696C3921C1A086B00484EE0 /* URBNDataSource-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "URBNDataSource-Bridging-Header.h"; sourceTree = "<group>"; };
+		46BB255C1C2094EA00B4FC22 /* URBNSwiftAccordionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URBNSwiftAccordionTableViewController.swift; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* URBNDataSource.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = URBNDataSource.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -131,6 +138,33 @@
 			path = "ViewControllers/Code Accordion CollectionView";
 			sourceTree = "<group>";
 		};
+		460A74611C1F64A400C170E0 /* Swift CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				460A74621C1F65A300C170E0 /* URBNSwiftCollectionViewController.swift */,
+			);
+			name = "Swift CollectionView";
+			path = "ViewControllers/Code CollectionView";
+			sourceTree = "<group>";
+		};
+		4696C38E1C19F9FE00484EE0 /* Swift TableView */ = {
+			isa = PBXGroup;
+			children = (
+				4696C3901C19FDF800484EE0 /* URBNSwiftTableViewController.swift */,
+			);
+			name = "Swift TableView";
+			path = "ViewControllers/Code TableView";
+			sourceTree = "<group>";
+		};
+		46BB255B1C20949100B4FC22 /* Swift Accordion TableView */ = {
+			isa = PBXGroup;
+			children = (
+				46BB255C1C2094EA00B4FC22 /* URBNSwiftAccordionTableViewController.swift */,
+			);
+			name = "Swift Accordion TableView";
+			path = "ViewControllers/Code CollectionView";
+			sourceTree = "<group>";
+		};
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
@@ -181,6 +215,7 @@
 		6003F594195388D20070C39A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4696C3921C1A086B00484EE0 /* URBNDataSource-Bridging-Header.h */,
 				6003F595195388D20070C39A /* URBNDataSource-Info.plist */,
 				6003F596195388D20070C39A /* InfoPlist.strings */,
 				6003F599195388D20070C39A /* main.m */,
@@ -253,6 +288,9 @@
 				D849C6C21A1A7B0F00E140DA /* Prototype CollectionView */,
 				D849C6BE1A1A5CDD00E140DA /* Prototype TableView */,
 				D86D97EE1A13E9330054EEE2 /* Code TableView */,
+				4696C38E1C19F9FE00484EE0 /* Swift TableView */,
+				460A74611C1F64A400C170E0 /* Swift CollectionView */,
+				46BB255B1C20949100B4FC22 /* Swift Accordion TableView */,
 				D86D97EB1A13E9330054EEE2 /* Code CollectionView */,
 				458B18521AB5076100B5169E /* Code Accordion TableView */,
 				45ADDC9E1AB60A36005E4C21 /* Code Accordion CollectionView */,
@@ -482,6 +520,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D86D97F11A13E9330054EEE2 /* URBNCodeCollectionViewController.m in Sources */,
+				46BB255D1C2094EA00B4FC22 /* URBNSwiftAccordionTableViewController.swift in Sources */,
+				4696C3911C19FDF800484EE0 /* URBNSwiftTableViewController.swift in Sources */,
 				D849C6C11A1A5D0F00E140DA /* URBNProtoTableViewController.m in Sources */,
 				D849C6C51A1A7B3100E140DA /* URBNProtoCollectionViewController.m in Sources */,
 				D86D97F21A13E9330054EEE2 /* URBNCodeTableViewController.m in Sources */,
@@ -489,6 +529,7 @@
 				6003F59E195388D20070C39A /* URBNAppDelegate.m in Sources */,
 				458B18511AB5074600B5169E /* URBNAccordionTableViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				460A74631C1F65A300C170E0 /* URBNSwiftCollectionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,6 +589,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEFINES_MODULE = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -566,6 +608,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "URBNDataSource-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -588,6 +631,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				DEFINES_MODULE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -598,6 +642,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "URBNDataSource-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -609,11 +654,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "URBNDataSource/URBNDataSource-Prefix.pch";
 				INFOPLIST_FILE = "URBNDataSource/URBNDataSource-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "URBNDataSource/URBNDataSource-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -624,11 +674,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "URBNDataSource/URBNDataSource-Prefix.pch";
 				INFOPLIST_FILE = "URBNDataSource/URBNDataSource-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "URBNDataSource/URBNDataSource-Bridging-Header.h";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
