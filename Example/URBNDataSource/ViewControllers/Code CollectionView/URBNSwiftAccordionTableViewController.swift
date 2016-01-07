@@ -20,7 +20,7 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
             items.append(["Item 0", "Item 1", "Item 2", "Item 3", "Item 4"])
         }
         
-        return URBNAccordionDataSourceAdapter.init(sectionObjects: sections, andItems: items)
+        return URBNAccordionDataSourceAdapter(sectionObjects: sections, andItems: items)
     }()
 
     @IBOutlet var stepper: UIStepper!
@@ -44,16 +44,20 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
         /// If all of your cell classes are unique, then you can just call regsiter cell with that class.
         /// The identifier will be the className
         adapter.registerCellClass(UITableViewCell.self) { (cell, object, indexPath) in
-            guard let cell = cell as? UITableViewCell else { return }
-            guard let object = object as? String else { return }
+            guard let cell = cell as? UITableViewCell,
+            let object = object as? String else {
+                return
+            }
             
             cell.textLabel?.text = object
         }
 
         adapter.registerAccordionHeaderViewClass(URBNAccordionHeader.self) { (view, object, section, expanded) in
-            guard let accordionView = view as? URBNAccordionHeader else { return }
-            guard let itemText = object as? String else { return }
-            
+            guard let accordionView = view as? URBNAccordionHeader,
+            let itemText = object as? String else {
+                return
+            }
+
             accordionView.catLabel.text = itemText
             accordionView.expanded = expanded
             
@@ -62,7 +66,7 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
             }
         }
         
-        adapter.sectionsToKeepOpen = NSIndexSet.init(index: 0)
+        adapter.sectionsToKeepOpen = NSIndexSet(index: 0)
         
         tableView.delegate = self.adapter
         tableView.dataSource = self.adapter
@@ -86,7 +90,7 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
         let catLabel = UILabel()
         var tappedAction:CellTappedBlock?
         let line = UIView()
-        let expandedImgV = UIImageView.init(image: UIImage(named:"shop-category-plus"))
+        let expandedImgV = UIImageView(image: UIImage(named:"shop-category-plus"))
 
         var _expanded = false
         var expanded : Bool {
@@ -125,7 +129,7 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
             NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[expandedImgV]-fifteenPadding-|", options: [], metrics:metrics, views: ["expandedImgV": expandedImgV]))
             NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[expandedImgV]|", options: [], metrics:metrics, views: ["expandedImgV": expandedImgV]))
         
-            let tap = UITapGestureRecognizer.init(target: self, action: "tapped:")
+            let tap = UITapGestureRecognizer(target: self, action: "tapped:")
             tap.numberOfTapsRequired = 1
             tap.numberOfTouchesRequired = 1
             addGestureRecognizer(tap)

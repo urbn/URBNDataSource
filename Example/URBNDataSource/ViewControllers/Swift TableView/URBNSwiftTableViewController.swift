@@ -30,8 +30,10 @@ class URBNSwiftTableViewController: UITableViewController {
         /// If all of your cell classes are unique, then you can just call regsiter cell with that class.
         /// The identifier will be the className
         adapter.registerCellClass(UITableViewCell.self) { (cell, object, indexPath) in
-            guard let cell = cell as? UITableViewCell else { return }
-            guard let object = object as? String else { return }
+            guard let cell = cell as? UITableViewCell,
+            let object = object as? String else {
+                return
+            }
             
             cell.textLabel?.text = object
         }
@@ -39,8 +41,10 @@ class URBNSwiftTableViewController: UITableViewController {
         /// Since this is a different subclass than the UITableViewCell we're doing above, there's no need to supply an identifier
         /// Since this Cell has a nib file, it will be instantiated from that nib as well.
         adapter.registerCellClass(CustomTableCellFromNib.self) { (cell, object, indexPath) in
-            guard let cell = cell as? CustomTableCellFromNib else { return }
-            guard let object = object as? String else { return }
+            guard let cell = cell as? CustomTableCellFromNib,
+            let object = object as? String else {
+                return
+            }
             
             cell.textLabel?.text = object
             cell.detailTextLabel?.text = cell.reuseIdentifier
@@ -48,8 +52,10 @@ class URBNSwiftTableViewController: UITableViewController {
         
         /// Since we've registered an `UITableViewCell` above, we should supply an identifier for this cell
         adapter.registerCellClass(UITableViewCell.self, withIdentifier: "My Identifier") { (cell, object, indexPath) in
-            guard let cell = cell as? UITableViewCell else { return }
-            guard let object = object as? String else { return }
+            guard let cell = cell as? UITableViewCell,
+            let object = object as? String else {
+                return
+            }
             
             cell.textLabel?.textColor = .redColor()
             cell.textLabel?.text = object

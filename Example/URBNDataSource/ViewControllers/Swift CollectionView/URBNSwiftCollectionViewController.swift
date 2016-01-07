@@ -28,8 +28,10 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
         /// If all of your cell classes are unique, then you can just call regsiter cell with that class.
         /// The identifier will be the className
         adapter.registerCellClass(UICollectionViewCell.self) { (cell, object, indexPath) in
-            guard let cell = cell as? UICollectionViewCell else { return }
-            guard let object = object as? String else { return }
+            guard let cell = cell as? UICollectionViewCell,
+            let object = object as? String else {
+                return
+            }
             
             cell.backgroundColor = UIColor.cyanColor().colorWithAlphaComponent(0.8)
             if let cellLabel = cell.viewWithTag(100) as? UILabel {
@@ -51,8 +53,10 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
         /// Since this is a different subclass than the UICollectionViewCell we're doing above, there's no need to supply an identifier
         /// Since this Cell has a nib file, it will be instantiated from that nib as well.
         adapter.registerCellClass(CustomCollectionCellFromNib.self) { (cell, object, indexPath) in
-            guard let cell = cell as? CustomCollectionCellFromNib else { return }
-            guard let object = object as? String else { return }
+            guard let cell = cell as? CustomCollectionCellFromNib,
+            let object = object as? String else {
+                return
+            }
             
             if let cellLabel = cell.label {
                  cellLabel.text = "Custom Cell " + object
@@ -61,8 +65,10 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
         
         /// Since we've registered an `UICollectionViewCell` above, we should supply an identifier for this cell
         adapter.registerCellClass(UICollectionViewCell.self, withIdentifier: "My Identifier") { (cell, object, indexPath) in
-            guard let cell = cell as? UICollectionViewCell else { return }
-            guard let object = object as? String else { return }
+            guard let cell = cell as? UICollectionViewCell,
+            let object = object as? String else {
+                return
+            }
             
             cell.backgroundColor = UIColor.redColor().colorWithAlphaComponent(0.8)
             if let cellLabel = cell.viewWithTag(100) as? UILabel {
