@@ -7,8 +7,7 @@
 //
 
 #import "URBNCodeTableViewController.h"
-#import <URBNDataSource/URBNArrayDataSourceAdapter.h>
-
+@import URBNDataSource;
 
 @interface URBNCodeTableViewController()
 @property (nonatomic, strong) URBNArrayDataSourceAdapter *adapter;

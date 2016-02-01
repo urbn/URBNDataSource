@@ -7,8 +7,7 @@
 //
 
 @import XCTest;
-#import <URBNDataSource/URBNArrayDataSourceAdapter.h>
-#import <URBNDataSource/URBNAccordionDataSourceAdapter.h>
+@import URBNDataSource;
 
 @interface BaseTests : XCTestCase @end
 @implementation BaseTests

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import URBNDataSource
+
 
 class URBNSwiftTableViewController: UITableViewController {
     
@@ -29,6 +31,8 @@ class URBNSwiftTableViewController: UITableViewController {
         
         /// If all of your cell classes are unique, then you can just call regsiter cell with that class.
         /// The identifier will be the className
+        //adapter.regi
+        
         adapter.registerCellClass(UITableViewCell.self) { (cell, object, indexPath) in
             guard let cell = cell as? UITableViewCell,
             let object = object as? String else {

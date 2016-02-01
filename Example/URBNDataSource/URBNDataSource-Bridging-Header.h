@@ -2,7 +2,3 @@
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
 
-#import <URBNDataSource/URBNArrayDataSourceAdapter.h>
-#import <URBNDataSource/URBNAccordionDataSourceAdapter.h>
-#import "URBNCodeTableViewController.h"
-#import "URBNCodeCollectionViewController.h"
