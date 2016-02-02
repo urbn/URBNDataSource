@@ -7,7 +7,7 @@
 //
 
 #import "URBNProtoCollectionViewController.h"
-#import <URBNDataSource/URBNArrayDataSourceAdapter.h>
+#import <UDS/URBNArrayDataSourceAdapter.h>
 
 NSString * const kProtoCollectionViewCell1_ID           = @"kProtoCollectionViewCell1_ID";
 NSString * const kProtoCollectionViewCell2_ID           = @"kProtoCollectionViewCell2_ID";

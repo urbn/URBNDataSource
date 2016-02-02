@@ -4,6 +4,6 @@
 #import "URBNArrayDataSourceAdapter.h"
 #import "URBNDataSourceAdapter.h"
 
-FOUNDATION_EXPORT double URBNDataSourceVersionNumber;
-FOUNDATION_EXPORT const unsigned char URBNDataSourceVersionString[];
+FOUNDATION_EXPORT double UDSVersionNumber;
+FOUNDATION_EXPORT const unsigned char UDSVersionString[];
 

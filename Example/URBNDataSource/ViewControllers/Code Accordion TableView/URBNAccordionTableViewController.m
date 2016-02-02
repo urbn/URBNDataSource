@@ -7,7 +7,7 @@
 //
 
 #import "URBNAccordionTableViewController.h"
-@import URBNDataSource;
+@import UDS;
 
 @interface URBNAccordionHeader : UITableViewHeaderFooterView
 

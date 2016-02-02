@@ -15,5 +15,6 @@
     "ios": "8.0"
   },
   "requires_arc": true,
+  "header_dir": "UDS",
   "source_files": "Pod/Classes"
 }

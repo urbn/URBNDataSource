@@ -7,7 +7,7 @@
 //
 
 #import "URBNAccordionCollectionVC.h"
-#import <URBNDataSource/URBNAccordionDataSourceAdapter.h>
+#import <UDS/URBNAccordionDataSourceAdapter.h>
 
 @interface URBNAccordionCVHeader : UICollectionReusableView
 
