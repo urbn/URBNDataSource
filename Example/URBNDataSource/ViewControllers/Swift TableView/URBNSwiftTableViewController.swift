@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import URBNDataSource
+import UDS
 
 
 class URBNSwiftTableViewController: UITableViewController {
@@ -28,19 +28,11 @@ class URBNSwiftTableViewController: UITableViewController {
         adapter.fallbackDataSource = self
         adapter.tableView = tableView
         adapter.autoSizingEnabled = true
-        
+        adapter.registerUpdatable { (cell: UITableViewCell, object: NSString, ip) -> () in
+            cell.textLabel?.text = object as String
+        }
         /// If all of your cell classes are unique, then you can just call regsiter cell with that class.
         /// The identifier will be the className
-        //adapter.regi
-        
-        adapter.registerCellClass(UITableViewCell.self) { (cell, object, indexPath) in
-            guard let cell = cell as? UITableViewCell,
-            let object = object as? String else {
-                return
-            }
-            
-            cell.textLabel?.text = object
-        }
         
         /// Since this is a different subclass than the UITableViewCell we're doing above, there's no need to supply an identifier
         /// Since this Cell has a nib file, it will be instantiated from that nib as well.

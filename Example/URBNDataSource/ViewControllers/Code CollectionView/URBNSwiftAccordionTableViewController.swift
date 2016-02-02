@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import URBNDataSource
+import UDS
 
 typealias CellTappedBlock = () -> Void
 

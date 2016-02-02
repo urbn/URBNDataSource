@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '3776EFD0158187BA84D7608B'
+               BlueprintIdentifier = '80E4AC118A6A2F77459A00B3'
                BlueprintName = 'URBNDataSource'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'UDS.framework'>

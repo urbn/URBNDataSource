@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import URBNDataSource
+import UDS
 
 class URBNSwiftCollectionViewController: UICollectionViewController {
 
