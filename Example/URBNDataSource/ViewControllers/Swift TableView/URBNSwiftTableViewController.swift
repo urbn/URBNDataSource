@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import UDS
+import URBNDataSource
 
 
 class URBNSwiftTableViewController: UITableViewController {

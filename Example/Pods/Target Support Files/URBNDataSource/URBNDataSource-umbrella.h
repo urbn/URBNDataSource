@@ -1,10 +1,10 @@
 #import <UIKit/UIKit.h>
 
-#import "UDS.h"
 #import "URBNAccordionDataSourceAdapter.h"
 #import "URBNArrayDataSourceAdapter.h"
+#import "URBNDataSource.h"
 #import "URBNDataSourceAdapter.h"
 
-FOUNDATION_EXPORT double UDSVersionNumber;
-FOUNDATION_EXPORT const unsigned char UDSVersionString[];
+FOUNDATION_EXPORT double URBNDataSourceVersionNumber;
+FOUNDATION_EXPORT const unsigned char URBNDataSourceVersionString[];
 

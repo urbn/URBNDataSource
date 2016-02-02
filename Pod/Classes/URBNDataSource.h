@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "URBNArrayDataSourceAdapter.h"
 
-@interface UDS : NSObject
+@interface URBNDataSource : NSObject
 
 @end

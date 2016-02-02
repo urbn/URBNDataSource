@@ -18,6 +18,5 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, '8.0'
   s.requires_arc = true
-  s.header_dir = 'UDS'
   s.source_files = 'Pod/Classes'
 end

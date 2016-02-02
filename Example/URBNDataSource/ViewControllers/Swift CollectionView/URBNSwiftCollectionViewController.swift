@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import UDS
+import URBNDataSource
 
 class URBNSwiftCollectionViewController: UICollectionViewController {
 
@@ -25,7 +25,9 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
         
         self.adapter.fallbackDataSource = self
         self.adapter.collectionView = collectionView
-        
+        adapter.registerUpdatable { (cell: UICollectionViewCell, data: NSString, indexPath) -> () in
+            
+        }
         /// If all of your cell classes are unique, then you can just call regsiter cell with that class.
         /// The identifier will be the className
         adapter.registerCellClass(UICollectionViewCell.self) { (cell, object, indexPath) in

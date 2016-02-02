@@ -1,4 +1,4 @@
-framework module UDS {
+framework module URBNDataSource {
   umbrella header "URBNDataSource-umbrella.h"
 
   export *
