@@ -28,7 +28,7 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
 
         /// If all of your cell classes are unique, then you can just call regsiter cell with that class.
         /// The identifier will be the className
-        adapter.registerUpdatable { (cell: UICollectionViewCell, data: NSString, indexPath) -> () in
+        adapter.registerCell { (cell: UICollectionViewCell, data: NSString, indexPath) -> () in
             cell.backgroundColor = UIColor.cyanColor().colorWithAlphaComponent(0.8)
             if let cellLabel = cell.viewWithTag(100) as? UILabel {
                 cellLabel.text = data as String
@@ -48,12 +48,12 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
         
         /// Since this is a different subclass than the UICollectionViewCell we're doing above, there's no need to supply an identifier
         /// Since this Cell has a nib file, it will be instantiated from that nib as well.
-        adapter.registerUpdatable { (cell: CustomCollectionCellFromNib, data: NSString, indexPath) -> () in
+        adapter.registerCell { (cell: CustomCollectionCellFromNib, data: NSString, indexPath) -> () in
             cell.label?.text = "Custom Cell " + (data as String)
         }
         
         /// Since we've registered an `UICollectionViewCell` above, we should supply an identifier for this cell
-        adapter.registerUpdatable("My Identifier") { (cell: UICollectionViewCell, data: NSString, indexPath) in
+        adapter.registerCell("My Identifier") { (cell: UICollectionViewCell, data: NSString, indexPath) in
             cell.backgroundColor = UIColor.redColor().colorWithAlphaComponent(0.8)
             if let cellLabel = cell.viewWithTag(100) as? UILabel {
                 cellLabel.text = data as String
