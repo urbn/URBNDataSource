@@ -4,6 +4,6 @@ target 'Example', :exclusive => true do
   pod "URBNDataSource", :path => "../"
 end
 
-target 'Tests', :exclusive => true do
+target 'ExampleTests', :exclusive => true do
   pod "URBNDataSource", :path => "../"
 end
