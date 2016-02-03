@@ -47,7 +47,7 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
         adapter.registerUpdatable { (cell: UITableViewCell, object: NSString, indexPath) in
             cell.textLabel?.text = object as String
         }
-
+        
         adapter.registerAccordionHeaderViewClass(URBNAccordionHeader.self) { (view, object, section, expanded) in
             guard let accordionView = view as? URBNAccordionHeader,
             let itemText = object as? String else {

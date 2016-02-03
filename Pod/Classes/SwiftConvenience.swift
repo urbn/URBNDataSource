@@ -20,7 +20,15 @@ extension URBNDataSourceAdapter {
         }
     }
     
-    public func registerSupplementaryUpdatable<VIEW: UITableViewHeaderFooterView>(kind: URBNSupplementaryViewType,configurationBlock: (view: VIEW, kind: URBNSupplementaryViewType, NSIndexPath) -> ()) {
+    public func registerFooterView<VIEW: UIView>(configurationBlock: (view: VIEW, kind: URBNSupplementaryViewType, NSIndexPath) -> ()) {
+        registerSupplementaryUpdatable(.Footer, configurationBlock: configurationBlock)
+    }
+    
+    public func registerHeaderView<VIEW: UIView>(configurationBlock: (view: VIEW, kind: URBNSupplementaryViewType, NSIndexPath) -> ()) {
+        registerSupplementaryUpdatable(.Header, configurationBlock: configurationBlock)
+    }
+    
+    public func registerSupplementaryUpdatable<VIEW: UIView>(kind: URBNSupplementaryViewType,configurationBlock: (view: VIEW, kind: URBNSupplementaryViewType, NSIndexPath) -> ()) {
         registerSupplementaryViewClass(VIEW.self, ofKind: kind) { (view, kind, ip) -> Void in
             guard let view = view as? VIEW else {
                 assertionFailure("Incorrect Types passed to DataSource. WHAT IS HAPPENING?")
