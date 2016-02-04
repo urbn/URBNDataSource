@@ -28,23 +28,23 @@ class URBNSwiftTableViewController: UITableViewController {
         adapter.fallbackDataSource = self
         adapter.tableView = tableView
         adapter.autoSizingEnabled = true
-        adapter.registerCell { (cell: UITableViewCell, object: String, ip) -> () in
-            cell.textLabel?.text = object
+        adapter.registerCell { (cell: UITableViewCell, object: NSString, ip) -> () in
+            cell.textLabel?.text = object as String
         }
         /// If all of your cell classes are unique, then you can just call regsiter cell with that class.
         /// The identifier will be the className
         
         /// Since this is a different subclass than the UITableViewCell we're doing above, there's no need to supply an identifier
         /// Since this Cell has a nib file, it will be instantiated from that nib as well.
-        adapter.registerCell { (cell: CustomTableCellFromNib, object: String, ip) -> () in
-            cell.textLabel?.text = object
+        adapter.registerCell { (cell: CustomTableCellFromNib, object: NSString, ip) -> () in
+            cell.textLabel?.text = object as String
             cell.detailTextLabel?.text = cell.reuseIdentifier
         }
         
         /// Since we've registered an `UITableViewCell` above, we should supply an identifier for this cell
-        adapter.registerCell("My Identifier") { (cell: UITableViewCell, object: String, ip) -> () in
+        adapter.registerCell("My Identifier") { (cell: UITableViewCell, object: NSString, ip) -> () in
             cell.textLabel?.textColor = .redColor()
-            cell.textLabel?.text = object
+            cell.textLabel?.text = object as String
         }
         
         /// Here we're registering a reuseableTableHeaderView for our section headers.  Pretty sweet

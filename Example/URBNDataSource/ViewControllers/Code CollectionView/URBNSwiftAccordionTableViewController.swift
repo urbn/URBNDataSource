@@ -44,8 +44,8 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
         
         /// If all of your cell classes are unique, then you can just call regsiter cell with that class.
         /// The identifier will be the className
-        adapter.registerCell { (cell: UITableViewCell, object: String, indexPath) in
-            cell.textLabel?.text = object
+        adapter.registerCell { (cell: UITableViewCell, object: NSString, indexPath) in
+            cell.textLabel?.text = object as String
         }
         
         adapter.registerAccordionHeaderViewClass(URBNAccordionHeader.self) { (view, object, section, expanded) in

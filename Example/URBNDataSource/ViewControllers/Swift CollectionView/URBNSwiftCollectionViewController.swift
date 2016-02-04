@@ -28,10 +28,10 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
 
         /// If all of your cell classes are unique, then you can just call regsiter cell with that class.
         /// The identifier will be the className
-        adapter.registerCell { (cell: UICollectionViewCell, data: String, indexPath) -> () in
+        adapter.registerCell { (cell: UICollectionViewCell, data: NSString, indexPath) -> () in
             cell.backgroundColor = UIColor.cyanColor().colorWithAlphaComponent(0.8)
             if let cellLabel = cell.viewWithTag(100) as? UILabel {
-                cellLabel.text = data
+                cellLabel.text = data as String
             }
             else {
                 let cellLabel = UILabel(frame: cell.contentView.bounds)
@@ -41,22 +41,22 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
                 cellLabel.font = UIFont.systemFontOfSize(30.0)
                 cellLabel.textColor = .blackColor()
                 cellLabel.textAlignment = .Center
-                cellLabel.text = data
+                cellLabel.text = data as String
                 cell.contentView.addSubview(cellLabel)
             }
         }
         
         /// Since this is a different subclass than the UICollectionViewCell we're doing above, there's no need to supply an identifier
         /// Since this Cell has a nib file, it will be instantiated from that nib as well.
-        adapter.registerCell { (cell: CustomCollectionCellFromNib, data: String, indexPath) -> () in
-            cell.label?.text = "Custom Cell " + data
+        adapter.registerCell { (cell: CustomCollectionCellFromNib, data: NSString, indexPath) -> () in
+            cell.label?.text = "Custom Cell " + (data as String)
         }
         
         /// Since we've registered an `UICollectionViewCell` above, we should supply an identifier for this cell
-        adapter.registerCell("My Identifier") { (cell: UICollectionViewCell, data: String, indexPath) in
+        adapter.registerCell("My Identifier") { (cell: UICollectionViewCell, data: NSString, indexPath) in
             cell.backgroundColor = UIColor.redColor().colorWithAlphaComponent(0.8)
             if let cellLabel = cell.viewWithTag(100) as? UILabel {
-                cellLabel.text = data
+                cellLabel.text = data as String
             }
             else {
                 let cellLabel = UILabel(frame: cell.contentView.bounds)
