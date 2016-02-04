@@ -10,7 +10,17 @@ import Foundation
 
 
 extension URBNDataSourceAdapter {
-    public func registerCell<CellElement: UIView, DataElement: AnyObject>(identifier: String = "\(CellElement.self)", configurationBlock: (CellElement, DataElement, NSIndexPath) -> ()) {
+    public func registerCell<CellElement: UIView, DataElement: AnyObject>(identifier: String = String(CellElement.self), configurationBlock: (CellElement, DataElement, NSIndexPath) -> ()) {
+        registerCellClass(CellElement.self, withIdentifier: identifier) { (cell, data, ip) -> Void in
+            guard let cell = cell as? CellElement, data = data as? DataElement else {
+                assertionFailure("Incorrect Types passed to DataSource. WHAT IS HAPPENING?")
+                return
+            }
+            configurationBlock(cell, data, ip)
+        }
+    }
+    
+    public func registerCell<CellElement: UIView, DataElement: _ObjectiveCBridgeable>(identifier: String = String(CellElement.self), configurationBlock: (CellElement, DataElement, NSIndexPath) -> ()) {
         registerCellClass(CellElement.self, withIdentifier: identifier) { (cell, data, ip) -> Void in
             guard let cell = cell as? CellElement, data = data as? DataElement else {
                 assertionFailure("Incorrect Types passed to DataSource. WHAT IS HAPPENING?")
