@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import URBNDataSource
 
 class URBNSwiftCollectionViewController: UICollectionViewController {
 
@@ -24,18 +25,13 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
         
         self.adapter.fallbackDataSource = self
         self.adapter.collectionView = collectionView
-        
+
         /// If all of your cell classes are unique, then you can just call regsiter cell with that class.
         /// The identifier will be the className
-        adapter.registerCellClass(UICollectionViewCell.self) { (cell, object, indexPath) in
-            guard let cell = cell as? UICollectionViewCell,
-            let object = object as? String else {
-                return
-            }
-            
+        adapter.registerCell { (cell: UICollectionViewCell, data: NSString, indexPath) -> () in
             cell.backgroundColor = UIColor.cyanColor().colorWithAlphaComponent(0.8)
             if let cellLabel = cell.viewWithTag(100) as? UILabel {
-                cellLabel.text = object
+                cellLabel.text = data as String
             }
             else {
                 let cellLabel = UILabel(frame: cell.contentView.bounds)
@@ -45,34 +41,22 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
                 cellLabel.font = UIFont.systemFontOfSize(30.0)
                 cellLabel.textColor = .blackColor()
                 cellLabel.textAlignment = .Center
-                cellLabel.text = object
+                cellLabel.text = data as String
                 cell.contentView.addSubview(cellLabel)
             }
         }
         
         /// Since this is a different subclass than the UICollectionViewCell we're doing above, there's no need to supply an identifier
         /// Since this Cell has a nib file, it will be instantiated from that nib as well.
-        adapter.registerCellClass(CustomCollectionCellFromNib.self) { (cell, object, indexPath) in
-            guard let cell = cell as? CustomCollectionCellFromNib,
-            let object = object as? String else {
-                return
-            }
-            
-            if let cellLabel = cell.label {
-                 cellLabel.text = "Custom Cell " + object
-            }
+        adapter.registerCell { (cell: CustomCollectionCellFromNib, data: NSString, indexPath) -> () in
+            cell.label?.text = "Custom Cell " + (data as String)
         }
         
         /// Since we've registered an `UICollectionViewCell` above, we should supply an identifier for this cell
-        adapter.registerCellClass(UICollectionViewCell.self, withIdentifier: "My Identifier") { (cell, object, indexPath) in
-            guard let cell = cell as? UICollectionViewCell,
-            let object = object as? String else {
-                return
-            }
-            
+        adapter.registerCell("My Identifier") { (cell: UICollectionViewCell, data: NSString, indexPath) in
             cell.backgroundColor = UIColor.redColor().colorWithAlphaComponent(0.8)
             if let cellLabel = cell.viewWithTag(100) as? UILabel {
-                cellLabel.text = object
+                cellLabel.text = data as String
             }
             else {
                 let cellLabel = UILabel(frame: cell.contentView.bounds)
@@ -82,15 +66,13 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
                 cellLabel.font = UIFont.systemFontOfSize(30.0)
                 cellLabel.textColor = .blackColor()
                 cellLabel.textAlignment = .Center
-                cellLabel.text = object
+                cellLabel.text = data as String
                 cell.contentView.addSubview(cellLabel)
             }
         }
         
         /// Here we're registering a UICollectionReusableView for our section headers.  Pretty sweet
-        adapter.registerSupplementaryViewClass(UICollectionReusableView.self, ofKind: .Header) { (view, kind, indexPath) in
-            guard let headerView = view as? UICollectionReusableView else { return }
-            
+        adapter.registerHeaderView { (headerView: UICollectionReusableView, kind, indexPath) -> () in
             headerView.backgroundColor = UIColor.orangeColor().colorWithAlphaComponent(0.8)
             headerView.layer.borderWidth = 1.0
             
@@ -114,9 +96,7 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
         /// Notice that we're not supplying an identifier here.  That's because it's not needed.
         /// Even though we're registering configuration blocks for the same class, since they're different kinds (`URBNSupplementaryViewTypeFooter` vs. `URBNSupplementaryViewTypeHeader`)
         /// we can ignore the identifier
-        adapter.registerSupplementaryViewClass(UICollectionReusableView.self, ofKind: .Footer) { (view, kind, indexPath) in
-            guard let footerView = view as? UICollectionReusableView else { return }
-            
+        adapter.registerFooterView { (footerView: UICollectionReusableView, kind, indexPath) -> () in
             footerView.backgroundColor = UIColor.purpleColor().colorWithAlphaComponent(0.1)
             footerView.layer.borderWidth = 1.0
             

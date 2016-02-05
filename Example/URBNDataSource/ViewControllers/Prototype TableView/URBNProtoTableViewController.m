@@ -7,8 +7,7 @@
 //
 
 #import "URBNProtoTableViewController.h"
-#import <URBNDataSource/URBNArrayDataSourceAdapter.h>
-
+@import URBNDataSource.URBNArrayDataSourceAdapter;
 
 NSString * const kProtoTableViewCell1_ID                = @"kProtoTableViewCell1_ID";
 NSString * const kProtoTableViewCell2_ID                = @"kProtoTableViewCell2_ID";

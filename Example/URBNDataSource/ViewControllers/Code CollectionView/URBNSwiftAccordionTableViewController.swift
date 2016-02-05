@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import URBNDataSource
 
 typealias CellTappedBlock = () -> Void
 
@@ -43,15 +44,10 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
         
         /// If all of your cell classes are unique, then you can just call regsiter cell with that class.
         /// The identifier will be the className
-        adapter.registerCellClass(UITableViewCell.self) { (cell, object, indexPath) in
-            guard let cell = cell as? UITableViewCell,
-            let object = object as? String else {
-                return
-            }
-            
-            cell.textLabel?.text = object
+        adapter.registerCell { (cell: UITableViewCell, object: NSString, indexPath) in
+            cell.textLabel?.text = object as String
         }
-
+        
         adapter.registerAccordionHeaderViewClass(URBNAccordionHeader.self) { (view, object, section, expanded) in
             guard let accordionView = view as? URBNAccordionHeader,
             let itemText = object as? String else {
