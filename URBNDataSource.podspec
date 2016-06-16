@@ -19,4 +19,5 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '8.0'
   s.requires_arc = true
   s.source_files = 'Pod/Classes'
+  s.tvos.deployment_target = '9.0'
 end
