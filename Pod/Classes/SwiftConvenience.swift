@@ -10,31 +10,31 @@ import Foundation
 
 
 extension URBNDataSourceAdapter {
-    public func registerCell<CellElement: UIView, DataElement: AnyObject>(identifier: String = "\(CellElement.self)", configurationBlock: (CellElement, DataElement, NSIndexPath) -> ()) {
+    public func registerCell<CellElement: UIView, DataElement: AnyObject>(identifier: String = "\(CellElement.self)", configurationBlock: @escaping (CellElement, DataElement, NSIndexPath) -> ()) {
         registerCellClass(CellElement.self, withIdentifier: identifier) { (cell, data, ip) -> Void in
-            guard let cell = cell as? CellElement, data = data as? DataElement else {
+            guard let cell = cell as? CellElement, let data = data as? DataElement else {
                 assertionFailure("Incorrect Types passed to DataSource. WHAT IS HAPPENING?")
                 return
             }
-            configurationBlock(cell, data, ip)
+            configurationBlock(cell, data, ip as NSIndexPath)
         }
     }
     
-    public func registerFooterView<ViewElement: UIView>(configurationBlock: (view: ViewElement, kind: URBNSupplementaryViewType, NSIndexPath) -> ()) {
-        registerSupplementaryUpdatable(.Footer, configurationBlock: configurationBlock)
+    public func registerFooterView<ViewElement: UIView>(configurationBlock: @escaping (_ view: ViewElement, _ kind: URBNSupplementaryViewType, NSIndexPath) -> ()) {
+        registerSupplementaryUpdatable(kind: .footer, configurationBlock: configurationBlock)
     }
     
-    public func registerHeaderView<ViewElement: UIView>(configurationBlock: (view: ViewElement, kind: URBNSupplementaryViewType, NSIndexPath) -> ()) {
-        registerSupplementaryUpdatable(.Header, configurationBlock: configurationBlock)
+    public func registerHeaderView<ViewElement: UIView>(configurationBlock: @escaping (_ view: ViewElement, _ kind: URBNSupplementaryViewType, NSIndexPath) -> ()) {
+        registerSupplementaryUpdatable(kind: .header, configurationBlock: configurationBlock)
     }
     
-    private func registerSupplementaryUpdatable<ViewElement: UIView>(kind: URBNSupplementaryViewType,configurationBlock: (view: ViewElement, kind: URBNSupplementaryViewType, NSIndexPath) -> ()) {
+    private func registerSupplementaryUpdatable<ViewElement: UIView>(kind: URBNSupplementaryViewType,configurationBlock: @escaping (_ view: ViewElement, _ kind: URBNSupplementaryViewType, NSIndexPath) -> ()) {
         registerSupplementaryViewClass(ViewElement.self, ofKind: kind) { (view, kind, ip) -> Void in
             guard let view = view as? ViewElement else {
                 assertionFailure("Incorrect Types passed to DataSource. WHAT IS HAPPENING?")
                 return
             }
-            configurationBlock(view: view, kind: kind, ip)
+            configurationBlock(view, kind, ip as NSIndexPath)
         }
     }
 }
