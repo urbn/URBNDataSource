@@ -1,4 +1,4 @@
 language: objective-c
 before_install: cd Example && rm -rf Pods && pod install && cd -
 script:
-- xcodebuild -workspace Example/URBNConvenience.xcworkspace -scheme Example clean build -destination "platform=iOS Simulator,name=iPhone 6,OS=latest" -destination-timeout 120 test
+- xcodebuild -workspace Example/Example.xcworkspace -scheme Example clean build -destination "platform=iOS Simulator,name=iPhone 6,OS=latest" -destination-timeout 120 test
