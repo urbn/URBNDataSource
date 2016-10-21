@@ -1,14 +1,16 @@
 PODS:
-  - URBNDataSource (1.0.1)
+  - URBNDataSource (1.1.1)
 
 DEPENDENCIES:
   - URBNDataSource (from `../`)
 
 EXTERNAL SOURCES:
   URBNDataSource:
-    :path: "../"
+    :path: ../
 
 SPEC CHECKSUMS:
-  URBNDataSource: 1dc9b95160e810e7c4086ff2605b7b4b51848535
+  URBNDataSource: a01328e75e8da22e1efc5b80c38fa1bac17d3b1a
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: c73e3ddcb89870118e06ec3b6f51156dc87220ec
+
+COCOAPODS: 1.1.1

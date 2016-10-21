@@ -1,9 +1,12 @@
 source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
 use_frameworks!
-target 'Example', :exclusive => true do
-  pod "URBNDataSource", :path => "../"
+
+target 'Example' do
+    target 'ExampleTests' do
+    inherit! :search_paths
+    end 
 end
 
-target 'ExampleTests', :exclusive => true do
-  pod "URBNDataSource", :path => "../"
-end
+
+pod "URBNDataSource", :path => "../"

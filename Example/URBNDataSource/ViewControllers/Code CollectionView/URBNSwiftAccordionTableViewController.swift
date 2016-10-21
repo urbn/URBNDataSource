@@ -62,17 +62,17 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
             }
         }
         
-        adapter.sectionsToKeepOpen = NSIndexSet(index: 0)
+        adapter.sectionsToKeepOpen = IndexSet(integer: 0)
         
         tableView.delegate = self.adapter
         tableView.dataSource = self.adapter
     }
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 100.0
     }
     
-    @IBAction func stepperPressed(sender: UIStepper) {
+    @IBAction func stepperPressed(_ sender: UIStepper) {
         let sectionCount = self.adapter.allSections().count
         if (Int(sender.value) > sectionCount) {
             adapter.appendSectionObject("Section " + String(sectionCount), items: ["Item A", "Item B", "Item C", "Item D", "Item E"])
@@ -97,8 +97,8 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
                 if (willExpand != expanded) {
                     _expanded = willExpand
                     
-                    catLabel.textColor = expanded ? UIColor.greenColor() : UIColor.blueColor()
-                    line.hidden = expanded
+                    catLabel.textColor = expanded ? UIColor.green : UIColor.blue
+                    line.isHidden = expanded
                 }
             }
         }
@@ -106,44 +106,44 @@ class URBNSwiftAccordionTableViewController: UITableViewController {
         override init(reuseIdentifier: String?) {
             super.init(reuseIdentifier: reuseIdentifier)
             
-            catLabel.font = UIFont.systemFontOfSize(14.0)
-            catLabel.textColor = UIColor.blueColor()
+            catLabel.font = UIFont.systemFont(ofSize: 14.0)
+            catLabel.textColor = UIColor.blue
             catLabel.translatesAutoresizingMaskIntoConstraints = false
-            catLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
+            catLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .vertical)
             contentView.addSubview(catLabel)
             
             let metrics = ["fifteenPadding":15]
             
-            NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-fifteenPadding-[catLabel]", options: [], metrics:metrics, views: ["catLabel": catLabel]))
-            NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[catLabel]|", options: [], metrics:metrics, views: ["catLabel": catLabel]))
+            NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-fifteenPadding-[catLabel]", options: [], metrics:metrics, views: ["catLabel": catLabel]))
+            NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|[catLabel]|", options: [], metrics:metrics, views: ["catLabel": catLabel]))
             
             expandedImgV.highlightedImage = UIImage(named:"shop-category-minus")
             expandedImgV.translatesAutoresizingMaskIntoConstraints = false
-            expandedImgV.contentMode = .ScaleAspectFit
+            expandedImgV.contentMode = .scaleAspectFit
             contentView.addSubview(expandedImgV)
             
-            NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[expandedImgV]-fifteenPadding-|", options: [], metrics:metrics, views: ["expandedImgV": expandedImgV]))
-            NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[expandedImgV]|", options: [], metrics:metrics, views: ["expandedImgV": expandedImgV]))
+            NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:[expandedImgV]-fifteenPadding-|", options: [], metrics:metrics, views: ["expandedImgV": expandedImgV]))
+            NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|[expandedImgV]|", options: [], metrics:metrics, views: ["expandedImgV": expandedImgV]))
         
-            let tap = UITapGestureRecognizer(target: self, action: "tapped:")
+            let tap = UITapGestureRecognizer(target: self, action: #selector(URBNAccordionHeader.tapped(_:)))
             tap.numberOfTapsRequired = 1
             tap.numberOfTouchesRequired = 1
             addGestureRecognizer(tap)
             
-            line.backgroundColor = UIColor.lightGrayColor()
+            line.backgroundColor = UIColor.lightGray
             line.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview(line)
             
-            NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[line]|", options: [], metrics:metrics, views: ["line": line]))
-            NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[line(==0.5)]|", options: [], metrics:metrics, views: ["line": line]))
+            NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|[line]|", options: [], metrics:metrics, views: ["line": line]))
+            NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:[line(==0.5)]|", options: [], metrics:metrics, views: ["line": line]))
         }
 
         required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
         
-        func tapped(tap:UITapGestureRecognizer) {
-            if (tap.state == .Ended) {
+        func tapped(_ tap:UITapGestureRecognizer) {
+            if (tap.state == .ended) {
                 tappedAction?()
             }
         }
