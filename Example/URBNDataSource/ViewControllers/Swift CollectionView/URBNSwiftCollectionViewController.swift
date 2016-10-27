@@ -53,7 +53,7 @@ class URBNSwiftCollectionViewController: UICollectionViewController {
         }
         
         /// Since we've registered an `UICollectionViewCell` above, we should supply an identifier for this cell
-        adapter.registerCell(identifier: "My Identifier") { (cell: UICollectionViewCell, data: NSString, indexPath) in
+        adapter.registerCell("My Identifier") { (cell: UICollectionViewCell, data: NSString, indexPath) in
             cell.backgroundColor = UIColor.red.withAlphaComponent(0.8)
             if let cellLabel = cell.viewWithTag(100) as? UILabel {
                 cellLabel.text = data as String

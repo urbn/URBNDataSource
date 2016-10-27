@@ -42,7 +42,7 @@ class URBNSwiftTableViewController: UITableViewController {
         }
         
         /// Since we've registered an `UITableViewCell` above, we should supply an identifier for this cell
-        adapter.registerCell(identifier: "My Identifier") { (cell: UITableViewCell, object: NSString, ip) -> () in
+        adapter.registerCell("My Identifier") { (cell: UITableViewCell, object: NSString, ip) -> () in
             cell.textLabel?.textColor = UIColor.red
             cell.textLabel?.text = object as String
         }
