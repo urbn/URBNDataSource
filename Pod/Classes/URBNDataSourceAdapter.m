@@ -284,7 +284,7 @@ NSString *const URBNSupplementaryViewKindFooter = @"URBNSupplementaryViewKindFoo
     ASSERT_TRUE(self.tableView || self.collectionView);
     
     identifier = identifier?:NSStringFromClass(cellClass);
-    UINib* nib = [self nibWithName:identifier];
+    UINib* nib = [self nibWithName:NSStringFromClass(cellClass)];
     if (nib) {
         [self.tableView registerNib:nib forCellReuseIdentifier:identifier];
         [self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
